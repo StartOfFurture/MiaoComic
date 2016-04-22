@@ -15,8 +15,8 @@
 @property (nonatomic, copy) NSString *label_color;// 该漫画类型的背景颜色
 @property (nonatomic, copy) NSString *cover_image_url;// 图片链接
 @property (nonatomic, copy) NSString *title;// 本集漫画名
-@property (nonatomic, copy) NSString *likes_count;// 喜欢数量
-@property (nonatomic, copy) NSString *comments_count;// 评论数量
+@property (nonatomic, assign) NSInteger likes_count;// 喜欢数量
+@property (nonatomic, assign) NSInteger comments_count;// 评论数量
 @property (nonatomic, copy) NSString *ids;// 点击进入下一个界面需要的id
 
 @property (nonatomic, strong) TopicModel *topicModel;// 整本漫画信息

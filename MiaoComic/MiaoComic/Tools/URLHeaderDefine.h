@@ -10,6 +10,11 @@
 #define URLHeaderDefine_h
 
 
+// 首页
+#define HOME_NEW @"http://api.kuaikanmanhua.com/v1/daily/comic_lists/"// 首页更新
+#define HOME_MORE @"http://api.kuaikanmanhua.com/v1/daily/comic_lists/0"// 加载更多
+#define HOME_ATTENTION @"http://api.kuaikanmanhua.com/v1/fav/timeline"// 首页关注
+
 //发现
 #define Discovery_CLASSIFY          @"http://api.kuaikanmanhua.com/v1/tag/suggestion"  //分类
 #define Discover_CLASSIFYLIST     @"http://api.kuaikanmanhua.com/v1/topics?limit=%@&offset=%@&tag=%@"  //分类列表

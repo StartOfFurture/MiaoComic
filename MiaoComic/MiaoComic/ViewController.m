@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "HomeTableViewController.h"
+#import "HomeViewController.h"
 #import "DiscoveryViewController.h"
 #import "UserViewController.h"
 #import "LoginViewController.h"
@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //首页
-    HomeTableViewController *homeVC = [[HomeTableViewController alloc] init];
+    HomeViewController *homeVC = [[HomeViewController alloc] init];
     UINavigationController *naVC2 = [[UINavigationController alloc] initWithRootViewController:homeVC];
     naVC2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"首页" image:[UIImage imageNamed:@"index"] selectedImage:[[UIImage imageNamed:@"index_change"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
