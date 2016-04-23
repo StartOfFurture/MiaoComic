@@ -24,25 +24,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**发现*/
-#define Discovery_CLASSIFY          @"http://api.kuaikanmanhua.com/v1/tag/suggestion"
-
-
-
-
 /**登录*/
 #define LOGINURL @"http://api.kuaikanmanhua.com/v1/phone/signin"
 /**获取验证码*/
@@ -51,5 +32,11 @@
 #define SENDURL @"http://api.kuaikanmanhua.com/v1/phone/verify"
 /**我的关注*/
 #define ATTENTIONURL @"http://api.kuaikanmanhua.com/v1/fav/topics?offset=%@&limit=%@"
+// 收藏
+#define COLLECTURL @"http://api.kuaikanmanhua.com/v1/fav/comics?offset=%@&limit=%@"
+// 消息展示
+#define MESSAGEURL @"http://api.kuaikanmanhua.com/v1/comments/replies/timeline?since=%@"
+// 消息接收
+#define MESSAGE_SENDURL @"http://api.kuaikanmanhua.com/v1/timeline/polling"
 
 #endif /* URLHeaderDefine_h */
