@@ -16,5 +16,8 @@
 @property (nonatomic, copy)NSString *title;//漫画的名称
 @property (nonatomic, copy)NSString *ID;//该本漫画的id
 @property (nonatomic, copy)NSString *nickname;//作者的名称
+@property (nonatomic, copy)NSString *pic;//官方显示图片的链接
+@property (nonatomic, copy)NSString *target_title;//官方该漫画的标题
+@property (nonatomic, copy)NSString *target_id;//官方传到下一个界面的id值
 
 @end

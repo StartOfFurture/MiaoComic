@@ -86,32 +86,17 @@
             } else {
                 NSString *err = dic[@"message"];
                 NSLog(@"%@",err);
-                if ([err isEqualToString:@"invalid phone number"]) {
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"登录失败" message:@"请正确输入手机号" preferredStyle:UIAlertControllerStyleAlert];
-                    [self presentViewController:alert animated:YES completion:nil];
-                } else if ([err isEqualToString:@"invalid user or password"]){
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"登录失败" message:@"用户名或密码错误" preferredStyle:UIAlertControllerStyleAlert];
-                    [self presentViewController:alert animated:YES completion:nil];
-                } else {
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"登录失败" message:@"用户名或密码错误" preferredStyle:UIAlertControllerStyleAlert];
-                    [self presentViewController:alert animated:YES completion:nil];
-                }
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"登录失败" message:err preferredStyle:UIAlertControllerStyleAlert];
+                [self presentViewController:alert animated:YES completion:nil];
             }
-            // 添加定时器，消失跳出框
-            [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
             
-
+            [self dismissViewControllerAnimated:YES completion:nil];
         });
         
     } errorMessage:^(NSError *error) {
-        NSLog(@"%@", error);
+        NSLog(@"lala");
     }];
 }
-
--(void)dismiss{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 
 // 跳转到注册界面
 - (IBAction)skipToRegister:(id)sender {

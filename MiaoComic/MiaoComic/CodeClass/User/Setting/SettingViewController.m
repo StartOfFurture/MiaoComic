@@ -8,8 +8,6 @@
 
 #import "SettingViewController.h"
 #import "UIButton+FinishClick.h"
-#import "SetUserViewController.h"
-#import "LoginViewController.h"
 
 @interface SettingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -74,56 +72,14 @@
     cell.textLabel.font = [UIFont systemFontOfSize:14];
     return cell;
 }
+/*
+#pragma mark - Navigation
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    switch (indexPath.section) {
-        case 0:
-        {
-            if (indexPath.row == 0) {
-                if ([[UserInfoManager getUserID] isEqual:@" "]) {
-                    NSLog(@"您还没有登陆");
-                    UIAlertController *alter = [UIAlertController alertControllerWithTitle:@"您还没有登陆" message:nil preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"随便看看" style:UIAlertActionStyleDefault handler:nil];
-                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"马上登陆" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        LoginViewController *loginVC = [[LoginViewController alloc] init];
-                        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:loginVC];
-                        [self presentViewController:naVC animated:YES completion:nil];
-                    }];
-                    
-                    [alter addAction:cancel];
-                    [alter addAction:sure];
-                    [self presentViewController:alter animated:YES completion:nil];
-                    
-                }
-                [self.navigationController popViewControllerAnimated:YES];
-                SetUserViewController *setUserVC = [[SetUserViewController alloc] init];
-                [self.navigationController pushViewController:setUserVC animated:YES];
-            } else {
-                NSLog(@"修改密码");
-            }
-        }
-            break;
-            case 1:
-        {
-            if (indexPath.row == 0) {
-                NSLog(@"清理缓存");
-            } else if (indexPath.row == 1){
-//                UILabel *hudLabel = [UILabel alloc] initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
-                NSLog(@"版本更新");
-            } else {
-                NSLog(@"关于喵");
-            }
-        }
-            break;
-            case 2:
-        {
-            NSLog(@"好评");
-        }
-            break;
-        default:
-            break;
-    }
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
 }
-
+*/
 
 @end

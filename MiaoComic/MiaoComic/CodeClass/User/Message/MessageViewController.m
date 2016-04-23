@@ -7,64 +7,12 @@
 //
 
 #import "MessageViewController.h"
-#import "MessageModel.h"
-#import "MessageComicModel.h"
-#import "MessageUserModel.h"
-#import "MessageMoldeCell.h"
 
-@interface MessageViewController ()<UITableViewDataSource,UITableViewDelegate>
-
-@property (nonatomic, strong) NSMutableArray *listArray;
-@property (nonatomic, strong) UITableView *tableView;
+@interface MessageViewController ()
 
 @end
 
 @implementation MessageViewController
-
--(NSMutableArray *)listArray{
-    if (_listArray == nil) {
-        _listArray = [[NSMutableArray alloc] initWithCapacity:0];
-    }
-    return _listArray;
-}
-
-
--(void)requestData {
-    NSString *str = [NSString stringWithFormat:MESSAGEURL,@"0"];
-    str = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    [NetWorkRequestManager requestWithType:GET urlString:str dic:nil successful:^(NSData *data) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-        NSArray *dataArray = dic[@"data"][@"comments"];
-        
-//        NSLog(@"dataArray is %@",dataArray);
-        for (NSDictionary *dic in dataArray) {
-            NSLog(@"dic is %@",dic);
-            MessageModel *model = [[MessageModel alloc] init];
-            MessageComicModel *cModel = [[MessageComicModel alloc] init];
-            MessageUserModel *uModel = [[MessageUserModel alloc] init];
-            
-            
-            [model setValuesForKeysWithDictionary:dic];
-            
-            [cModel setValuesForKeysWithDictionary:dic[@"target_comic"]];
-            [uModel setValuesForKeysWithDictionary:dic[@"user"]];
-            model.tcontent = dic[@"target_comment"][@"content"];
-//            NSLog(@"%@",model.tcontent);
-            model.target_comic = cModel;
-            model.user = uModel;
-            
-            [self.listArray addObject:model];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
-        
-        
-    } errorMessage:^(NSError *error) {
-        NSLog(@"error is %@",error);
-    }];
-}
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -81,41 +29,6 @@
     [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [back setImage:[UIImage imageNamed:@"back_1"] forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:back];
-    
-    [self requestData];
-    
-    
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    [self.tableView registerNib:[UINib nibWithNibName:@"MessageModelCell" bundle:nil] forCellReuseIdentifier:NSStringFromClass([MessageModel class])];
-    [self.view addSubview:self.tableView];
-    
-}
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.listArray.count;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    MessageModel *model = self.listArray[indexPath.row];
-    NSString *content = model.content;
-//    NSLog(@"str %@",content);
-    
-    CGRect rect = [content boundingRectWithSize:CGSizeMake(tableView.bounds.size.width - 100, MAXFLOAT) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18]} context:nil];
-    
-//    NSLog(@"rect is %@",[NSValue valueWithCGRect:rect]);
-    return rect.size.height + 240;
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    MessageModel *model = self.listArray[indexPath.row];
-//    NSLog(@"model is %@",model.user.nickname);
-    MessageMoldeCell *cell = (MessageMoldeCell *)[FactoryTableViewCell creatTableViewCell:model tableView:tableView indexPath:indexPath];
-    
-    [cell setDataWithModel:model];
-
-    return cell;
 }
 
 -(void)back{

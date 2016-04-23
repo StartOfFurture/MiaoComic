@@ -38,7 +38,7 @@
     [_authorNameLabel sizeThatFits:CGSizeMake(40, 15)];
     
     _thisComicTitleLabel.text = comicsModel.title;
-    
+    NSLog(@"comicsModel.title:%@",comicsModel.title);
     if (comicsModel.likes_count > 100000) {
         _likeLabel.text = [NSString stringWithFormat:@"%ld万", comicsModel.likes_count / 10000];
     } else {
