@@ -18,7 +18,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [[UITabBar appearance] setTintColor:[UIColor colorWithRed:0.73 green:0.27 blue:0.62 alpha:1]];
-    
+    NSString *str = NSHomeDirectory();
+    NSLog(@"str is %@",str);
     return YES;
 }
 

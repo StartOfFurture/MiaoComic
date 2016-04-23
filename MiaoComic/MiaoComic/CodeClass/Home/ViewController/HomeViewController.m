@@ -257,10 +257,7 @@
       
             // 计算时间
             NSDate *date = [GetTime getDate:[NSDate date] formatString:@"YYYY-MM-dd"];
-//            NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
-//            [formatter setDateFormat:@"YYYY-MM-dd"];
-//            NSString *dataString = [formatter stringFromDate:[NSDate date]];
-//            NSDate *date = [formatter dateFromString:dataString];
+
             _urlString = [NSString stringWithFormat:@"%.0f", [[NSDate dateWithTimeInterval:(i - 6) * 24 * 60 * 60  sinceDate:date] timeIntervalSince1970]];
 
             // 请求数据
@@ -537,7 +534,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ((indexPath.section == self.comicsArray.count && tableView == _comicsTableView) || (indexPath.section == self.attentionArray.count && tableView == _attentionTableView)) {// 最后一组的高度
+    if ((indexPath.section == self.comicsArray.count && self.selectButton == _comicsBtn) || (indexPath.section == self.attentionArray.count && self.selectButton == _attentionBtn)) {// 最后一组的高度
         return 50;
     }
     return (ScreenWidth) * ((float)10 / 17) + 10 * 4 + 20 + 20;
@@ -549,29 +546,29 @@
     }
     
     // 最后一组，滑到底的时候
-    if (indexPath.section == self.comicsArray.count) {
+
+  
+
+    if (indexPath.section == self.comicsArray.count && self.selectButton == _comicsBtn) {
+
         BaseTableViewCell *cell = [[BaseTableViewCell alloc] init];
         cell.textLabel.text = @" 到底了哦，看看前一天的吧~";
         cell.imageView.image = [UIImage imageNamed:@"Logo_Miao"];
         cell.backgroundColor = [UIColor clearColor];
         return cell;
     }
-//    if (indexPath.section == self.attentionArray.count && tableView == _attentionTableView) {
-//        BaseTableViewCell *cell = [[BaseTableViewCell alloc] init];
-//        cell.textLabel.text = @" 到底了哦，看看其他的吧~";
-//        cell.imageView.image = [UIImage imageNamed:@"Logo_Miao"];
-//        cell.backgroundColor = [UIColor clearColor];
-//        return cell;
-//    }
     
     ComicsModel *comics = nil;
-     comics = _comicsArray[indexPath.section];
-//    if (tableView == _comicsTableView) {
+
+  
+comics = _comicsArray[indexPath.section];
+//    if (self.selectButton == _comicsBtn) {
 //        comics = _comicsArray[indexPath.section];
 //    } else {
 //        NSString *key = _attentionArray[indexPath.section];
 //        comics = _attentionDic[key][indexPath.row];
 //    }
+
     
     BaseTableViewCell *cell = [FactoryTableViewCell creatTableViewCell:comics tableView:tableView indexPath:indexPath];
     
@@ -591,16 +588,18 @@
 
 #pragma mark - 设置组间距和颜色 -
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-//    if (tableView == _attentionTableView) {
-//        return _attentionArray[section];
-//    } else {
-//        return nil;
-//    }
-//}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (self.selectButton == _attentionBtn) {
+        return _attentionArray[section];
+    } else {
+        return nil;
+    }
+}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (tableView == _comicsTableView) {
+    if (self.selectButton == _comicsBtn) {
         return 10;
     } else {
         return 20;

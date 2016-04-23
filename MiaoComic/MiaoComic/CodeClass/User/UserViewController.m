@@ -107,7 +107,8 @@
     _headerView.layer.cornerRadius= 50;
     _headerView.layer.masksToBounds = YES;// 
     _headerView.userInteractionEnabled = YES;// 打开用户交互
-    _headerView.backgroundColor = [UIColor grayColor];
+    _headerView.backgroundColor = [UIColor whiteColor];
+    [_headerView sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"pheader"]];
     // 给头像添加手势
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
     tap.numberOfTouchesRequired = 1;

@@ -27,8 +27,9 @@
 }
 
 // 从 某个秒数字符串，获取时间（如果时间在一个小时内显示 刚刚、1分钟前）
-+ (NSString *)getTimeFromSecondString:(NSString *)secondString timeFormatType:(NSString *)timeFormatType {
++ (NSString *)getTimeFromSecondString:(NSString *)secondString timeFormatType:(TimeFormatType)timeFormatType {
     NSTimeInterval time = [secondString doubleValue];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:time];
     NSTimeInterval timeNow = [[NSDate date] timeIntervalSince1970];
     // 传入的时间在一个小时内
     if (time + 60 > timeNow) {
@@ -36,8 +37,46 @@
     } else if (time + 60 * 60 > timeNow) {
         return [NSString stringWithFormat:@"%.0f分钟前", (timeNow - time) / 60];
     } else {
-        NSDate *date = [GetTime getDate:[GetTime getDateFromSecondString:secondString] formatString:timeFormatType];
-        return [NSString stringWithFormat:@"%@", date];
+        
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        NSDateComponents *comps = [[NSDateComponents alloc] init];
+        NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | kCFCalendarUnitHour | kCFCalendarUnitMinute;
+        
+        comps = [calendar components:unitFlags fromDate:date];
+        
+        NSInteger year= [comps year];
+        NSInteger month = [comps month];
+        NSInteger day = [comps day];
+        NSInteger hour = [comps hour];
+        NSInteger minute = [comps minute];
+        
+        // 获取当前的 年份
+        NSDateComponents *thisComps = [[NSDateComponents alloc] init];
+        thisComps = [calendar components:unitFlags fromDate:[NSDate date]];
+        NSInteger thisYear = [thisComps year];
+        
+        // 判断是否显示 年份
+        NSString *dataString = nil;
+        if (timeFormatType == Month_Day_Hour_Minute) {
+            if (thisYear == year) {
+                dataString = [NSString stringWithFormat:@"%02ld-%02ld %02ld:%02ld",month,day, hour, minute];
+                return dataString;
+            } else {
+                dataString = [NSString stringWithFormat:@"%02ld-%02ld-%02ld %02ld:%02ld",year,month,day, hour, minute];
+                return dataString;
+                
+            }
+        } else {
+            if (thisYear == year) {
+                dataString = [NSString stringWithFormat:@"%02ld月%02ld日 %02ld:%02ld",month,day, hour, minute];
+                return dataString;
+            } else {
+                dataString = [NSString stringWithFormat:@"%ld年%02ld月%02ld日 %02ld:%02ld",year,month,day, hour, minute];
+                return dataString;
+                
+            }
+        }
+        
     }
     
     return nil;

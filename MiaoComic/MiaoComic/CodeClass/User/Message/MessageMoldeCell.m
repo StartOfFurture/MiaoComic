@@ -16,9 +16,7 @@
     self.headerImage.layer.masksToBounds = YES;
     [self.headerImage sd_setImageWithURL:[NSURL URLWithString:model.user.avatar_url]];
     self.nicknameLabel.text = [NSString stringWithFormat:@"%@", model.user.nickname];
-//    self.nicknameLabel.backgroundColor = [UIColor redColor];
-//    NSLog(@"self.nicknameLabel%@",self.nicknameLabel);
-    self.timeLabel.text = [GetTime getTimeFromSecondString:model.created_at timeFormatType:@"MM-dd HH:mm"];
+    self.timeLabel.text = [GetTime getTimeFromSecondString:model.created_at timeFormatType:Month_Day_Hour_Minute];
     [self.sendButton setTitle:@"回复" forState:UIControlStateNormal];
     self.contentLabel.text = model.content;
     self.myContentLabel.text = model.tcontent;

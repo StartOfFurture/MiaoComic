@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -44,8 +45,8 @@
                         <rect key="frame" x="374" y="20" width="46" height="30"/>
                         <state key="normal" title="Button"/>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hvy-zw-9bX">
-                        <rect key="frame" x="70" y="74" width="44" height="22"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hvy-zw-9bX">
+                        <rect key="frame" x="70" y="74" width="347" height="22"/>
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -91,6 +92,7 @@
                                     <constraint firstItem="bEY-wa-Oi8" firstAttribute="leading" secondItem="cSR-UD-f7T" secondAttribute="trailing" constant="10" id="cD7-ki-cc3"/>
                                     <constraint firstItem="cSR-UD-f7T" firstAttribute="top" secondItem="f40-Ix-z1X" secondAttribute="top" id="ggg-JL-eME"/>
                                     <constraint firstAttribute="trailing" secondItem="bEY-wa-Oi8" secondAttribute="trailing" constant="10" id="jB2-jc-h4f"/>
+                                    <constraint firstAttribute="height" constant="92" id="vQH-9n-6Wi"/>
                                     <constraint firstItem="mC0-u0-jJN" firstAttribute="leading" secondItem="bEY-wa-Oi8" secondAttribute="leading" id="yhG-84-Inh"/>
                                 </constraints>
                             </view>
@@ -98,6 +100,7 @@
                         <color key="backgroundColor" red="0.87350186434659094" green="0.87350186434659094" blue="0.87350186434659094" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="f40-Ix-z1X" firstAttribute="leading" secondItem="Zbb-ae-fgU" secondAttribute="leading" constant="8" id="7h9-rV-o8T"/>
+                            <constraint firstAttribute="height" constant="138" id="8Zf-5l-kMe"/>
                             <constraint firstItem="9fd-qe-1LZ" firstAttribute="top" secondItem="Zbb-ae-fgU" secondAttribute="top" constant="8" id="AxJ-sy-uOE"/>
                             <constraint firstItem="f40-Ix-z1X" firstAttribute="top" secondItem="9fd-qe-1LZ" secondAttribute="bottom" constant="10" id="amY-Xz-OHF"/>
                             <constraint firstAttribute="bottom" secondItem="f40-Ix-z1X" secondAttribute="bottom" constant="8" id="lfZ-NQ-LJw"/>
@@ -113,6 +116,7 @@
                     <constraint firstItem="W7E-Ux-usd" firstAttribute="top" secondItem="OZ9-YM-4Cb" secondAttribute="top" constant="10" id="98J-VQ-lXs"/>
                     <constraint firstAttribute="trailing" secondItem="Zbb-ae-fgU" secondAttribute="trailing" constant="10" id="Uci-1Q-jba"/>
                     <constraint firstAttribute="trailing" secondItem="GXb-rl-geD" secondAttribute="trailing" constant="15" id="Ugi-RZ-A9r"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="hvy-zw-9bX" secondAttribute="trailing" constant="10" id="Xhv-h5-h6R"/>
                     <constraint firstItem="CZN-EB-61m" firstAttribute="top" secondItem="OZ9-YM-4Cb" secondAttribute="top" constant="10" id="YMX-Jr-dDm"/>
                     <constraint firstItem="GXb-rl-geD" firstAttribute="top" secondItem="OZ9-YM-4Cb" secondAttribute="top" constant="20" id="YNj-tZ-HUj"/>
                     <constraint firstAttribute="bottom" secondItem="Zbb-ae-fgU" secondAttribute="bottom" constant="15" id="Zfj-1v-nwU"/>
@@ -134,7 +138,7 @@
                 <outlet property="timeLabel" destination="8UZ-Qo-cE2" id="Mn8-NG-jlt"/>
                 <outlet property="titleLaebl" destination="bEY-wa-Oi8" id="VL1-lu-qLA"/>
             </connections>
-            <point key="canvasLocation" x="1208.5" y="473"/>
+            <point key="canvasLocation" x="1486.5" y="420"/>
         </tableViewCell>
     </objects>
 </document>

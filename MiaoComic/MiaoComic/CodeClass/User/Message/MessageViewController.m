@@ -98,7 +98,14 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 260;
+    MessageModel *model = self.listArray[indexPath.row];
+    NSString *content = model.content;
+//    NSLog(@"str %@",content);
+    
+    CGRect rect = [content boundingRectWithSize:CGSizeMake(tableView.bounds.size.width - 100, MAXFLOAT) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18]} context:nil];
+    
+//    NSLog(@"rect is %@",[NSValue valueWithCGRect:rect]);
+    return rect.size.height + 240;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

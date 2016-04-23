@@ -35,7 +35,7 @@
     //tabbar
 //    UITabBarController *contrllerVC = [[UITabBarController alloc] init];
     self.viewControllers = @[naVC2, naVC1, userVC];
-    
+    self.selectedIndex = 2;
 }
 
 - (void)didReceiveMemoryWarning {

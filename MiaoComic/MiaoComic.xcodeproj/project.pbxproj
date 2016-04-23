@@ -33,6 +33,7 @@
 		790643301CC90D730068E199 /* AttentionModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7906432F1CC90D730068E199 /* AttentionModelCell.xib */; };
 		7934A3811CCB096B0072F386 /* MessageMoldeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7934A3801CCB096B0072F386 /* MessageMoldeCell.m */; };
 		7934A3831CCB097D0072F386 /* MessageModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7934A3821CCB097D0072F386 /* MessageModelCell.xib */; };
+		7934A3861CCB63450072F386 /* SetUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7934A3851CCB63450072F386 /* SetUserViewController.m */; };
 		795035991CCA06490083DF98 /* CollectModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 795035981CCA06490083DF98 /* CollectModel.m */; };
 		7950359C1CCA06CB0083DF98 /* CollectTopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7950359B1CCA06CB0083DF98 /* CollectTopicModel.m */; };
 		7950359F1CCA08300083DF98 /* CollectModelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7950359E1CCA08300083DF98 /* CollectModelCell.m */; };
@@ -158,6 +159,8 @@
 		7934A37F1CCB096B0072F386 /* MessageMoldeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageMoldeCell.h; sourceTree = "<group>"; };
 		7934A3801CCB096B0072F386 /* MessageMoldeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageMoldeCell.m; sourceTree = "<group>"; };
 		7934A3821CCB097D0072F386 /* MessageModelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageModelCell.xib; sourceTree = "<group>"; };
+		7934A3841CCB63450072F386 /* SetUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetUserViewController.h; sourceTree = "<group>"; };
+		7934A3851CCB63450072F386 /* SetUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetUserViewController.m; sourceTree = "<group>"; };
 		795035971CCA06490083DF98 /* CollectModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectModel.h; sourceTree = "<group>"; };
 		795035981CCA06490083DF98 /* CollectModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectModel.m; sourceTree = "<group>"; };
 		7950359A1CCA06CB0083DF98 /* CollectTopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectTopicModel.h; sourceTree = "<group>"; };
@@ -674,6 +677,8 @@
 			children = (
 				7901CB551CC7BC1E00D944C6 /* SettingViewController.h */,
 				7901CB561CC7BC1E00D944C6 /* SettingViewController.m */,
+				7934A3841CCB63450072F386 /* SetUserViewController.h */,
+				7934A3851CCB63450072F386 /* SetUserViewController.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -1031,6 +1036,7 @@
 				798DE48E1CC8655A00AF2155 /* ClassifyListTableViewController.m in Sources */,
 				798DE4991CC8BC5B00AF2155 /* ClassifyListModelCellChange.m in Sources */,
 				7901CB571CC7BC1E00D944C6 /* SettingViewController.m in Sources */,
+				7934A3861CCB63450072F386 /* SetUserViewController.m in Sources */,
 				790643251CC8EFBE0068E199 /* SetViewController.m in Sources */,
 				7901CB531CC7A6C800D944C6 /* UserViewController.m in Sources */,
 				795035A71CCA58C10083DF98 /* MessageComicModel.m in Sources */,
