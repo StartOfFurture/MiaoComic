@@ -42,7 +42,7 @@
 //        NSLog(@"dic is %@",dicData);
         NSArray *dataArray = dicData[@"data"][@"comics"];
         for (NSDictionary *dic in dataArray) {
-            NSLog(@"dic is %@",dic);
+//            NSLog(@"dic is %@",dic);
             CollectModel *cModel = [[CollectModel alloc] init];
             CollectTopicModel *tModel = [[CollectTopicModel alloc] init];
             [cModel setValuesForKeysWithDictionary:dic];

@@ -9,14 +9,14 @@
 #import "BaseTableViewCell.h"
 
 @interface MessageMoldeCell : BaseTableViewCell
-@property (strong, nonatomic) IBOutlet UIImageView *headerImage;
-@property (strong, nonatomic) IBOutlet UILabel *nicknameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *timeLabel;
-@property (strong, nonatomic) IBOutlet UIButton *sendButton;
-@property (strong, nonatomic) IBOutlet UILabel *contentLabel;
-@property (strong, nonatomic) IBOutlet UILabel *myContentLabel;
-@property (strong, nonatomic) IBOutlet UIImageView *coverImage;
-@property (strong, nonatomic) IBOutlet UILabel *titleLaebl;
-@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *headerImage;
+@property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
+@property (weak, nonatomic) IBOutlet UILabel *myContentLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImage;
+@property (weak, nonatomic) IBOutlet UILabel *titleLaebl;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 
 @end

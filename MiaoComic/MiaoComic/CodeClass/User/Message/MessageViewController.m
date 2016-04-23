@@ -10,10 +10,12 @@
 #import "MessageModel.h"
 #import "MessageComicModel.h"
 #import "MessageUserModel.h"
+#import "MessageMoldeCell.h"
 
-@interface MessageViewController ()
+@interface MessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *listArray;
+@property (nonatomic, strong) UITableView *tableView;
 
 @end
 
@@ -36,7 +38,7 @@
         
 //        NSLog(@"dataArray is %@",dataArray);
         for (NSDictionary *dic in dataArray) {
-//            NSLog(@"dic is %@",dic);
+            NSLog(@"dic is %@",dic);
             MessageModel *model = [[MessageModel alloc] init];
             MessageComicModel *cModel = [[MessageComicModel alloc] init];
             MessageUserModel *uModel = [[MessageUserModel alloc] init];
@@ -54,9 +56,7 @@
             [self.listArray addObject:model];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            
-            
-            
+            [self.tableView reloadData];
         });
         
         
@@ -83,6 +83,32 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:back];
     
     [self requestData];
+    
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    [self.tableView registerNib:[UINib nibWithNibName:@"MessageModelCell" bundle:nil] forCellReuseIdentifier:NSStringFromClass([MessageModel class])];
+    [self.view addSubview:self.tableView];
+    
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.listArray.count;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 260;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    MessageModel *model = self.listArray[indexPath.row];
+//    NSLog(@"model is %@",model.user.nickname);
+    MessageMoldeCell *cell = (MessageMoldeCell *)[FactoryTableViewCell creatTableViewCell:model tableView:tableView indexPath:indexPath];
+    
+    [cell setDataWithModel:model];
+
+    return cell;
 }
 
 -(void)back{

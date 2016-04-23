@@ -549,28 +549,29 @@
     }
     
     // 最后一组，滑到底的时候
-    if (indexPath.section == self.comicsArray.count && tableView == _comicsTableView) {
+    if (indexPath.section == self.comicsArray.count) {
         BaseTableViewCell *cell = [[BaseTableViewCell alloc] init];
         cell.textLabel.text = @" 到底了哦，看看前一天的吧~";
         cell.imageView.image = [UIImage imageNamed:@"Logo_Miao"];
         cell.backgroundColor = [UIColor clearColor];
         return cell;
     }
-    if (indexPath.section == self.attentionArray.count && tableView == _attentionTableView) {
-        BaseTableViewCell *cell = [[BaseTableViewCell alloc] init];
-        cell.textLabel.text = @" 到底了哦，看看其他的吧~";
-        cell.imageView.image = [UIImage imageNamed:@"Logo_Miao"];
-        cell.backgroundColor = [UIColor clearColor];
-        return cell;
-    }
+//    if (indexPath.section == self.attentionArray.count && tableView == _attentionTableView) {
+//        BaseTableViewCell *cell = [[BaseTableViewCell alloc] init];
+//        cell.textLabel.text = @" 到底了哦，看看其他的吧~";
+//        cell.imageView.image = [UIImage imageNamed:@"Logo_Miao"];
+//        cell.backgroundColor = [UIColor clearColor];
+//        return cell;
+//    }
     
     ComicsModel *comics = nil;
-    if (tableView == _comicsTableView) {
-        comics = _comicsArray[indexPath.section];
-    } else {
-        NSString *key = _attentionArray[indexPath.section];
-        comics = _attentionDic[key][indexPath.row];
-    }
+     comics = _comicsArray[indexPath.section];
+//    if (tableView == _comicsTableView) {
+//        comics = _comicsArray[indexPath.section];
+//    } else {
+//        NSString *key = _attentionArray[indexPath.section];
+//        comics = _attentionDic[key][indexPath.row];
+//    }
     
     BaseTableViewCell *cell = [FactoryTableViewCell creatTableViewCell:comics tableView:tableView indexPath:indexPath];
     
@@ -590,13 +591,13 @@
 
 #pragma mark - 设置组间距和颜色 -
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (tableView == _attentionTableView) {
-        return _attentionArray[section];
-    } else {
-        return nil;
-    }
-}
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+//    if (tableView == _attentionTableView) {
+//        return _attentionArray[section];
+//    } else {
+//        return nil;
+//    }
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (tableView == _comicsTableView) {
