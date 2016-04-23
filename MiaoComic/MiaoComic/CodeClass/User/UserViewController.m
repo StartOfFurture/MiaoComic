@@ -83,7 +83,7 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     cell.imageView.image = [UIImage imageNamed:_icoArray[indexPath.section][indexPath.row]];
