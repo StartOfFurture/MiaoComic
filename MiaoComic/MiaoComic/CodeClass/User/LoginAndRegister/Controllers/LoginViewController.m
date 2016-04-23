@@ -94,7 +94,7 @@
         });
         
     } errorMessage:^(NSError *error) {
-        NSLog(@"lala");
+        NSLog(@"%@", error);
     }];
 }
 
