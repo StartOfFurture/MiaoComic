@@ -27,7 +27,7 @@
     [super viewDidAppear:animated];
     [self requestData];
 }
-
+ 
 //数据请求
 - (void)requestData{
     if (self.listArr.count != 0 && self.startCount == 0) {
@@ -114,8 +114,12 @@
     
     //下拉刷新
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        self.startCount = 0;
-        [self requestData];
+        if (self.tableView.contentOffset.y >= 0) {
+            self.startCount = 0;
+            [self requestData];
+        }else{
+            [self.tableView.mj_header endRefreshing];
+        }
     }];
 
     // Do any additional setup after loading the view.

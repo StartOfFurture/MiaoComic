@@ -13,6 +13,9 @@
 #import "DiscoveryHoTBannerModel.h"
 #import "CycleScrollView.h"
 #import "DiscoveryHotListModel.h"
+#import "DiscoveryHotSecondView.h"
+#import "DiscoveryHotRenQiCell.h"
+#import "SearchViewController.h"
 
 @interface DiscoveryViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -20,7 +23,7 @@
 @property (nonatomic, strong)NSMutableArray *hotBannerArr;//热门轮播数组
 @property (nonatomic, strong)CycleScrollView *headerScrollView;//头视图
 @property (nonatomic, strong)NSMutableDictionary *hotListDic;//热门列表字典
-@property (nonatomic, strong)NSMutableArray  *hotListArr;//
+@property (nonatomic, strong)NSMutableArray  *hotListArr;//热门列表的分组数组
 
 @property (nonatomic, strong)UICollectionView *collectionView;//分类视图
 @property (nonatomic, strong)NSMutableArray *collectionArray;//分类数组
@@ -28,6 +31,14 @@
 @end
 
 @implementation DiscoveryViewController
+
+//热门列表的分组数组的懒加载
+- (NSMutableArray *)hotListArr{
+    if (_hotListArr == nil) {
+        _hotListArr = [[NSMutableArray alloc] initWithCapacity:0];
+    }
+    return _hotListArr;
+}
 
 //热门列表字典的懒加载
 - (NSMutableDictionary *)hotListDic{
@@ -97,20 +108,31 @@
         NSArray *array = dic[@"data"][@"infos"];
         for (NSDictionary *dic1 in array) {
             NSMutableArray *listArr = [[NSMutableArray alloc] initWithCapacity:0];
-            NSArray *arr = dic1[@"topics"];
-            for (NSDictionary *dic2 in arr) {
-                DiscoveryHotListModel *model = [[DiscoveryHotListModel alloc] init];
-                [model setValuesForKeysWithDictionary:dic2];
-                model.nickname = dic2[@"user"][@"nickname"];
-                model.GroupTitle = dic1[@"title"];
-                [listArr addObject:model];
+            if ([dic1[@"title"] isEqualToString:@"官方活动"]) {
+                NSArray *arr = dic1[@"banners"];
+                for (NSDictionary *dic2 in arr) {
+                    DiscoveryHotListModel *model = [[DiscoveryHotListModel alloc] init];
+                    [model setValuesForKeysWithDictionary:dic2];
+                    model.ID = @"";
+                    model.GroupTitle = dic1[@"title"];
+                    [listArr addObject:model];
+                }
+            }else{
+                NSArray *arr = dic1[@"topics"];
+                for (NSDictionary *dic2 in arr) {
+                    DiscoveryHotListModel *model = [[DiscoveryHotListModel alloc] init];
+                    [model setValuesForKeysWithDictionary:dic2];
+                    model.nickname = dic2[@"user"][@"nickname"];
+                    model.GroupTitle = dic1[@"title"];
+                    [listArr addObject:model];
+                }
             }
-//            NSLog(@"%@",dic1[@"title"]);
+            [self.hotListArr addObject:dic1[@"title"]];
             [self.hotListDic setObject:listArr forKey:dic1[@"title"]];
         }
-//        NSLog(@"%@",self.hotListDic);
+        NSLog(@"%@",self.hotListDic);
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+            [_hotTableView reloadData];
         });
     } errorMessage:^(NSError *error) {
         NSLog(@"2%@",error);
@@ -126,7 +148,6 @@
     
     //导航栏的颜色
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-    
     
     //热门、分类标题的显示
     UISegmentedControl *segVC = [[UISegmentedControl alloc] initWithItems:@[@"热门",@"分类"]];
@@ -147,20 +168,27 @@
     [button setBackgroundImage:[UIImage imageNamed:@"search_change"] forState:UIControlStateNormal];
     button.frame = CGRectMake(0, 0, 20, 20);
     button.block = (id)^(id but){
-        NSLog(@"搜索搜索");
+//        NSLog(@"搜索搜索");
+        SearchViewController *searchVC = [[SearchViewController alloc] init];
+        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:searchVC];
+//        searchVC.navigationController.navigationBar.barTintColor = [UIColor purpleColor];
+//        naVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
+//        [self.view addSubview:naVC.view];
+        [self presentViewController:naVC animated:YES completion:nil];
         return nil;
     };
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     
     //页面搭建
     //热门
-    self.hotTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - 44) style:UITableViewStylePlain];
-//    _hotTableView.backgroundColor = [UIColor redColor];
+    self.hotTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStyleGrouped];
+    _hotTableView.backgroundColor = [UIColor whiteColor];
     _headerScrollView = [[CycleScrollView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 230) animationDuration:2];
-//    _headerScrollView.backgroundColor = [UIColor purpleColor];
     _hotTableView.tableHeaderView = _headerScrollView;
-//    _hotTableView.delegate = self;
-//    _hotTableView.dataSource = self;
+    _hotTableView.delegate = self;
+    _hotTableView.dataSource = self;
+    //cell之间的分割线去掉
+    _hotTableView.separatorStyle = NO;
     [self.view addSubview:_hotTableView];
     
     //分类
@@ -200,7 +228,84 @@
 }
 
 //协议的实现
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return self.hotListArr.count;
+}
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSString *title = self.hotListArr[section];
+    if ([title isEqualToString:@"人气飙升"]) {
+        return 1;
+    }else{
+        return [self.hotListDic[title] count];
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSString *title = self.hotListArr[indexPath.section];
+    BaseTableViewCell *cell = nil;
+    if ([title isEqualToString:@"人气飙升"]) {
+        static NSString *renqiStr = @"renqi";
+        cell = [tableView dequeueReusableCellWithIdentifier:renqiStr];
+        if (cell == nil) {
+            cell = [[DiscoveryHotRenQiCell alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 120)];
+//            ((DiscoveryHotRenQiCell *)cell).collectionView.delegate = self;
+            cell.userInteractionEnabled = NO;
+            cell = [cell initWithStyle:UITableViewCellStyleDefault reuseIdentifier:renqiStr];
+        }
+//        cell.array = [[NSMutableArray alloc] initWithCapacity:0];
+        ((DiscoveryHotRenQiCell *)cell).array = self.hotListDic[title];
+        NSLog(@"%@",self.hotListDic[title]);
+        NSLog(@"%@",((DiscoveryHotRenQiCell *)cell).array);
+    }else{
+        DiscoveryHotListModel *model = self.hotListDic[title][indexPath.row];
+        static NSString *str = @"lala";
+        cell = [tableView dequeueReusableCellWithIdentifier:str];
+        if (cell == nil) {
+            cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:str];
+        }
+        if (model.title == nil) {
+            cell.textLabel.text = model.target_title;
+        }else{
+            cell.textLabel.text = model.title;
+        }
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone; 
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ([self.hotListArr[indexPath.section] isEqualToString:@"人气飙升"]) {
+        return 130;
+    }
+    return 30;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    DiscoveryHotSecondView *view = [[NSBundle mainBundle] loadNibNamed:@"DiscoveryHotSecondView" owner:nil options:nil][0];
+//    view.frame = CGRectMake(0, 0, ScreenWidth, 50);
+//    view.backgroundColor = [UIColor whiteColor];
+    [view setDataModel:self.hotListArr[section]];
+    return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 35;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = [UIColor whiteColor];
+    return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 1;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"lolo");
+}
 
 #pragma mark ---UICollectionView协议实现---
 
@@ -215,14 +320,18 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    ClassifyModel *model = self.collectionArray[indexPath.row];
-    ClassifyListTableViewController *classifyTable = [[ClassifyListTableViewController alloc] init];
-    classifyTable.titleStr = model.title;
-    self.navigationItem.title = @"";
-//    [self.navigationController pushViewController:classifyTable animated:YES];
-    UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:classifyTable];
-    naVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    [self presentViewController:naVC animated:YES completion:nil];
+    if (collectionView != _collectionView) {
+        NSLog(@"1111");
+    } else {
+        ClassifyModel *model = self.collectionArray[indexPath.row];
+        ClassifyListTableViewController *classifyTable = [[ClassifyListTableViewController alloc] init];
+        classifyTable.titleStr = model.title;
+        self.navigationItem.title = @"";
+        //    [self.navigationController pushViewController:classifyTable animated:YES];
+        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:classifyTable];
+        naVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        [self presentViewController:naVC animated:YES completion:nil];
+    }
 }
 
 #pragma mark ---分段控件的点击事件---
@@ -230,12 +339,12 @@
 - (void)segClick:(UISegmentedControl *)seg{
     if (seg.selectedSegmentIndex == 0) {
         [UIView animateWithDuration:0.3 animations:^{
-            self.hotTableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - 44);
+            self.hotTableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight);
             self.collectionView.frame = CGRectMake(ScreenWidth, 64, ScreenWidth, ScreenHeight - 64 - 44);
         }];
     }else{
         [UIView animateWithDuration:0.3 animations:^{
-            self.hotTableView.frame = CGRectMake(-ScreenWidth, 0, ScreenWidth, ScreenHeight - 64 - 44);
+            self.hotTableView.frame = CGRectMake(-ScreenWidth, 0, ScreenWidth, ScreenHeight);
             self.collectionView.frame = CGRectMake(0, 64, ScreenWidth, ScreenHeight - 64 - 44);
         }];
     }

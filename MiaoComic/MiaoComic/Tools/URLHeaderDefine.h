@@ -9,7 +9,6 @@
 #ifndef URLHeaderDefine_h
 #define URLHeaderDefine_h
 
-
 // 首页
 #define HOME_NEW @"http://api.kuaikanmanhua.com/v1/daily/comic_lists/"// 首页更新
 #define HOME_MORE @"http://api.kuaikanmanhua.com/v1/daily/comic_lists/0"// 加载更多
@@ -23,6 +22,8 @@
 #define Discover_Hot_topic_lists    @"http://api.kuaikanmanhua.com/v1/topic_lists/mixed/new"    //热门列表
 
 
+//搜索
+#define SEARCH_url       @"http://api.kuaikanmanhua.com/v1/topics/search?keyword=%@&limit=20&offset=0" //搜索
 
 
 

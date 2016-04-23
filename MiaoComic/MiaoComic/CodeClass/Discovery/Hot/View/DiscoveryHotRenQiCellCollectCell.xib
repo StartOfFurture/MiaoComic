@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DiscoveryHotRenQiCellCollectCell" id="bsQ-CQ-q8Z" customClass="DiscoveryHotRenQiCellCollectCell">
+            <rect key="frame" x="0.0" y="0.0" width="148" height="129"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="148" height="129"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0sh-Zq-gSr">
+                        <rect key="frame" x="0.0" y="0.0" width="148" height="129"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E4B-Ic-dpz">
+                        <rect key="frame" x="0.0" y="109" width="148" height="20"/>
+                        <color key="backgroundColor" red="0.20691675896996875" green="0.30104502150103746" blue="0.37474352904040409" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="ipe-ia-28t"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="E4B-Ic-dpz" secondAttribute="trailing" id="0D3-2w-EKj"/>
+                <constraint firstAttribute="trailing" secondItem="0sh-Zq-gSr" secondAttribute="trailing" id="FPR-Wr-RNY"/>
+                <constraint firstAttribute="bottom" secondItem="0sh-Zq-gSr" secondAttribute="bottom" id="XoE-ZH-Hqe"/>
+                <constraint firstItem="E4B-Ic-dpz" firstAttribute="leading" secondItem="bsQ-CQ-q8Z" secondAttribute="leading" id="bME-k5-Fak"/>
+                <constraint firstItem="0sh-Zq-gSr" firstAttribute="top" secondItem="bsQ-CQ-q8Z" secondAttribute="top" id="qYS-wr-eJK"/>
+                <constraint firstAttribute="bottom" secondItem="E4B-Ic-dpz" secondAttribute="bottom" id="vwx-zL-cSp"/>
+                <constraint firstItem="0sh-Zq-gSr" firstAttribute="leading" secondItem="bsQ-CQ-q8Z" secondAttribute="leading" id="yFi-3J-3Lt"/>
+            </constraints>
+            <size key="customSize" width="148" height="129"/>
+            <connections>
+                <outlet property="imageView" destination="0sh-Zq-gSr" id="nId-zx-r1L"/>
+                <outlet property="label" destination="E4B-Ic-dpz" id="F6k-iw-0ey"/>
+            </connections>
+            <point key="canvasLocation" x="403" y="298.5"/>
+        </collectionViewCell>
+    </objects>
+</document>
