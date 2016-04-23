@@ -49,15 +49,17 @@
                         <color key="textColor" red="0.60000002384185791" green="0.60000002384185791" blue="0.60000002384185791" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pinlun" translatesAutoresizingMaskIntoConstraints="NO" id="VKw-9M-zO0">
+                    <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VKw-9M-zO0">
                         <rect key="frame" x="507" y="391" width="15" height="15"/>
+                        <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="IiG-DS-HGN"/>
                             <constraint firstAttribute="width" constant="15" id="xJY-Gm-UD5"/>
                         </constraints>
                     </imageView>
-                    <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="Qd6-IJ-rqA">
+                    <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qd6-IJ-rqA">
                         <rect key="frame" x="523" y="13" width="15" height="15"/>
+                        <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="15" id="ErB-cB-Q6F"/>
                             <constraint firstAttribute="height" constant="15" id="KHb-PS-dLm"/>
@@ -69,8 +71,10 @@
                         <color key="textColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zan" translatesAutoresizingMaskIntoConstraints="NO" id="SkR-uX-6FT">
+                    <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SkR-uX-6FT">
                         <rect key="frame" x="437" y="391" width="15" height="15"/>
+                        <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="15" id="PbW-lZ-FHp"/>
                             <constraint firstAttribute="height" constant="15" id="qt2-3X-upg"/>
@@ -147,9 +151,4 @@
             <point key="canvasLocation" x="717.5" y="511"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="pinlun" width="32" height="32"/>
-        <image name="user" width="32" height="32"/>
-        <image name="zan" width="33" height="32"/>
-    </resources>
 </document>

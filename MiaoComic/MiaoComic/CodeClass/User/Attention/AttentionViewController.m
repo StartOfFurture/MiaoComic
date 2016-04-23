@@ -41,11 +41,11 @@
     [NetWorkRequestManager requestWithType:GET urlString:str dic:nil successful:^(NSData *data) {
         NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSArray *dataArray = dataDic[@"data"][@"topics"];
-//        NSLog(@"%@",dataArray);
+        NSLog(@"%@",dataArray);
         for (NSDictionary *dic in dataArray) {
-//            NSLog(@"dic %@",dic);
+            NSLog(@"dic %@",dic);
             AttentionModel *aModel = [[AttentionModel alloc] init];
-            AttentionUserModel *userModel = [[AttentionUserModel alloc] init];
+            UserModel *userModel = [[UserModel alloc] init];
             [aModel setValuesForKeysWithDictionary:dic];
             [userModel setValuesForKeysWithDictionary:dic[@"user"]];
             aModel.user = userModel;
@@ -54,7 +54,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-//            NSLog(@"dataArray %@",self.dataArray);
+            NSLog(@"dataArray %@",self.dataArray);
         });
         
     } errorMessage:^(NSError *error) {
