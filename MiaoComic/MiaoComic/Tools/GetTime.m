@@ -98,11 +98,11 @@
     CGFloat beforeYesterday_d = yesterday_d - interval;// 前天的范围下限
     
     if (time >= today_d && time < today_u) {
-        return @"今日更新";
+        return @"今日";
     } else if (time >= yesterday_d && time < today_d) {
-        return @"昨日更新";
+        return @"昨日";
     } else if (time >= beforeYesterday_d && time < yesterday_d) {
-        return @"两天前更新";
+        return @"两天前";
     } else {
         
         // 获取传入时间的年、月、日

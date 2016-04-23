@@ -23,9 +23,13 @@
 @property (nonatomic, strong) NSMutableArray *attentionArray;// 关注请求的数据漫画数组
 @property (nonatomic, strong) NSMutableDictionary *attentionDic;// 关注请求的数据漫画字典
 @property (nonatomic, strong) UIButton *attentionBtn;// 导航栏上的关注按钮
-@property (nonatomic, copy) NSString *attentionUrl;// 关注的url参数
+@property (nonatomic, assign) int attentionUrl;// 关注的url参数
 
 @property (nonatomic, strong) UIButton *navSelectBtn;// 导航栏上被选中的按钮
+
+@property (nonatomic, assign) BOOL isEnding;// 标记是否到了尾部
+
+@property (nonatomic, strong) UIView *loginView;// 提示用户登录
 
 @end
 
@@ -83,16 +87,29 @@
     _attentionBtn.layer.masksToBounds = YES;
     _attentionBtn.layer.borderWidth = 0;
     
-    // 关注的第一次数据请求
-    [self requestDataForAttentionWithAttentionUrl:@"0"];
+
 
     __block UIButton *attentionBtn = _attentionBtn;
     attentionBtn.block = (id)^(id button){
         self.navSelectBtn = ((UIButton *)button);
+#warning 登录状态
+        if (![[UserInfoManager getUserID] isEqual:@" "]) {
+            if (_loginView != nil) {
+                [_loginView removeFromSuperview];
+            }
+        }
+//        else {
+//            [self.attentionTableView addSubview:_loginView];
+//            self.attentionArray = nil;
+//            self.attentionDic = nil;
+//        }
         
-//        // 请求数据
-//        [self requestDataForAttentionWithAttentionUrl:_attentionUrl];
         
+        if (_attentionUrl == 0) {
+            // 请求数据
+            [self requestDataForAttentionWithAttentionUrl:0];
+        }
+  
         // 改变两个按钮的颜色
         [_comicsBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _comicsBtn.backgroundColor = [UIColor clearColor];
@@ -153,8 +170,7 @@
         } completion:^(BOOL finished) {
             NSLog(@"finished");
         }];
-        
-        //        [self.comicsTableView reloadData];
+
         return button;
     };
     
@@ -190,7 +206,7 @@
     [self.comicsTableView_switchover registerNib:[UINib nibWithNibName:@"HomeCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ComicsModel"];
     
     // 关注页面
-    _attentionTableView = [[UITableView alloc] initWithFrame:CGRectMake(- ScreenWidth, 64, ScreenWidth, ScreenHeight - 64 - 49) style:UITableViewStylePlain];
+    _attentionTableView = [[UITableView alloc] initWithFrame:CGRectMake(- ScreenWidth, 64, ScreenWidth, ScreenHeight - 64 - 49) style:UITableViewStyleGrouped];
     _attentionTableView.delegate = self;
     _attentionTableView.dataSource = self;
     _attentionTableView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
@@ -199,6 +215,17 @@
     [self.attentionTableView registerNib:[UINib nibWithNibName:@"HomeCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ComicsModel"];
 }
 
+- (void)createLogin {
+    UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 50, 50)];
+    imageV.image = [UIImage imageNamed:@"Logo_Miao"];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(80, 30, 120, 20)];
+    label.text = @"请先登录~";
+    _loginView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - 49)];
+    [_loginView addSubview:label];
+    [_loginView addSubview:imageV];
+    _loginView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
+    
+}
 
 #pragma mark - 创建头部日期滚动视图 -
 
@@ -309,6 +336,8 @@
             [comics setValuesForKeysWithDictionary:mDic];
             [comics.topicModel setValuesForKeysWithDictionary:mDic[@"topic"]];
             [comics.authorUserInfo setValuesForKeysWithDictionary:mDic[@"topic"][@"user"]];
+
+            comics.cover_image_url = [NSString stringWithFormat:@"%@.jpg", mDic[@"cover_image_url"]];
             
             [self.comicsArray addObject:comics];
         }
@@ -349,51 +378,63 @@
 
 #pragma mark - 关注的请求网络数据 -
 
-- (void)requestDataForAttentionWithAttentionUrl:(NSString *)attentionUrl {
-    NSString *urlString = [NSString stringWithFormat:@"%@?since=%@",HOME_ATTENTION, attentionUrl];
-    
-    [NetWorkRequestManager requestWithType:GET urlString:urlString dic:@{} successful:^(NSData *data) {
-        NSDictionary *dateDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
-        
-        NSArray *array = dateDic[@"data"][@"comics"];
-        for (NSDictionary *mDic in array) {
-            
-            ComicsModel *comics = [[ComicsModel alloc] init];
-            comics.authorUserInfo = [[AuthorUserInfo alloc] init];
-            comics.topicModel = [[TopicModel alloc] init];
-            
-            [comics setValuesForKeysWithDictionary:mDic];
-            [comics.topicModel setValuesForKeysWithDictionary:mDic[@"topic"]];
-            [comics.authorUserInfo setValuesForKeysWithDictionary:mDic[@"topic"][@"user"]];
-
-            // 分组名
-            NSString *groupName = [GetTime getDayFromSecondString:mDic[@"created_at"]];
-            NSMutableArray *mArr = [self.attentionDic valueForKey:groupName];
-            if (mArr == nil) {
-                mArr = [[NSMutableArray alloc] initWithCapacity:0];
-                [mArr addObject:comics];
-                [self.attentionDic setValue:mArr forKey:groupName];
-                [self.attentionArray addObject:groupName];
-                
-            } else {
-                [mArr addObject:comics];
-            }
+- (void)requestDataForAttentionWithAttentionUrl:(int)attentionUrl {
+#warning 登录状态
+    if (![[UserInfoManager getUserID] isEqual:@" "]) {
+        if (_loginView != nil) {
+            [_loginView removeFromSuperview];
         }
-
-
-        _attentionUrl = dateDic[@"data"][@"since"];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-
-            [self.attentionTableView reloadData];
-            [self.attentionTableView.mj_header endRefreshing];
-            [self.attentionTableView.mj_footer endRefreshing];
-        });
         
-    } errorMessage:^(NSError *error) {
-        NSLog(@"%@", error);
-    }];
+        [NetWorkRequestManager requestWithType:GET urlString:[NSString stringWithFormat:@"%@?since=%d",HOME_ATTENTION, attentionUrl] dic:@{} successful:^(NSData *data) {
+            NSDictionary *dateDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
+            
+            _attentionUrl = [dateDic[@"data"][@"since"] intValue];
+            if (_attentionUrl == 0 && _attentionArray.count > 0) {
+                _isEnding = YES;
+            }
 
+            NSArray *array = dateDic[@"data"][@"comics"];
+            for (NSDictionary *mDic in array) {
+                
+                ComicsModel *comics = [[ComicsModel alloc] init];
+                comics.authorUserInfo = [[AuthorUserInfo alloc] init];
+                comics.topicModel = [[TopicModel alloc] init];
+                
+                [comics setValuesForKeysWithDictionary:mDic];
+                [comics.topicModel setValuesForKeysWithDictionary:mDic[@"topic"]];
+                [comics.authorUserInfo setValuesForKeysWithDictionary:mDic[@"topic"][@"user"]];
+
+                // 分组名
+                NSString *groupName = [GetTime getDayFromSecondString:mDic[@"created_at"]];
+                NSMutableArray *mArr = [self.attentionDic valueForKey:groupName];
+                if (mArr == nil) {
+                    mArr = [[NSMutableArray alloc] initWithCapacity:0];
+                    [mArr addObject:comics];
+                    [self.attentionDic setValue:mArr forKey:groupName];
+                    [self.attentionArray addObject:groupName];
+                    
+                } else {
+                    [mArr addObject:comics];
+                }
+            }
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+
+                [self.attentionTableView reloadData];
+                [self.attentionTableView.mj_header endRefreshing];
+                [self.attentionTableView.mj_footer endRefreshing];
+            });
+            
+        } errorMessage:^(NSError *error) {
+            NSLog(@"%@", error);
+        }];
+    }
+    else {
+        [self.attentionTableView addSubview:_loginView];
+        self.attentionArray = nil;
+        self.attentionDic = nil;
+    }
 }
 
 
@@ -403,6 +444,9 @@
     __weak HomeViewController *homeVC = self;
     // 更新列表添加下拉功能
     self.comicsTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        if (homeVC.comicsTableView.contentOffset.y < 0) {
+            [homeVC.comicsTableView.mj_header endRefreshing];
+        }
         // 进入刷新状态后会自动调用这个block
         self.comicsArray = nil;// 置空数组
         [homeVC requestData:_urlString];
@@ -410,13 +454,21 @@
     
     // 关注列表添加下拉功能
     self.attentionTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        if (homeVC.attentionTableView.contentOffset.y < 0) {
+            [homeVC.attentionTableView.mj_header endRefreshing];
+        }
         self.attentionArray = nil;// 置空数组
         self.attentionDic = nil;
-        [homeVC requestDataForAttentionWithAttentionUrl:@"0"];
+        [homeVC requestDataForAttentionWithAttentionUrl:0];
     }];
     
     // 关注列表上拉功能
     self.attentionTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        if (_isEnding) {
+            [self.attentionTableView.mj_footer endRefreshingWithNoMoreData];
+            return ;
+        }
+        
         [homeVC requestDataForAttentionWithAttentionUrl:_attentionUrl];
     }];
 }
@@ -475,7 +527,6 @@
             ((UIButton *)((_headView.subviews)[mark - 1])).block((UIButton *)((_headView.subviews)[mark - 1]));
         }
     }
-    
 }
 
 
@@ -486,7 +537,10 @@
     
     // 首次数据请求
     [self requestData:@"0"];
-    _attentionUrl = @"0";
+
+    _attentionUrl = 0;
+
+    _isEnding = 0;
     
     // 创建基础视图
     [self createNavigationButton];
@@ -519,22 +573,26 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (self.navSelectBtn == self.comicsBtn) {
         return self.comicsArray.count + 1;
-    } else {
+    }
+    else {
         return self.attentionArray.count + 1;
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
     if (self.navSelectBtn == self.comicsBtn) {
         return 1;
-    } else {
+    }
+    else if (self.navSelectBtn == self.attentionBtn && self.attentionArray.count != section) {
         NSString *key = self.attentionArray[section];
         return [self.attentionDic[key] count];
     }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ((indexPath.section == self.comicsArray.count && self.selectButton == _comicsBtn) || (indexPath.section == self.attentionArray.count && self.selectButton == _attentionBtn)) {// 最后一组的高度
+    if ((indexPath.section == self.comicsArray.count && self.navSelectBtn == _comicsBtn) || (indexPath.section == self.attentionArray.count && self.navSelectBtn == _attentionBtn)) {// 最后一组的高度
         return 50;
     }
     return (ScreenWidth) * ((float)10 / 17) + 10 * 4 + 20 + 20;
@@ -546,15 +604,15 @@
     }
     
     // 最后一组，滑到底的时候
-    if (indexPath.section == self.comicsArray.count && self.selectButton == _comicsBtn) {
+    if (indexPath.section == self.comicsArray.count && self.navSelectBtn == _comicsBtn) {
         BaseTableViewCell *cell = [[BaseTableViewCell alloc] init];
         cell.textLabel.text = @" 到底了哦，看看前一天的吧~";
         cell.imageView.image = [UIImage imageNamed:@"Logo_Miao"];
         cell.backgroundColor = [UIColor clearColor];
         return cell;
     }
-    if (indexPath.section == self.attentionArray.count && tableView == _attentionTableView) {
-        BaseTableViewCell *cell = [[BaseTableViewCell alloc] init];
+    if (indexPath.section == self.attentionArray.count &&_isEnding == YES  && self.navSelectBtn == _attentionBtn ) {
+        BaseTableViewCell *cell = [[BaseTableViewCell alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 50)];
         cell.textLabel.text = @" 到底了哦，看看其他的吧~";
         cell.imageView.image = [UIImage imageNamed:@"Logo_Miao"];
         cell.backgroundColor = [UIColor clearColor];
@@ -562,9 +620,10 @@
     }
     
     ComicsModel *comics = nil;
-    if (self.selectButton == _comicsBtn) {
+    if (self.navSelectBtn == _comicsBtn) {
         comics = _comicsArray[indexPath.section];
-    } else {
+    }
+    else if (self.navSelectBtn == _attentionBtn){
         NSString *key = _attentionArray[indexPath.section];
         comics = _attentionDic[key][indexPath.row];
     }
@@ -587,28 +646,38 @@
 
 #pragma mark - 设置组间距和颜色 -
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (self.selectButton == _attentionBtn) {
-        return _attentionArray[section];
-    } else {
-        return nil;
-    }
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.000001;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (self.selectButton == _comicsBtn) {
+    if (self.navSelectBtn == _comicsBtn) {
         return 10;
     } else {
-        return 20;
+        return 25.000001;
     }
-//    return 10;
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    UIView *view = [[UIView alloc] init];
-//    view.backgroundColor = [UIColor clearColor];
-//    return view;
-//}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    if (self.navSelectBtn == _attentionBtn && self.attentionArray.count != section) {
+        UIImageView *clockImageV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 2.5, 20, 20)];
+        clockImageV.image = [UIImage imageNamed:@"clock"];
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(35, 0, 180, 25)];
+        timeLabel.text = [NSString stringWithFormat:@"%@更新", _attentionArray[section]];
+        UIView *timeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 25)];
+        [timeView addSubview:timeLabel];
+        [timeView addSubview:clockImageV];
+        timeView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
+        return timeView;
+    }
+    
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = [UIColor clearColor];
+    
+    return view;
+}
 
 
 /*

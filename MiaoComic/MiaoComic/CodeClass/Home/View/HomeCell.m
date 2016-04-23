@@ -50,7 +50,7 @@
         _commentLabel.text = [NSString stringWithFormat:@"%ld", comicsModel.comments_count];
     }
     
-    [_coverImgV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@.jpg", comicsModel.cover_image_url]]];
+    [_coverImgV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", comicsModel.cover_image_url]]];
 }
 
 // 颜色转换
