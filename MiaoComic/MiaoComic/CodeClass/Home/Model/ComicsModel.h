@@ -18,6 +18,8 @@
 @property (nonatomic, assign) NSInteger likes_count;// 喜欢数量
 @property (nonatomic, assign) NSInteger comments_count;// 评论数量
 @property (nonatomic, copy) NSString *ids;// 点击进入下一个界面需要的id
+@property (nonatomic, copy) NSString *shared_count;// 分享总数
+@property (nonatomic, copy) NSString *created_at;// 创建的时间，用于关注页面按时间将数据分组
 
 @property (nonatomic, strong) TopicModel *topicModel;// 整本漫画信息
 @property (nonatomic, strong) AuthorUserInfo *authorUserInfo;// 作者信息

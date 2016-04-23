@@ -83,6 +83,7 @@
 		79AD285A1CC9CE8E00C1131D /* HomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79AD28501CC9CE8E00C1131D /* HomeCell.xib */; };
 		79AD285B1CC9CE8E00C1131D /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79AD28531CC9CE8E00C1131D /* HomeViewController.m */; };
 		79AD285C1CC9CE8E00C1131D /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79AD28541CC9CE8E00C1131D /* HomeViewController.xib */; };
+		79AD285F1CCA4FCE00C1131D /* GetTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 79AD285E1CCA4FCE00C1131D /* GetTime.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -231,6 +232,8 @@
 		79AD28521CC9CE8E00C1131D /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		79AD28531CC9CE8E00C1131D /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		79AD28541CC9CE8E00C1131D /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		79AD285D1CCA4FCE00C1131D /* GetTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetTime.h; sourceTree = "<group>"; };
+		79AD285E1CCA4FCE00C1131D /* GetTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetTime.m; sourceTree = "<group>"; };
 		CDFB363E9FC144833ED0433E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -368,6 +371,8 @@
 				79879FD51CC7A94400A69F46 /* URLHeaderDefine.h */,
 				7901CAFB1CC759A900D944C6 /* CycleScrollView */,
 				7901CB001CC759A900D944C6 /* EncapsulateRequest */,
+				79AD285D1CCA4FCE00C1131D /* GetTime.h */,
+				79AD285E1CCA4FCE00C1131D /* GetTime.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1003,6 +1008,7 @@
 				79823D6C1CC72A9100E3EA63 /* main.m in Sources */,
 				7906432E1CC90D590068E199 /* AttentionModelCell.m in Sources */,
 				790642F91CC861A40068E199 /* CollectViewController.m in Sources */,
+				79AD285F1CCA4FCE00C1131D /* GetTime.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
