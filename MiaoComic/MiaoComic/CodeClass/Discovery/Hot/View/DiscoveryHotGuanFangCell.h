@@ -10,4 +10,7 @@
 
 @interface DiscoveryHotGuanFangCell : BaseTableViewCell
 
+@property (nonatomic, strong)NSMutableArray *array;
+@property (nonatomic, strong)UICollectionView *collectionView;
+
 @end

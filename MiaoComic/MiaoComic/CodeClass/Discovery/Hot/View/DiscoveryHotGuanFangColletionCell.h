@@ -10,4 +10,8 @@
 
 @interface DiscoveryHotGuanFangColletionCell : BaseCollectionViewCell
 
+@property (strong, nonatomic) IBOutlet UIImageView *MyimageView;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+
+
 @end

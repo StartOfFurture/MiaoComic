@@ -7,8 +7,48 @@
 //
 
 #import "DiscoveryHotGuanFangCell.h"
+#import "DiscoveryHotGuanFangColletionCell.h"
+@interface DiscoveryHotGuanFangCell ()<UICollectionViewDelegate, UICollectionViewDataSource>
+
+@end
 
 @implementation DiscoveryHotGuanFangCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        layout.itemSize = CGSizeMake((ScreenWidth - 24)/2, 100);
+        layout.minimumInteritemSpacing = 8;
+        layout.minimumLineSpacing = 0;
+        layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(8, 2, ScreenWidth - 16, layout.itemSize.height) collectionViewLayout:layout];
+        _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.delegate = self;
+        _collectionView.dataSource = self;
+        _collectionView.showsVerticalScrollIndicator = NO;
+        //        _collectionView.pagingEnabled = YES;
+        [_collectionView registerNib:[UINib nibWithNibName:@"DiscoveryHotGuanFangColletionCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"DiscoveryHotGuanFangColletionCell"];
+        [self.contentView addSubview:_collectionView];
+    }
+    return self;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return self.array.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *str = @"DiscoveryHotGuanFangColletionCell";
+    DiscoveryHotGuanFangColletionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:str forIndexPath:indexPath];
+    [cell setDataWithModel:self.array[indexPath.row]];
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"nihao");
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.

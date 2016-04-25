@@ -7,8 +7,28 @@
 //
 
 #import "DiscoveryXinZuoCell.h"
+#import "DiscoveryHotListModel.h"
+
+@interface DiscoveryXinZuoCell ()
+
+@property (nonatomic, strong)UIImageView *MyimageView;
+
+@end
 
 @implementation DiscoveryXinZuoCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.MyimageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 0, ScreenWidth - 16, 120)];
+        [self.contentView addSubview:self.MyimageView];
+    }
+    return self;
+}
+
+- (void)setDataWithModel:(DiscoveryHotListModel *)model{
+    [_MyimageView sd_setImageWithURL:[NSURL URLWithString:[model.cover_image_url stringByAppendingString:@".jpg"]]];
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.

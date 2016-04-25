@@ -7,8 +7,13 @@
 //
 
 #import "DiscoveryHotGuanFangColletionCell.h"
-
+#import "DiscoveryHotListModel.h"
 @implementation DiscoveryHotGuanFangColletionCell
+
+- (void)setDataWithModel:(DiscoveryHotListModel *)model{
+    [self.MyimageView sd_setImageWithURL:[NSURL URLWithString:[model.pic stringByAppendingString:@".jpg"]]];
+    self.titleLabel.text = model.target_title;
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.
