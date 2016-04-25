@@ -11,13 +11,14 @@
 @implementation DiscoveryHotRenQiCellCollectCell
 
 - (void)setDataModel:(DiscoveryHotListModel *)model{
-    if (ScreenWidth == 320) {
-        [self.imageView sd_setImageWithURL:[NSURL URLWithString:[model.vertical_image_url stringByAppendingString:@".jpg"]]];
-    }else{
+//    if (ScreenWidth == 320) {
+//        [self.imageView sd_setImageWithURL:[NSURL URLWithString:[model.vertical_image_url stringByAppendingString:@".jpg"]]];
+////    }else{
         [self.imageView sd_setImageWithURL:[NSURL URLWithString:model.vertical_image_url]];
-    }
+//    }
     self.imageView.userInteractionEnabled = YES;
     self.label.text = model.title;
+    NSLog(@"%@",model.vertical_image_url);
 }
 
 - (void)layoutSubviews {
