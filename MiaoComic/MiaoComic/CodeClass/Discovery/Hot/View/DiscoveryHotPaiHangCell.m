@@ -14,16 +14,16 @@
 
 @implementation DiscoveryHotPaiHangCell
 
-- (instancetype)initWithFrame:(CGRect)frame{
-    self = [super initWithFrame:frame];
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake((ScreenWidth - 24)/3, 120);
-        layout.minimumInteritemSpacing = 2;
-        layout.minimumLineSpacing = 2;
-        layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        layout.itemSize = CGSizeMake(ScreenWidth - 30, 70);
+//        layout.minimumInteritemSpacing = 2;
+//        layout.minimumLineSpacing = 2;
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(8, 2, ScreenWidth - 16, frame.size.height) collectionViewLayout:layout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(8, 2, ScreenWidth - 8, layout.itemSize.height * 3) collectionViewLayout:layout];
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;

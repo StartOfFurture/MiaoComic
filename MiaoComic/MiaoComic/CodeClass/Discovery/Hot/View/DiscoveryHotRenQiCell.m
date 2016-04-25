@@ -16,8 +16,29 @@
 
 @implementation DiscoveryHotRenQiCell
 
-- (instancetype)initWithFrame:(CGRect)frame{
-    self = [super initWithFrame:frame];
+//- (instancetype)initWithFrame:(CGRect)frame{
+//    self = [super initWithFrame:frame];
+//    if (self) {
+//        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+//        layout.itemSize = CGSizeMake((ScreenWidth - 24)/3, 120);
+//        layout.minimumInteritemSpacing = 2;
+//        layout.minimumLineSpacing = 2;
+//        layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+//        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(8, 2, ScreenWidth - 16, frame.size.height) collectionViewLayout:layout];
+//        _collectionView.backgroundColor = [UIColor clearColor];
+//        _collectionView.dataSource = self;
+//        _collectionView.delegate = self;
+//        _collectionView.userInteractionEnabled = YES;
+//        [_collectionView registerNib:[UINib nibWithNibName:@"DiscoveryHotRenQiCellCollectCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"DiscoveryHotRenQiCellCollectCell"];
+//        [self.contentView addSubview:_collectionView];
+////        self.userInteractionEnabled = YES;
+//    }
+//    return self;
+//}
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         layout.itemSize = CGSizeMake((ScreenWidth - 24)/3, 120);
@@ -25,14 +46,13 @@
         layout.minimumLineSpacing = 2;
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
         layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(8, 2, ScreenWidth - 16, frame.size.height) collectionViewLayout:layout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(8, 2, ScreenWidth - 16, layout.itemSize.height) collectionViewLayout:layout];
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.userInteractionEnabled = YES;
         [_collectionView registerNib:[UINib nibWithNibName:@"DiscoveryHotRenQiCellCollectCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"DiscoveryHotRenQiCellCollectCell"];
-        [self addSubview:_collectionView];
-        self.userInteractionEnabled = YES;
+        [self.contentView addSubview:_collectionView];
     }
     return self;
 }
@@ -52,9 +72,6 @@
     NSLog(@"lala1111");
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    NSLog(@"lala");
-}
 
 
 /*

@@ -16,7 +16,7 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <size key="customSize" width="400" height="218"/>
-            <point key="canvasLocation" x="306" y="276"/>
+            <point key="canvasLocation" x="466" y="284"/>
         </collectionViewCell>
     </objects>
 </document>
