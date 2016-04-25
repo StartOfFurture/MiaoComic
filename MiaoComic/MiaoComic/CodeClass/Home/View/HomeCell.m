@@ -12,9 +12,9 @@
 @interface HomeCell ()
 
 @property (strong, nonatomic) IBOutlet UILabel *typeLabel;// 漫画类型
-@property (strong, nonatomic) IBOutlet UILabel *comicNameLabel;// 漫画名
-@property (strong, nonatomic) IBOutlet UILabel *authorNameLabel;// 作者名
-@property (strong, nonatomic) IBOutlet UILabel *thisComicTitleLabel;// 本集漫画名
+@property (strong, nonatomic) IBOutlet UIButton *comicNameBtn;// 漫画名
+@property (strong, nonatomic) IBOutlet UIButton *authorNameBtn;// 作者名
+@property (strong, nonatomic) IBOutlet UIButton *thisComicTitleBtn;// 本集漫画名
 @property (strong, nonatomic) IBOutlet UILabel *likeLabel;// 喜欢数
 @property (strong, nonatomic) IBOutlet UILabel *commentLabel;// 评论数
 @property (strong, nonatomic) IBOutlet UIImageView *coverImgV;// 封面
@@ -29,15 +29,20 @@
     ComicsModel *comicsModel = (ComicsModel *)model;
     _typeLabel.text = comicsModel.label_text;
     _typeLabel.backgroundColor = [self colorWithHexString:comicsModel.label_color];
-//    _typeLabel.layer.cornerRadius = 10;
-//    _typeLabel.layer.masksToBounds = YES;
     
-    _comicNameLabel.text = comicsModel.topicModel.title;
+    [_comicNameBtn setTitle:comicsModel.topicModel.title forState:UIControlStateNormal];
+    _comicNameBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;//设置文字位置，现设为居左，默认的是居中
     
-    _authorNameLabel.text = comicsModel.authorUserInfo.nickname;
-    [_authorNameLabel sizeThatFits:CGSizeMake(40, 15)];
     
-    _thisComicTitleLabel.text = comicsModel.title;
+    [_authorNameBtn setTitle:comicsModel.authorUserInfo.nickname forState:UIControlStateNormal];
+   _authorNameBtn.contentHorizontalAlignment= UIControlContentHorizontalAlignmentRight;
+    [_authorNameBtn sizeThatFits:CGSizeMake(40, 15)];
+
+    
+    [_thisComicTitleBtn setTitle:comicsModel.title forState:UIControlStateNormal];
+    _thisComicTitleBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
+    
+    
     
     if (comicsModel.likes_count > 100000) {
         _likeLabel.text = [NSString stringWithFormat:@"%ld万", comicsModel.likes_count / 10000];
