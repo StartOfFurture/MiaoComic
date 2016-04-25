@@ -215,17 +215,8 @@
     [self.attentionTableView registerNib:[UINib nibWithNibName:@"HomeCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ComicsModel"];
 }
 
-- (void)createLogin {
-    UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 50, 50)];
-    imageV.image = [UIImage imageNamed:@"Logo_Miao"];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(80, 30, 120, 20)];
-    label.text = @"请先登录~";
-    _loginView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - 49)];
-    [_loginView addSubview:label];
-    [_loginView addSubview:imageV];
-    _loginView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
-    
-}
+
+
 
 #pragma mark - 创建头部日期滚动视图 -
 
@@ -319,6 +310,62 @@
 }
 
 
+#pragma mark - 创建轻扫手势 -
+
+- (void)createSwipeGesture {
+    //向右
+    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
+    //设置轻扫的方向
+    swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+    swipeGesture.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:swipeGesture];
+    
+    //向左
+    UISwipeGestureRecognizer *swipeGestureLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
+    //设置轻扫的方向
+    swipeGestureLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    swipeGestureLeft.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:swipeGestureLeft];
+}
+
+
+#pragma mark - 轻扫手势 -
+
+-(void)swipeGesture:(id)sender
+{
+    static int mark = 0;
+    for (int i = 0; i < 7; i ++) {
+        if (self.selectButton == (UIButton *)((_headView.subviews)[i])) {
+            mark = i;
+            break;
+        }
+    }
+    
+    UISwipeGestureRecognizer *swipe = sender;
+    if(swipe.direction == UISwipeGestureRecognizerDirectionLeft)   {
+        //向左轻扫，向后一天，+ 1
+        if (mark < 6) {
+            if (mark == 5) {
+                [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:15.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    _headView.contentOffset = CGPointMake(ScreenWidth / 6, 0);
+                } completion:nil];
+            }
+            ((UIButton *)((_headView.subviews)[mark + 1])).block((UIButton *)((_headView.subviews)[mark + 1]));
+        }
+    } if(swipe.direction == UISwipeGestureRecognizerDirectionRight){
+        //向右轻扫，向前一天，- 1
+        if (mark > 0) {
+            if (mark == 1) {
+                [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:15.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    _headView.contentOffset = CGPointMake(0, 0);
+                } completion:nil];
+            }
+            ((UIButton *)((_headView.subviews)[mark - 1])).block((UIButton *)((_headView.subviews)[mark - 1]));
+        }
+    }
+}
+
+
 #pragma mark - 更新的请求网络数据 -
 
 - (void)requestData:(NSString *)dateString {
@@ -373,6 +420,21 @@
     } errorMessage:^(NSError *error) {
         NSLog(@"%@", error);
     }];
+}
+
+
+#pragma mark - 创建关注部分的登录判断视图视图 -
+
+- (void)createLogin {
+    UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 50, 50)];
+    imageV.image = [UIImage imageNamed:@"Logo_Miao"];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(80, 30, 120, 20)];
+    label.text = @"请先登录~";
+    _loginView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - 49)];
+    [_loginView addSubview:label];
+    [_loginView addSubview:imageV];
+    _loginView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
+    
 }
 
 
@@ -438,6 +500,8 @@
 }
 
 
+
+
 #pragma mark -添加上拉加载和下拉刷新-
 
 - (void)refresh{
@@ -474,60 +538,6 @@
 }
 
 
-#pragma mark - 创建轻扫手势 -
-
-- (void)createSwipeGesture {
-    //向右
-    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
-    //设置轻扫的方向
-    swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-    swipeGesture.numberOfTouchesRequired = 1;
-    [self.view addGestureRecognizer:swipeGesture];
-    
-    //向左
-    UISwipeGestureRecognizer *swipeGestureLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
-    //设置轻扫的方向
-    swipeGestureLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-    swipeGestureLeft.numberOfTouchesRequired = 1;
-    [self.view addGestureRecognizer:swipeGestureLeft];
-}
-
-
-#pragma mark - 轻扫手势 -
-
--(void)swipeGesture:(id)sender
-{
-    static int mark = 0;
-    for (int i = 0; i < 7; i ++) {
-        if (self.selectButton == (UIButton *)((_headView.subviews)[i])) {
-            mark = i;
-            break;
-        }
-    }
-    
-    UISwipeGestureRecognizer *swipe = sender;
-    if(swipe.direction == UISwipeGestureRecognizerDirectionLeft)   {
-        //向左轻扫，向后一天，+ 1
-        if (mark < 6) {
-            if (mark == 5) {
-                [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:15.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    _headView.contentOffset = CGPointMake(ScreenWidth / 6, 0);
-                } completion:nil];
-            }
-            ((UIButton *)((_headView.subviews)[mark + 1])).block((UIButton *)((_headView.subviews)[mark + 1]));
-        }
-    } if(swipe.direction == UISwipeGestureRecognizerDirectionRight){
-        //向右轻扫，向前一天，- 1
-        if (mark > 0) {
-            if (mark == 1) {
-                [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:15.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    _headView.contentOffset = CGPointMake(0, 0);
-                } completion:nil];
-            }
-            ((UIButton *)((_headView.subviews)[mark - 1])).block((UIButton *)((_headView.subviews)[mark - 1]));
-        }
-    }
-}
 
 
 - (void)viewDidLoad {
@@ -555,12 +565,26 @@
     // 创建轻扫手势
     [self createSwipeGesture];
     
+    // 创建登录判断界面
+    [self createLogin];
+    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (![[UserInfoManager getUserID] isEqual:@" "]) {
+        if (_loginView != nil) {
+            [_loginView removeFromSuperview];
+        }
+    } else {
+        [self.view addSubview:_loginView];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
