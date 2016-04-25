@@ -59,6 +59,21 @@
     return _attentionDic;
 }
 
+// 创建关注部分的登录判断视图视图
+- (UIView *)loginView {
+    if (_loginView == nil) {
+        self.loginView = [[UIView alloc] initWithFrame:CGRectMake(- ScreenWidth, 0, ScreenWidth, ScreenHeight - 64 - 49)];
+        UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 50, 50)];
+        imageV.image = [UIImage imageNamed:@"Logo_Miao"];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(80, 30, 120, 20)];
+        label.text = @"请先登录~";
+        [self.loginView addSubview:label];
+        [self.loginView addSubview:imageV];
+        self.loginView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
+    }
+    return _loginView;
+}
+
 
 #pragma mark - 创建基础视图 -
 - (void)createNavigationButton {
@@ -98,11 +113,11 @@
                 [_loginView removeFromSuperview];
             }
         }
-//        else {
-//            [self.attentionTableView addSubview:_loginView];
-//            self.attentionArray = nil;
-//            self.attentionDic = nil;
-//        }
+        else {
+            [self.view addSubview:_loginView];
+            self.attentionArray = nil;
+            self.attentionDic = nil;
+        }
         
         
         if (_attentionUrl == 0) {
@@ -125,6 +140,7 @@
             }];
             [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
                 self.attentionTableView.frame = CGRectMake(0, 64, ScreenWidth, ScreenHeight - 64 - 49);
+                self.loginView.frame = CGRectMake(0, 64, ScreenWidth, ScreenHeight - 64 - 49);
             }];
             
         } completion:^(BOOL finished) {
@@ -161,6 +177,7 @@
             [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:1.0 animations:^{
                 
                 self.attentionTableView.frame = CGRectMake(-ScreenWidth, 64, ScreenWidth, ScreenHeight - 64 - 49);
+                self.loginView.frame = CGRectMake(-ScreenWidth, 64, ScreenWidth, ScreenHeight - 64 - 49);
             }];
             [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
                 _headView.frame = CGRectMake(0, 64, ScreenWidth, 30);
@@ -184,6 +201,7 @@
     
     self.navigationItem.titleView = titleView;
 }
+
 
 - (void)createTableView {
     
@@ -214,8 +232,6 @@
     
     [self.attentionTableView registerNib:[UINib nibWithNibName:@"HomeCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ComicsModel"];
 }
-
-
 
 
 #pragma mark - 创建头部日期滚动视图 -
@@ -423,31 +439,12 @@
 }
 
 
-#pragma mark - 创建关注部分的登录判断视图视图 -
-
-- (void)createLogin {
-    UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 50, 50)];
-    imageV.image = [UIImage imageNamed:@"Logo_Miao"];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(80, 30, 120, 20)];
-    label.text = @"请先登录~";
-    _loginView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - 49)];
-    [_loginView addSubview:label];
-    [_loginView addSubview:imageV];
-    _loginView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
-    
-}
-
-
 #pragma mark - 关注的请求网络数据 -
 
 - (void)requestDataForAttentionWithAttentionUrl:(int)attentionUrl {
-#warning 登录状态
+
     if (![[UserInfoManager getUserID] isEqual:@" "]) {
-        if (_loginView != nil) {
-            [_loginView removeFromSuperview];
-        }
-        
-        
+
         [NetWorkRequestManager requestWithType:GET urlString:[NSString stringWithFormat:@"%@?since=%d",HOME_ATTENTION, attentionUrl] dic:@{} successful:^(NSData *data) {
             NSDictionary *dateDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
             
@@ -492,11 +489,7 @@
             NSLog(@"%@", error);
         }];
     }
-    else {
-        [self.attentionTableView addSubview:_loginView];
-        self.attentionArray = nil;
-        self.attentionDic = nil;
-    }
+
 }
 
 
@@ -537,9 +530,6 @@
     }];
 }
 
-
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -565,8 +555,8 @@
     // 创建轻扫手势
     [self createSwipeGesture];
     
-    // 创建登录判断界面
-    [self createLogin];
+//    // 创建登录判断界面
+//    [self createLogin];
     
     
     // Uncomment the following line to preserve selection between presentations.
@@ -579,11 +569,17 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (![[UserInfoManager getUserID] isEqual:@" "]) {
-        if (_loginView != nil) {
-            [_loginView removeFromSuperview];
+        if (self.loginView != nil && self.navSelectBtn == _attentionBtn) {
+            [self.loginView removeFromSuperview];
+            self.attentionArray = nil;
+            self.attentionDic = nil;
+            [self requestDataForAttentionWithAttentionUrl:0];
+            [self.attentionTableView reloadData];
         }
     } else {
-        [self.view addSubview:_loginView];
+        [self.view addSubview:self.loginView];
+        self.attentionArray = nil;
+        self.attentionDic = nil;
     }
 }
 
