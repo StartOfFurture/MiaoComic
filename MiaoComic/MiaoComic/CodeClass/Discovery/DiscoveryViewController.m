@@ -189,6 +189,8 @@
     _hotTableView.dataSource = self;
     //cell之间的分割线去掉
     _hotTableView.separatorStyle = NO;
+    //注册
+    [_hotTableView registerClass:[DiscoveryHotRenQiCell class] forCellReuseIdentifier:@"renqi"];
     [self.view addSubview:_hotTableView];
     
     //分类
@@ -246,16 +248,8 @@
     BaseTableViewCell *cell = nil;
     if ([title isEqualToString:@"人气飙升"]) {
         static NSString *renqiStr = @"renqi";
-        cell = [tableView dequeueReusableCellWithIdentifier:renqiStr];
-        if (cell == nil) {
-            cell = [[DiscoveryHotRenQiCell alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 120)];
-//            ((DiscoveryHotRenQiCell *)cell).collectionView.delegate = self;
-            cell.userInteractionEnabled = NO;
-            cell = [cell initWithStyle:UITableViewCellStyleDefault reuseIdentifier:renqiStr];
-        }
-//        cell.array = [[NSMutableArray alloc] initWithCapacity:0];
+       cell = (DiscoveryHotRenQiCell *)[tableView dequeueReusableCellWithIdentifier:renqiStr];
         ((DiscoveryHotRenQiCell *)cell).array = self.hotListDic[title];
-        NSLog(@"%@",self.hotListDic[title]);
         NSLog(@"%@",((DiscoveryHotRenQiCell *)cell).array);
     }else{
         DiscoveryHotListModel *model = self.hotListDic[title][indexPath.row];
@@ -320,9 +314,6 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    if (collectionView != _collectionView) {
-        NSLog(@"1111");
-    } else {
         ClassifyModel *model = self.collectionArray[indexPath.row];
         ClassifyListTableViewController *classifyTable = [[ClassifyListTableViewController alloc] init];
         classifyTable.titleStr = model.title;
@@ -331,7 +322,6 @@
         UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:classifyTable];
         naVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         [self presentViewController:naVC animated:YES completion:nil];
-    }
 }
 
 #pragma mark ---分段控件的点击事件---

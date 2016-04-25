@@ -16,7 +16,7 @@
     }else{
         [self.imageView sd_setImageWithURL:[NSURL URLWithString:model.vertical_image_url]];
     }
-//    self.imageView.userInteractionEnabled = YES;
+    self.imageView.userInteractionEnabled = YES;
     self.label.text = model.title;
 }
 
@@ -24,10 +24,6 @@
     [super layoutSubviews];
     self.imageView.userInteractionEnabled = YES;
     self.userInteractionEnabled = YES;
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    NSLog(@"nini");
 }
 
 // Only override drawRect: if you perform custom drawing.
