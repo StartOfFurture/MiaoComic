@@ -9,6 +9,11 @@
 #import "HomeViewController.h"
 #import "UIButton+FinishClick.h"
 #import "ComicsModel.h"
+#import "HomeCell.h"
+#import "SearchViewController.h"
+#import "AuthorViewController.h"
+#import "CompleteViewController.h"
+#import "DetailsViewController.h"
 
 @interface HomeViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *comicsTableView;// 更新TableView
@@ -76,6 +81,7 @@
 
 
 #pragma mark - 创建基础视图 -
+
 - (void)createNavigationButton {
     // 设置导航栏的背景色
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.73 green:0.27 blue:0.62 alpha:1];
@@ -85,7 +91,10 @@
     searchBtn.frame = CGRectMake(0, 0, 20, 20);
     [searchBtn setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
     searchBtn.block = ^(id button){
-        NSLog(@"zhuhzhu");
+        SearchViewController *searchVC = [[SearchViewController alloc] init];
+        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:searchVC];
+        [self presentViewController:naVC animated:YES completion:nil];
+
         return button;
     };
     UIBarButtonItem *seachItem = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];
@@ -218,7 +227,7 @@
     _comicsTableView_switchover = [[UITableView alloc] initWithFrame:CGRectMake(- ScreenWidth, 30 + 64, ScreenWidth, ScreenHeight - 30 - 64 - 49) style:UITableViewStylePlain];
     _comicsTableView_switchover.delegate = self;
     _comicsTableView_switchover.dataSource = self;
-    _comicsTableView_switchover.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
+    _comicsTableView_switchover.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.98 alpha:1];
     [self.view addSubview:_comicsTableView_switchover];
     
     [self.comicsTableView_switchover registerNib:[UINib nibWithNibName:@"HomeCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ComicsModel"];
@@ -227,7 +236,7 @@
     _attentionTableView = [[UITableView alloc] initWithFrame:CGRectMake(- ScreenWidth, 64, ScreenWidth, ScreenHeight - 64 - 49) style:UITableViewStyleGrouped];
     _attentionTableView.delegate = self;
     _attentionTableView.dataSource = self;
-    _attentionTableView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
+    _attentionTableView.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.98 alpha:1];
     [self.view addSubview:_attentionTableView];
     
     [self.attentionTableView registerNib:[UINib nibWithNibName:@"HomeCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ComicsModel"];
@@ -592,6 +601,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -665,6 +675,35 @@
     cell.layer.borderWidth = 1;
     cell.layer.borderColor = [UIColor darkGrayColor].CGColor;
     
+    HomeCell *mycell = (HomeCell *)cell;
+    mycell.comicNameBtn.block = (id)^(id button) {
+        CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+        completeVC.ids = comics.topicModel.ids;// 传入全集的id
+        UINavigationController *navc = [[UINavigationController alloc] initWithRootViewController:completeVC];
+//        [self.navigationController presentViewController:navc animated:YES completion:nil];
+        NSLog(@"%@", completeVC.ids);
+        return nil;
+    };
+    
+    mycell.authorNameBtn.block = (id)^(id button) {
+        AuthorViewController *authorVC = [[AuthorViewController alloc] init];
+        authorVC.ids = comics.authorUserInfo.ids;// 传入作者的id
+        UINavigationController *navc = [[UINavigationController alloc] initWithRootViewController:authorVC];
+        [self.navigationController presentViewController:navc animated:YES completion:nil];
+//        NSLog(@"%@", authorVC.ids);
+        return nil;
+    };
+    
+    mycell.thisComicTitleBtn.block = (id)^(id button) {
+        DetailsViewController *detailsVC = [[DetailsViewController alloc] init];
+        detailsVC.ids = comics.ids;// 传入详情的id
+        UINavigationController *navc = [[UINavigationController alloc] initWithRootViewController:detailsVC];
+//        [self.navigationController presentViewController:navc animated:YES completion:nil];
+        NSLog(@"%@", detailsVC.ids);
+        return nil;
+    };
+    
+    
     return cell;
 
 }
@@ -683,7 +722,6 @@
         return 25.000001;
     }
 }
-
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
@@ -704,17 +742,5 @@
     
     return view;
 }
-
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
-
 
 @end

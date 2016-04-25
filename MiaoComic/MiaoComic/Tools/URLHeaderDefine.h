@@ -41,4 +41,9 @@
 // 消息接收
 #define MESSAGE_SENDURL @"http://api.kuaikanmanhua.com/v1/timeline/polling"
 
+// 作者
+#define AUTHORURL @"http://api.kuaikanmanhua.com/v1/users/"
+
+
+
 #endif /* URLHeaderDefine_h */
