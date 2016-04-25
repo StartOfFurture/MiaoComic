@@ -35,7 +35,12 @@
     _comicNameLabel.text = comicsModel.topicModel.title;
     
     _authorNameLabel.text = comicsModel.authorUserInfo.nickname;
+
     [_authorNameLabel sizeThatFits:CGSizeMake(40, 15)];
+//    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:14],NSFontAttributeName, nil];
+//    [_authorNameLabel.text boundingRectWithSize:CGSizeMake(40, 15) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:dic context:nil];
+
+    
     
     _thisComicTitleLabel.text = comicsModel.title;
     

@@ -292,8 +292,14 @@
             // 计算时间
             NSDate *date = [GetTime getDate:[NSDate date] formatString:@"YYYY-MM-dd"];
 
-            _urlString = [NSString stringWithFormat:@"%.0f", [[NSDate dateWithTimeInterval:(i - 6) * 24 * 60 * 60  sinceDate:date] timeIntervalSince1970]];
-
+            if (i == 6) {
+                _urlString = @"0";
+            } else if (i == 5){
+                _urlString = @"1";
+            } else {
+                _urlString = [NSString stringWithFormat:@"%.0f", [[NSDate dateWithTimeInterval:(i - 6) * 24 * 60 * 60  sinceDate:date] timeIntervalSince1970]];
+            }
+            
             // 请求数据
             [self requestData:_urlString];
             
@@ -493,8 +499,6 @@
 }
 
 
-
-
 #pragma mark -添加上拉加载和下拉刷新-
 
 - (void)refresh{
@@ -594,9 +598,11 @@
     if (self.navSelectBtn == self.comicsBtn) {
         return self.comicsArray.count + 1;
     }
-    else {
+    else if (self.navSelectBtn == self.attentionBtn && _isEnding == YES ){
         return self.attentionArray.count + 1;
     }
+    return self.attentionArray.count;
+#warning 注意
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

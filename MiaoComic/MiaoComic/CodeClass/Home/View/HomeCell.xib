@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -23,10 +24,7 @@
                         </constraints>
                     </imageView>
                     <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="漫画名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TCZ-3A-kBM">
-                        <rect key="frame" x="80" y="11" width="240" height="18"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="240" id="qvh-S2-C7f"/>
-                        </constraints>
+                        <rect key="frame" x="80" y="11" width="289" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -106,6 +104,7 @@
                 <constraints>
                     <constraint firstItem="oyZ-yG-Oi7" firstAttribute="leading" secondItem="NGA-lh-oKg" secondAttribute="leading" constant="10" id="4Hb-MP-5xY"/>
                     <constraint firstAttribute="trailing" secondItem="r5T-87-Ubz" secondAttribute="trailing" constant="10" id="5c5-8K-tbj"/>
+                    <constraint firstAttribute="width" secondItem="1zo-dK-e57" secondAttribute="width" id="7SA-ry-ITz"/>
                     <constraint firstItem="GjY-cu-cUe" firstAttribute="leading" secondItem="SkR-uX-6FT" secondAttribute="trailing" constant="5" id="8Fi-BF-nH1"/>
                     <constraint firstItem="oyZ-yG-Oi7" firstAttribute="centerY" secondItem="TCZ-3A-kBM" secondAttribute="centerY" id="B79-PC-yja"/>
                     <constraint firstItem="GjY-cu-cUe" firstAttribute="centerY" secondItem="VKw-9M-zO0" secondAttribute="centerY" id="C1e-BC-k6Z"/>
@@ -120,6 +119,7 @@
                     <constraint firstItem="VKw-9M-zO0" firstAttribute="centerY" secondItem="r5T-87-Ubz" secondAttribute="centerY" id="PFm-HS-B6H"/>
                     <constraint firstItem="2cP-On-hXs" firstAttribute="centerY" secondItem="SkR-uX-6FT" secondAttribute="centerY" id="PQj-9t-srZ"/>
                     <constraint firstItem="1zo-dK-e57" firstAttribute="leading" secondItem="NGA-lh-oKg" secondAttribute="leading" id="Ulu-3b-nxQ"/>
+                    <constraint firstItem="TCZ-3A-kBM" firstAttribute="width" secondItem="1zo-dK-e57" secondAttribute="width" multiplier="1/2" id="YFC-6m-7PF"/>
                     <constraint firstItem="2cP-On-hXs" firstAttribute="top" secondItem="1zo-dK-e57" secondAttribute="bottom" constant="10" id="bhU-Fr-ZxV"/>
                     <constraint firstItem="oyZ-yG-Oi7" firstAttribute="top" secondItem="NGA-lh-oKg" secondAttribute="top" constant="10" id="d2u-Rg-6T8"/>
                     <constraint firstItem="1zo-dK-e57" firstAttribute="top" secondItem="oyZ-yG-Oi7" secondAttribute="bottom" constant="10" id="gl5-b1-zH4"/>
@@ -144,7 +144,7 @@
                 <outlet property="thisComicTitleLabel" destination="2cP-On-hXs" id="0M6-Md-Nhs"/>
                 <outlet property="typeLabel" destination="oyZ-yG-Oi7" id="XBi-97-kbg"/>
             </connections>
-            <point key="canvasLocation" x="717.5" y="511"/>
+            <point key="canvasLocation" x="401.5" y="312"/>
         </tableViewCell>
     </objects>
     <resources>
