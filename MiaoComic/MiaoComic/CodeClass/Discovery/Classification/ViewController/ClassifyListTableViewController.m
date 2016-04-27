@@ -11,6 +11,7 @@
 #import "ClassifyListModelCell.h"
 #import "ClassifyListModelCellChange.h"
 #import "LoginViewController.h"
+#import "CompleteViewController.h"
 
 @interface ClassifyListTableViewController ()
 
@@ -189,6 +190,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 86;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    ClassifyListModel *model = self.listArr[indexPath.row];
+    CompleteViewController *compleVC = [[CompleteViewController alloc] init];
+    compleVC.ids = model.ID;
+    UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:compleVC];
+    [self presentViewController:naVC animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

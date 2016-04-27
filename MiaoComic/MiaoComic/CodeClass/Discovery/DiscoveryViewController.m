@@ -21,6 +21,9 @@
 #import "DiscoveryHotGuanFangCell.h"
 #import "HotPaiHangViewController.h"
 #import "CommentViewController.h"
+#import "DetailsViewController.h"
+#import "CompleteViewController.h"
+
 
 @interface DiscoveryViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate,DiscoveryHotPaiHangCellDelegate>
 
@@ -42,7 +45,7 @@
     [super viewWillAppear:animated];
     //导航栏的颜色
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-    self.tabBarController.tabBar.hidden = NO;
+//    self.tabBarController.tabBar.hidden = NO;
 }
 
 //热门列表的分组数组的懒加载
@@ -199,6 +202,7 @@
 //        naVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
 //        [self.view addSubview:naVC.view];
 //        [self presentViewController:naVC animated:YES completion:nil];
+        searchVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:searchVC animated:YES];
         return nil;
     };
@@ -238,8 +242,31 @@
     [_collectionView  registerNib:[UINib nibWithNibName:@"ClassifyModelCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"ClassifyModel"];
     [self.view addSubview:_collectionView];
     
+    //添加观察者
+    [self addObserver];
     
     // Do any additional setup after loading the view from its nib.
+}
+
+#pragma mark ---添加观察者---
+
+- (void)addObserver{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renqi:) name:@"push" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(guanfang:) name:@"guanfang" object:nil];
+}
+
+- (void)renqi:(NSNotification *)no{
+    CompleteViewController *compleVC = [[CompleteViewController alloc] init];
+    compleVC.ids = (NSString *)no.object;
+    UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:compleVC];
+    [self presentViewController:naVC animated:YES completion:nil];
+}
+
+- (void)guanfang:(NSNotification *)no{
+    DetailsViewController *DetailVC = [[DetailsViewController alloc] init];
+    DetailVC.cid = (NSString *)no.object;
+    DetailVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:DetailVC animated:YES];
 }
 
 #pragma mark ---jump协议---
@@ -264,6 +291,16 @@
     _headerScrollView.totalPagesCount = picArray.count;
     _headerScrollView.fetchContentViewAtIndex = ^UIView *(NSInteger page){
         return picArray[page];
+    };
+    __block DiscoveryViewController *discVC = self;
+    _headerScrollView.TapActionBlock = ^(NSInteger page){
+        DiscoveryHoTBannerModel *model = discVC.hotBannerArr[page];
+        NSLog(@"%@",model.value);
+        if (model.value.length == 3) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"push" object:model.value];
+        }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"guanfang" object:model.value];
+        }
     };
 }
 
@@ -352,7 +389,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"lolo");
+    DiscoveryHotListModel *model = self.hotListDic[self.hotListArr[indexPath.section]][indexPath.row];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"push" object:model.ID];
 }
 
 #pragma mark ---UICollectionView协议实现---
