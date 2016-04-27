@@ -87,8 +87,7 @@
 
 - (void)loadView {
     [super loadView];
-    _authorView = [[AuthorView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.view = _authorView;
+
     
 }
 
@@ -97,6 +96,9 @@
     
     self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
     self.navigationController.navigationBarHidden = YES;
+    
+    _authorView = [[AuthorView alloc] initWithFrame:CGRectMake(0, ScreenHeight / 3, ScreenWidth, ScreenHeight / 3 * 2)];
+    self.view = _authorView;
     
     self.authorView.productionTableV.delegate = self;
     self.authorView.productionTableV.dataSource = self;

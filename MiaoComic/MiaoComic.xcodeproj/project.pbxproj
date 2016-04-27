@@ -75,6 +75,9 @@
 		795D9D7D1CCE14E50014A727 /* AuthorTopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D9D7C1CCE14E50014A727 /* AuthorTopicModel.m */; };
 		795D9D841CCE45D10014A727 /* AuthorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D9D821CCE45D10014A727 /* AuthorCell.m */; };
 		795D9D851CCE45D10014A727 /* AuthorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 795D9D831CCE45D10014A727 /* AuthorCell.xib */; };
+		795D9D881CCE60FE0014A727 /* CompleteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D9D871CCE60FE0014A727 /* CompleteView.m */; };
+		795D9D8C1CCE62150014A727 /* CompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 795D9D8A1CCE62150014A727 /* CompleteCell.m */; };
+		795D9D8D1CCE62150014A727 /* CompleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 795D9D8B1CCE62150014A727 /* CompleteCell.xib */; };
 		79823D6C1CC72A9100E3EA63 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 79823D6B1CC72A9100E3EA63 /* main.m */; };
 		79823D6F1CC72A9100E3EA63 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 79823D6E1CC72A9100E3EA63 /* AppDelegate.m */; };
 		79823D721CC72A9100E3EA63 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79823D711CC72A9100E3EA63 /* ViewController.m */; };
@@ -248,6 +251,11 @@
 		795D9D811CCE45D10014A727 /* AuthorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorCell.h; sourceTree = "<group>"; };
 		795D9D821CCE45D10014A727 /* AuthorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorCell.m; sourceTree = "<group>"; };
 		795D9D831CCE45D10014A727 /* AuthorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthorCell.xib; sourceTree = "<group>"; };
+		795D9D861CCE60FE0014A727 /* CompleteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompleteView.h; sourceTree = "<group>"; };
+		795D9D871CCE60FE0014A727 /* CompleteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompleteView.m; sourceTree = "<group>"; };
+		795D9D891CCE62150014A727 /* CompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompleteCell.h; sourceTree = "<group>"; };
+		795D9D8A1CCE62150014A727 /* CompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompleteCell.m; sourceTree = "<group>"; };
+		795D9D8B1CCE62150014A727 /* CompleteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompleteCell.xib; sourceTree = "<group>"; };
 		79823D671CC72A9100E3EA63 /* MiaoComic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiaoComic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79823D6B1CC72A9100E3EA63 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		79823D6D1CC72A9100E3EA63 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -649,6 +657,11 @@
 		795D9D661CCDFF4B0014A727 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				795D9D861CCE60FE0014A727 /* CompleteView.h */,
+				795D9D871CCE60FE0014A727 /* CompleteView.m */,
+				795D9D891CCE62150014A727 /* CompleteCell.h */,
+				795D9D8A1CCE62150014A727 /* CompleteCell.m */,
+				795D9D8B1CCE62150014A727 /* CompleteCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1133,6 +1146,7 @@
 				791C4BFE1CCBA36A00F62479 /* MessageModelCell.xib in Resources */,
 				791C4BFA1CCBA36A00F62479 /* LoginCell.xib in Resources */,
 				790643131CC8B05C0068E199 /* ClassifyListModelCell.xib in Resources */,
+				795D9D8D1CCE62150014A727 /* CompleteCell.xib in Resources */,
 				791C4BF31CCBA36A00F62479 /* LoginViewController.xib in Resources */,
 				79823D7A1CC72A9100E3EA63 /* LaunchScreen.storyboard in Resources */,
 				795D9D741CCDFFF20014A727 /* DetailsViewController.xib in Resources */,
@@ -1236,6 +1250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				795D9D8C1CCE62150014A727 /* CompleteCell.m in Sources */,
 				7934A3D01CCBA7D40072F386 /* LoginViewController.m in Sources */,
 				791C4BF11CCBA36A00F62479 /* GetCodeViewController.m in Sources */,
 				7906431C1CC8B22E0068E199 /* BaseCollectionViewCell.m in Sources */,
@@ -1289,6 +1304,7 @@
 				7901CB051CC759A900D944C6 /* NetWorkRequestManager.m in Sources */,
 				7906430B1CC8B0410068E199 /* ClassifyModel.m in Sources */,
 				791C4BF01CCBA36A00F62479 /* CollectViewController.m in Sources */,
+				795D9D881CCE60FE0014A727 /* CompleteView.m in Sources */,
 				791C4C031CCBA36A00F62479 /* SetUserViewController.m in Sources */,
 				79823E861CC777B200E3EA63 /* FactoryTableViewCell.m in Sources */,
 				791C4BEF1CCBA36A00F62479 /* CollectTopicModel.m in Sources */,

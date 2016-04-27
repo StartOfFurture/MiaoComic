@@ -10,7 +10,7 @@
 #import "ComicsModel.h"
 
 @interface HomeCell ()
-
+@property (nonatomic, strong) ComicsModel *myModel;
 @end
 
 
@@ -18,6 +18,7 @@
 
 
 - (void)setDataWithModel:(BaseModel *)model {
+    _myModel = (ComicsModel *)model;
     ComicsModel *comicsModel = (ComicsModel *)model;
     _typeLabel.text = comicsModel.label_text;
     _typeLabel.backgroundColor = [self colorWithHexString:comicsModel.label_color];
@@ -28,7 +29,12 @@
     
     [_authorNameBtn setTitle:comicsModel.authorUserInfo.nickname forState:UIControlStateNormal];
    _authorNameBtn.contentHorizontalAlignment= UIControlContentHorizontalAlignmentRight;
-    [_authorNameBtn sizeThatFits:CGSizeMake(40, 15)];
+//    if(comicsModel.authorUserInfo.nickname.length > 5) {
+//        _authorNameBtn.frame = CGRectMake(110 + ScreenWidth / 2, 10, ScreenWidth / 2 - 110, 20);
+//    } else {
+//        [_authorNameBtn sizeThatFits:CGSizeMake(40, 1)];
+//    }
+    
 
     
     [_thisComicTitleBtn setTitle:comicsModel.title forState:UIControlStateNormal];
@@ -36,18 +42,41 @@
     
     
     
+    _likeBtn.contentHorizontalAlignment= UIControlContentHorizontalAlignmentRight;
     if (comicsModel.likes_count > 100000) {
-        _likeLabel.text = [NSString stringWithFormat:@"%ld万", comicsModel.likes_count / 10000];
+        
+        [_likeBtn setTitle:[NSString stringWithFormat:@"%ld万", comicsModel.likes_count / 10000] forState:UIControlStateNormal];
+        _likeBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
+//        _likeLabel.text = [NSString stringWithFormat:@"%ld万", comicsModel.likes_count / 10000];
     } else {
-        _likeLabel.text = [NSString stringWithFormat:@"%ld", comicsModel.likes_count];
+        [_likeBtn setTitle:[NSString stringWithFormat:@"%ld", comicsModel.likes_count] forState:UIControlStateNormal];
+//        _likeLabel.text = [NSString stringWithFormat:@"%ld", comicsModel.likes_count];
     }
+    
+    _commentBtn.contentHorizontalAlignment= UIControlContentHorizontalAlignmentRight;
     if (comicsModel.comments_count > 100000) {
-        _commentLabel.text = [NSString stringWithFormat:@"%ld万", comicsModel.comments_count / 10000];
+        [_commentBtn setTitle:[NSString stringWithFormat:@"%ld万", comicsModel.comments_count / 10000] forState:UIControlStateNormal];
+//        _commentLabel.text = [NSString stringWithFormat:@"%ld万", comicsModel.comments_count / 10000];
     } else {
-        _commentLabel.text = [NSString stringWithFormat:@"%ld", comicsModel.comments_count];
+        [_commentBtn setTitle:[NSString stringWithFormat:@"%ld", comicsModel.comments_count] forState:UIControlStateNormal];
+//        _commentLabel.text = [NSString stringWithFormat:@"%ld", comicsModel.comments_count];
     }
     
     [_coverImgV sd_setImageWithURL:[NSURL URLWithString:comicsModel.cover_image_url]];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    if(_myModel.authorUserInfo.nickname.length > 6) {
+        _authorNameBtn.frame = CGRectMake(100 + ScreenWidth / 2, 10, ScreenWidth / 2 - 110, 20);
+        _authorImgV.frame = CGRectMake(80 + ScreenWidth / 2, 10, 20, 20);
+    }
+    else {
+        [_authorNameBtn sizeThatFits:CGSizeMake(40, 1)];
+    }
+    
+    
 }
 
 // 颜色转换

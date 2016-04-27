@@ -303,8 +303,6 @@
 
             if (i == 6) {
                 _urlString = @"0";
-            } else if (i == 5){
-                _urlString = @"1";
             } else {
                 _urlString = [NSString stringWithFormat:@"%.0f", [[NSDate dateWithTimeInterval:(i - 6) * 24 * 60 * 60  sinceDate:date] timeIntervalSince1970]];
             }
@@ -322,7 +320,7 @@
 }
 
 
-#pragma mark - 更新时间的计算 -
+#pragma mark - 更新日期的计算 -
 
 - (NSString *)computeTimeWithIndex:(int)index {
     if (index == 6) {
@@ -680,8 +678,8 @@
         CompleteViewController *completeVC = [[CompleteViewController alloc] init];
         completeVC.ids = comics.topicModel.ids;// 传入全集的id
         UINavigationController *navc = [[UINavigationController alloc] initWithRootViewController:completeVC];
-//        [self.navigationController presentViewController:navc animated:YES completion:nil];
-        NSLog(@"%@", completeVC.ids);
+        [self.navigationController presentViewController:navc animated:YES completion:nil];
+//        NSLog(@"%@", completeVC.ids);
         return nil;
     };
     

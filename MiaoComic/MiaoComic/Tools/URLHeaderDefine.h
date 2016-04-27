@@ -43,7 +43,7 @@
 
 // 作者
 #define AUTHORURL @"http://api.kuaikanmanhua.com/v1/users/"
-
+#define COMPLETEURL @"http://api.kuaikanmanhua.com/v1/topics/"
 
 
 #endif /* URLHeaderDefine_h */

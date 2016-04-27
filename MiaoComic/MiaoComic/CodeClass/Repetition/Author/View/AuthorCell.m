@@ -21,16 +21,18 @@
 - (void)setDataWithModel:(BaseModel *)model {
     AuthorTopicModel *myModel = (AuthorTopicModel *)model;
     dispatch_async(dispatch_get_main_queue(), ^{
-
+//        NSLog(@"myModel.cover_image_url:%@", myModel.cover_image_url);
         if ([myModel.cover_image_url rangeOfString:@".jpg"].location == NSNotFound) {
-            [self.coverImgV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@.jpg",myModel.cover_image_url]] placeholderImage:[UIImage imageNamed:@"pheader"]];
+            [self.coverImgV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@.jpg",myModel.cover_image_url]] placeholderImage:[UIImage imageNamed:@"placeholder"]];
         } else {
-            [self.coverImgV sd_setImageWithURL:[NSURL URLWithString:myModel.cover_image_url] placeholderImage:[UIImage imageNamed:@"pheader"]];
+            [self.coverImgV sd_setImageWithURL:[NSURL URLWithString:myModel.cover_image_url] placeholderImage:[UIImage imageNamed:@"placeholder"]];
         }
     });
     self.titleLabel.text = myModel.title;
     self.descriptionLabel.text = myModel.descriptions;
 }
+
+
 -(void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
