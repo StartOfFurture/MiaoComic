@@ -69,6 +69,7 @@
 
 - (void)createNavigationButton {
     // 设置导航栏的背景色
+    
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.73 green:0.27 blue:0.62 alpha:1];
     
     // 搜索按钮
@@ -694,22 +695,19 @@
         authorVC.ids = comics.authorUserInfo.ids;// 传入作者的id
         UINavigationController *navc = [[UINavigationController alloc] initWithRootViewController:authorVC];
         [self.navigationController presentViewController:navc animated:YES completion:nil];
-//        NSLog(@"%@", authorVC.ids);
         return nil;
     };
     
     mycell.thisComicTitleBtn.block = (id)^(id button) {
         DetailsViewController *detailsVC = [[DetailsViewController alloc] init];
         detailsVC.cid = comics.ids;// 传入详情的id
-        UINavigationController *navc = [[UINavigationController alloc] initWithRootViewController:detailsVC];
-//        [self.navigationController presentViewController:navc animated:YES completion:nil];
-        NSLog(@"%@", detailsVC.cid);
+
+        detailsVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:detailsVC animated:YES];
+
         return nil;
     };
-    
-    
     return cell;
-
 }
 
 
