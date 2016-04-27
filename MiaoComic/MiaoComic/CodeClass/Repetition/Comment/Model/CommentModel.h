@@ -17,5 +17,6 @@
 @property (nonatomic, copy)NSString *created_at;//发评论的时间
 @property (nonatomic, copy)NSString *ID;//回复评论要传入的ID
 @property (nonatomic, copy)NSString *is_liked;//是否点赞
+@property (nonatomic, copy)NSString *userID;//用户id
 
 @end

@@ -8,6 +8,7 @@
 
 #import "DiscoveryHotGuanFangCell.h"
 #import "DiscoveryHotGuanFangColletionCell.h"
+#import "DiscoveryHotListModel.h"
 @interface DiscoveryHotGuanFangCell ()<UICollectionViewDelegate, UICollectionViewDataSource>
 
 @end
@@ -28,6 +29,7 @@
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
         _collectionView.showsVerticalScrollIndicator = NO;
+        _collectionView.scrollEnabled = NO;
         //        _collectionView.pagingEnabled = YES;
         [_collectionView registerNib:[UINib nibWithNibName:@"DiscoveryHotGuanFangColletionCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"DiscoveryHotGuanFangColletionCell"];
         [self.contentView addSubview:_collectionView];
@@ -36,7 +38,8 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return self.array.count;
+//    return self.array.count;
+    return 2;//官方外面只显示2个
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -47,7 +50,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"nihao");
+    DiscoveryHotListModel *model = self.array[indexPath.row];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"guanfang" object:model.target_id];
 }
 
 /*

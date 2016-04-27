@@ -8,6 +8,7 @@
 
 #import "DiscoveryHotPaiHangCell.h"
 #import "DiscoveryHotPaiHangCellCollectionViewCell.h"
+#import "DiscoveryHotListModel.h"
 
 @interface DiscoveryHotPaiHangCell ()<UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -71,7 +72,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"nihao");
+    DiscoveryHotListModel *model = self.array[indexPath.row];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"push" object:model.ID];
 }
 
 /*

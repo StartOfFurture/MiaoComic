@@ -72,7 +72,7 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    self.tabBarController.tabBar.hidden = YES;
+//    self.tabBarController.tabBar.hidden = YES;
     [self requestData:[self.searchController.searchBar text]];
     NSLog(@"zhuzhzuzhuz");
 }

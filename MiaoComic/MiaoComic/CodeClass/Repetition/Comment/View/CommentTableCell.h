@@ -9,6 +9,7 @@
 #import "BaseTableViewCell.h"
 
 @interface CommentTableCell : BaseTableViewCell
+
 @property (strong, nonatomic) IBOutlet UIImageView *cover_imageView;
 @property (strong, nonatomic) IBOutlet UILabel *nickNameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *timeLabel;

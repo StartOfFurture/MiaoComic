@@ -18,6 +18,7 @@
     self.nickNameLabel.text = model.nickname;
     self.timeLabel.text = [NSString stringWithString:[GetTime getTimeFromSecondString:model.created_at timeFormatType:Month_Day_Hour_Minute]];
     self.contentLabel.text = model.content;
+    //判断点赞数是否为0
     if ([[NSString stringWithFormat:@"%@",model.likes_count] isEqualToString:@"0"]) {
         self.likeCountLabel.text = @"";
     }else{
@@ -25,9 +26,27 @@
     }
     NSLog(@"%@",model.is_liked);
 //    model.is_liked = @"1";
+    //判断是否已经点赞
     if ([[NSString stringWithFormat:@"%@",model.is_liked] isEqualToString:@"1"]) {
         [self.zanButton setBackgroundImage:[[UIImage imageNamed:@"zan-change"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
     }
+    __block CommentTableCell *cell = self;
+    self.zanButton.block = (id)^(id button){
+        [cell requestData:[NSString stringWithFormat:@"%@",model.ID]];
+        return nil;
+    };
+}
+
+//数据请求点赞
+- (void)requestData:(NSString *)IDstr{
+    [NetWorkRequestManager requestWithType:POST urlString:[NSString stringWithFormat:LIKE_URL,IDstr] dic:nil successful:^(NSData *data) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"%@",IDstr);
+        NSLog(@"dicccccc%@",dic);
+        NSLog(@"%@",[NSString stringWithFormat:LIKE_URL,IDstr]);
+    } errorMessage:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 /*

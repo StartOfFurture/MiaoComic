@@ -10,6 +10,7 @@
 #import "CommentModel.h"
 #import "CommentTableCell.h"
 #import "ReadKeyBoard.h"
+#import "LoginViewController.h"
 
 @interface CommentViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -41,6 +42,7 @@
         [model setValuesForKeysWithDictionary:dic1];
         model.avatar_url = dic1[@"user"][@"avatar_url"];
         model.nickname = dic1[@"user"][@"nickname"];
+        model.userID = dic1[@"user"][@"id"];
         [self.array addObject:model];
     }
     NSLog(@"%@",self.array);
@@ -66,7 +68,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.since = @"0";
-    self.ID = @"11649";
+    self.ID = @"10720";
     //请求数据
     [self requestData:COMMENT_New];
     
@@ -124,17 +126,24 @@
     
     //添加观察者
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shuaxin) name:@"shuaxin" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(login) name:@"nouser" object:nil];
     
     // Do any additional setup after loading the view.
 }
 
-#pragma mark ---刷新界面---
+#pragma mark ---刷新界面,判断有没有用户---
 
 - (void)shuaxin{
     if (_segVC.selectedSegmentIndex == 0) {
         self.since = @"0";
         [self requestData:COMMENT_New];
     }
+}
+
+- (void)login{
+    LoginViewController *logVC = [[LoginViewController alloc] init];
+    UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:logVC];
+    [self presentViewController:naVC animated:YES completion:nil];
 }
 
 #pragma mark ---点击遮盖层---

@@ -7,7 +7,7 @@
 //
 
 #import "ReadKeyBoard.h"
-
+#import "LoginViewController.h"
 @interface ReadKeyBoard()
 
 @property (nonatomic, assign)BOOL isresult;
@@ -64,13 +64,13 @@
     __block UILabel *label = _plahchLabel;
     __block ReadKeyBoard *keyBoard = self;
     _sendButton.block = (id)^(id button){
-        if (![textView.text isEqualToString:@""]&&![[UserInfoManager getUserID] isEqual:@""]) {
+        if (![textView.text isEqualToString:@""]&&![[UserInfoManager getUserID] isEqual:@" "]) {
             [keyBoard requestData:textView.text];
             textView.text = @"";
             label.text = @"来吐槽把～～～";
             [textView resignFirstResponder];
-        }if ([[UserInfoManager getUserID] isEqual:@""]) {
-//            [ ]
+        }if ([[UserInfoManager getUserID] isEqual:@" "]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"nouser" object:nil];
         }
         return nil;
     };

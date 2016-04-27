@@ -61,7 +61,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     if ([_identent isEqualToString:@"renqi"]) {
-        return self.array.count;
+        return 3;//人气外面只显示3个
     }else{
         return self.zhubianArray.count;
     }
@@ -86,6 +86,7 @@
     }else{
         model = self.zhubianArray[indexPath.row];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"push" object:model.ID];
     NSLog(@"%@",model.title);
 }
 

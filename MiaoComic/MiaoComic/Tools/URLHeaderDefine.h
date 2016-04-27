@@ -20,10 +20,12 @@
 #define Discover_fav                   @"http://api.kuaikanmanhua.com/v1/topics/%@/fav"   //关注
 #define Discover_Hot_banner         @"http://api.kuaikanmanhua.com/v1/banners"   //热门的轮播
 #define Discover_Hot_topic_lists    @"http://api.kuaikanmanhua.com/v1/topic_lists/mixed/new"    //热门列表
-
 #define Discover_zuopin_more        @"http://www.kuaikanmanhua.com/webapp/total_list_new.html"  //作品榜单更多
+
 //搜索
 #define SEARCH_url       @"http://api.kuaikanmanhua.com/v1/topics/search?keyword=%@&limit=20&offset=0" //搜索
+//点赞
+#define LIKE_URL         @"http://api.kuaikanmanhua.com/v1/comics/%@/like"  //点赞
 
 
 /**登录*/
