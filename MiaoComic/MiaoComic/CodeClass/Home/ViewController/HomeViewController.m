@@ -78,6 +78,7 @@
     searchBtn.block = (id)^(id button){
         SearchViewController *searchVC = [[SearchViewController alloc] init];
         searchVC.ControllerWithstring = @"HomeViewController";
+        searchVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:searchVC animated:YES];
         return nil;
     };
@@ -125,13 +126,13 @@
         ((UIButton *)button).backgroundColor = [UIColor whiteColor];
         
         // 切换tableView
-        [UIView animateKeyframesWithDuration:1.0 delay:0.0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+        [UIView animateKeyframesWithDuration:0.5 delay:0.0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
             //添加帧动画
-            [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:1.0 animations:^{
+            [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.5 animations:^{
                 _headView.frame = CGRectMake(ScreenWidth, 64, ScreenWidth, 30);
                 self.comicsTableView.frame = CGRectMake(ScreenWidth, 30 + 64, ScreenWidth, ScreenHeight - 30 - 64 - 49);
             }];
-            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
+            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:0.5 animations:^{
                 self.attentionTableView.frame = CGRectMake(0, 64, ScreenWidth, ScreenHeight - 64 - 49);
             }];
             
@@ -164,13 +165,13 @@
         ((UIButton *)button).backgroundColor = [UIColor whiteColor];
         
         // 切换tableView
-        [UIView animateKeyframesWithDuration:1.0 delay:0.0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+        [UIView animateKeyframesWithDuration:0.5 delay:0.0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
             //添加帧动画
-            [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:1.0 animations:^{
+            [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:0.5 animations:^{
                 
                 self.attentionTableView.frame = CGRectMake(-ScreenWidth, 64, ScreenWidth, ScreenHeight - 64 - 49);
             }];
-            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
+            [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:0.5 animations:^{
                 _headView.frame = CGRectMake(0, 64, ScreenWidth, 30);
                 self.comicsTableView.frame = CGRectMake(0, 30 + 64, ScreenWidth, ScreenHeight - 30 - 64 - 49);
             }];
@@ -733,10 +734,11 @@
         clockImageV.image = [UIImage imageNamed:@"clock"];
         UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(35, 0, 180, 25)];
         timeLabel.text = [NSString stringWithFormat:@"%@更新", _attentionArray[section]];
+        timeLabel.font = [UIFont systemFontOfSize:15];
         UIView *timeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 25)];
         [timeView addSubview:timeLabel];
         [timeView addSubview:clockImageV];
-        timeView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
+        timeView.backgroundColor = [UIColor clearColor];
         return timeView;
     }
     

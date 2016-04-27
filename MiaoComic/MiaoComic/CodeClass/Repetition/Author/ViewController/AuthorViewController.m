@@ -136,7 +136,9 @@
     
     [tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+    tableView.bounces = NO;// 去掉回弹效果
+    tableView.showsVerticalScrollIndicator = NO;
+    
     CGFloat y = cell.frame.origin.y;// cell的y轴
     CGFloat height = cell.frame.size.height;
     CGFloat tableViewHeight = tableView.frame.size.height;

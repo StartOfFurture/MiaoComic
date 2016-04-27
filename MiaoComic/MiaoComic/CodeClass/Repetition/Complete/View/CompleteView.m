@@ -42,7 +42,12 @@
 #pragma mark - 第二组cell 的头部视图（简介、内容、标记图片）
 - (UIView *)createSection_Two_Header {
     // 头视图
-    UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(- 30, 0, ScreenWidth + 60, 40)];
+    /**
+     分组头视图只能设置高度
+     CGRectMake( 0, 0, 0, height)
+     这里的宽度是设置给 另外一个视图的
+     */
+    UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth, 40)];
     tableHeaderView.backgroundColor = [UIColor blackColor];
     // 设置阴影，向上
     tableHeaderView.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -52,7 +57,7 @@
     
     // 简介按钮
     _introBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _introBtn.frame = CGRectMake(- 1, 0, ScreenWidth / 2 + 1, 40);
+    _introBtn.frame = CGRectMake(- 1 , 0, ScreenWidth / 2 + 1, 40);
     _introBtn.backgroundColor = [UIColor whiteColor];
     [_introBtn setTitle:@"简介" forState:UIControlStateNormal];
     [_introBtn setTitleColor:[UIColor colorWithRed:0.38 green:0.38 blue:0.38 alpha:1] forState:UIControlStateNormal];
@@ -60,6 +65,7 @@
     _introBtn.layer.borderColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1].CGColor;
     _introBtn.layer.borderWidth = 1;
     [tableHeaderView addSubview:_introBtn];
+    
     
     // 内容按钮
     _contentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -111,7 +117,7 @@
     if (self) {
 
         // 表格
-        _contentTableV = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
+        _contentTableV = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
         _contentTableV.backgroundColor = [UIColor whiteColor];
 
         
