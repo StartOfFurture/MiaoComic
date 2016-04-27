@@ -10,8 +10,12 @@
 
 @interface DiscoveryHotRenQiCell : BaseTableViewCell
 
-@property (nonatomic, strong)NSMutableArray *array;
+@property (nonatomic, strong)NSMutableArray *array;//人气
+
+@property (nonatomic, strong)NSMutableArray *zhubianArray;//主编
 
 @property (strong, nonatomic)UICollectionView *collectionView;
+
+@property (strong, nonatomic)NSString *identent;//标识
 
 @end

@@ -1,5 +1,6 @@
-platform :ios, "6.0"
+#latform :ios, "6.0"
 
 pod "SDWebImage"
 
 pod "MJRefresh"
+pod "SDWebImage/WebP"

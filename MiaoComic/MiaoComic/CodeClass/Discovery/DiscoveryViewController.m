@@ -16,8 +16,13 @@
 #import "DiscoveryHotSecondView.h"
 #import "DiscoveryHotRenQiCell.h"
 #import "SearchViewController.h"
+#import "DiscoveryHotPaiHangCell.h"
+#import "DiscoveryXinZuoCell.h"
+#import "DiscoveryHotGuanFangCell.h"
+#import "HotPaiHangViewController.h"
+#import "CommentViewController.h"
 
-@interface DiscoveryViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface DiscoveryViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate,DiscoveryHotPaiHangCellDelegate>
 
 @property (nonatomic, strong)UITableView *hotTableView;//热门视图
 @property (nonatomic, strong)NSMutableArray *hotBannerArr;//热门轮播数组
@@ -31,6 +36,14 @@
 @end
 
 @implementation DiscoveryViewController
+
+//视图即将显示
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    //导航栏的颜色
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    self.tabBarController.tabBar.hidden = NO;
+}
 
 //热门列表的分组数组的懒加载
 - (NSMutableArray *)hotListArr{
@@ -141,13 +154,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+#warning 测试评论
+    UIButton *button11 = [UIButton buttonWithType:UIButtonTypeSystem];
+    button11.frame = CGRectMake(0, 0, 50, 20);
+    [button11 setTitle:@"评论" forState:UIControlStateNormal];
+    button11.block = (id)^(id button1){
+        CommentViewController *commVC = [[CommentViewController alloc] init];
+        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:commVC];
+        [self presentViewController:naVC animated:YES completion:nil];
+        return nil;
+    };
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button11];
+
     //数据分类请求
     [self requestData];
     //热门数据
     [self requestHotData];
-    
-    //导航栏的颜色
-    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     
     //热门、分类标题的显示
     UISegmentedControl *segVC = [[UISegmentedControl alloc] initWithItems:@[@"热门",@"分类"]];
@@ -170,11 +193,12 @@
     button.block = (id)^(id but){
 //        NSLog(@"搜索搜索");
         SearchViewController *searchVC = [[SearchViewController alloc] init];
-        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:searchVC];
+//        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:searchVC];
 //        searchVC.navigationController.navigationBar.barTintColor = [UIColor purpleColor];
 //        naVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
 //        [self.view addSubview:naVC.view];
-        [self presentViewController:naVC animated:YES completion:nil];
+//        [self presentViewController:naVC animated:YES completion:nil];
+        [self.navigationController pushViewController:searchVC animated:YES];
         return nil;
     };
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
@@ -191,6 +215,10 @@
     _hotTableView.separatorStyle = NO;
     //注册
     [_hotTableView registerClass:[DiscoveryHotRenQiCell class] forCellReuseIdentifier:@"renqi"];
+    [_hotTableView registerClass:[DiscoveryHotPaiHangCell class] forCellReuseIdentifier:@"paihang"];
+    [_hotTableView registerClass:[DiscoveryXinZuoCell class] forCellReuseIdentifier:@"xinzuo"];
+    [_hotTableView registerClass:[DiscoveryHotRenQiCell class] forCellReuseIdentifier:@"zhubian"];
+    [_hotTableView registerClass:[DiscoveryHotGuanFangCell class] forCellReuseIdentifier:@"guangfang"];
     [self.view addSubview:_hotTableView];
     
     //分类
@@ -211,6 +239,15 @@
     
     
     // Do any additional setup after loading the view from its nib.
+}
+
+#pragma mark ---jump协议---
+
+- (void)jump{
+    HotPaiHangViewController *hotPaiHangVC = [[HotPaiHangViewController alloc] init];
+//    UINavigationController *naVC = [[UINavigationController alloc]initWithRootViewController:hotPaiHangVC];
+//    [self presentViewController:naVC animated:YES completion:nil];
+    [self.navigationController pushViewController:hotPaiHangVC animated:YES];
 }
 
 #pragma mark ---UITableView的实现---
@@ -236,7 +273,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSString *title = self.hotListArr[section];
-    if ([title isEqualToString:@"人气飙升"]) {
+    if ([title isEqualToString:@"人气飙升"] || [title isEqualToString:@"每周排行榜"] || [title isEqualToString:@"主编力推"]|| [title isEqualToString:@"官方活动"]) {
         return 1;
     }else{
         return [self.hotListDic[title] count];
@@ -246,23 +283,33 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *title = self.hotListArr[indexPath.section];
     BaseTableViewCell *cell = nil;
-    if ([title isEqualToString:@"人气飙升"]) {
-        static NSString *renqiStr = @"renqi";
-       cell = (DiscoveryHotRenQiCell *)[tableView dequeueReusableCellWithIdentifier:renqiStr];
-        ((DiscoveryHotRenQiCell *)cell).array = self.hotListDic[title];
-        NSLog(@"%@",((DiscoveryHotRenQiCell *)cell).array);
-    }else{
-        DiscoveryHotListModel *model = self.hotListDic[title][indexPath.row];
-        static NSString *str = @"lala";
-        cell = [tableView dequeueReusableCellWithIdentifier:str];
-        if (cell == nil) {
-            cell = [[BaseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:str];
-        }
-        if (model.title == nil) {
-            cell.textLabel.text = model.target_title;
+    DiscoveryHotListModel *model = self.hotListDic[title][indexPath.row];
+    if ([title isEqualToString:@"人气飙升"] || [title isEqualToString:@"主编力推"]) {
+        if ([title isEqualToString:@"人气飙升"]) {
+            static NSString *renqiStr = @"renqi";
+            cell = (DiscoveryHotRenQiCell *)[tableView dequeueReusableCellWithIdentifier:renqiStr];
+            ((DiscoveryHotRenQiCell *)cell).array = self.hotListDic[title];
+            ((DiscoveryHotRenQiCell *)cell).identent = @"renqi";
         }else{
-            cell.textLabel.text = model.title;
+            static NSString *zhubianStr = @"zhubian";
+            cell = (DiscoveryHotRenQiCell *)[tableView dequeueReusableCellWithIdentifier:zhubianStr];
+            ((DiscoveryHotRenQiCell *)cell).zhubianArray = self.hotListDic[title];
+            ((DiscoveryHotRenQiCell *)cell).identent = @"zhubian";
         }
+        NSLog(@"%@",((DiscoveryHotRenQiCell *)cell).array);
+    }else if ([title isEqualToString:@"每周排行榜"]){
+        static NSString *renqiStr = @"paihang";
+        cell = (DiscoveryHotPaiHangCell *)[tableView dequeueReusableCellWithIdentifier:renqiStr];
+        ((DiscoveryHotPaiHangCell *)cell).array = self.hotListDic[title];
+        ((DiscoveryHotPaiHangCell *)cell).delegate = self;
+    }else if ([title isEqualToString:@"新作出炉"]){
+        static NSString *xinzuoStr = @"xinzuo";
+        cell = (DiscoveryXinZuoCell *)[tableView dequeueReusableCellWithIdentifier:xinzuoStr];
+        [cell setDataWithModel:model];
+    }else{
+        static NSString *guangfangStr = @"guangfang";
+        cell = (DiscoveryHotGuanFangCell *)[tableView dequeueReusableCellWithIdentifier:guangfangStr];
+        ((DiscoveryHotGuanFangCell *)cell).array = self.hotListDic[title];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone; 
     return cell;
@@ -270,9 +317,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if ([self.hotListArr[indexPath.section] isEqualToString:@"人气飙升"]) {
-        return 130;
+        return 120;
+    }else if ([self.hotListArr[indexPath.section] isEqualToString:@"每周排行榜"]){
+        return 241;
+    }else if ([self.hotListArr[indexPath.section] isEqualToString:@"新作出炉"]){
+        return 125;
+    }else if ([self.hotListArr[indexPath.section] isEqualToString:@"主编力推"]){
+        return 260;
     }
-    return 30;
+    return 80;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{

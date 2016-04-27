@@ -27,7 +27,8 @@
 }
 
 - (void)setDataWithModel:(DiscoveryHotListModel *)model{
-    [_MyimageView sd_setImageWithURL:[NSURL URLWithString:[model.cover_image_url stringByAppendingString:@".jpg"]]];
+    [_MyimageView sd_setImageWithURL:[NSURL URLWithString:[ImageURL ImageStrWithString:model.cover_image_url]]];
+    NSLog(@"22222%@",model.cover_image_url);
 }
 
 /*

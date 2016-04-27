@@ -11,7 +11,8 @@
 @implementation DiscoveryHotGuanFangColletionCell
 
 - (void)setDataWithModel:(DiscoveryHotListModel *)model{
-    [self.MyimageView sd_setImageWithURL:[NSURL URLWithString:[model.pic stringByAppendingString:@".jpg"]]];
+    [self.MyimageView sd_setImageWithURL:[NSURL URLWithString:[ImageURL ImageStrWithString:model.pic]]];
+    NSLog(@"pic%@",model.pic);
     self.titleLabel.text = model.target_title;
 }
 

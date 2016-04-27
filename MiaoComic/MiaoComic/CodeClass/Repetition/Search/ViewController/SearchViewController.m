@@ -11,6 +11,8 @@
 #import "SearchModelCellChange.h"
 #import "SearchModel.h"
 #import "LoginViewController.h"
+#import "DiscoveryViewController.h"
+
 @interface SearchViewController ()<UISearchResultsUpdating,UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong)UISearchController *searchController;
@@ -70,6 +72,7 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
     [self requestData:[self.searchController.searchBar text]];
     NSLog(@"zhuzhzuzhuz");
 }
@@ -79,6 +82,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.73 green:0.27 blue:0.62 alpha:1.0];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:label];
     self.view.backgroundColor = [UIColor whiteColor];
     //手势的添加
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(back)];
@@ -104,8 +109,8 @@
     self.searchController.searchBar.placeholder = @"搜索作品名、作者名";
     self.searchController.searchBar.barTintColor = [UIColor colorWithRed:0.73 green:0.27 blue:0.62 alpha:1.0];
     self.searchController.searchBar.tintColor = [UIColor colorWithRed:0.73 green:0.27 blue:0.62 alpha:1.0];
-    //设置搜索框加到哪个视图控制器上面，很重要!!!!!!!!!!!!
-    self.definesPresentationContext = YES;
+    //设置搜索框加到哪个视图控制器上面，很重要!!!!!!!!!!!!如果是模态出来的要加，是push出来的不用加
+//    self.definesPresentationContext = YES;
     //搜索框一进去就是第一响应者
     self.searchController.searchBar.text = @"";
     //按钮
@@ -146,7 +151,16 @@
             cancelButton.titleLabel.attributedText = str;
             cancelButton.tintColor = [UIColor blackColor];
             cancelButton.block = (id)^(id button){
-                [self dismissViewControllerAnimated:YES completion:nil];
+//                [self dismissViewControllerAnimated:YES completion:nil];
+                NSArray *array = self.navigationController.childViewControllers;
+                UIViewController *viewVC = nil;
+                NSLog(@"%@",array);
+                for (UIViewController *viewVC1 in array) {
+                    if ([viewVC1 isKindOfClass:[DiscoveryViewController class]]) {
+                        viewVC = viewVC1;
+                    }
+                }
+                [self.navigationController popToViewController:viewVC animated:YES];
                 return nil;
             };
         }
