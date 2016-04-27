@@ -3,4 +3,5 @@
 pod "SDWebImage"
 
 pod "MJRefresh"
-pod "SDWebImage/WebP"
+
+

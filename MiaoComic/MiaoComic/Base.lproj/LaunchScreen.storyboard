@@ -20,11 +20,20 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo_Miao.png" translatesAutoresizingMaskIntoConstraints="NO" id="UQy-K1-n7B">
                                 <rect key="frame" x="244" y="236" width="113" height="128"/>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Log_header" translatesAutoresizingMaskIntoConstraints="NO" id="uqI-Rb-NIs">
+                                <rect key="frame" x="180" y="100" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="V1c-Dz-LFv"/>
+                                    <constraint firstAttribute="height" constant="128" id="lHc-L2-4Nl"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="UQy-K1-n7B" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="0Jr-n9-EUb"/>
                             <constraint firstItem="UQy-K1-n7B" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="7TW-ax-G9a"/>
+                            <constraint firstItem="uqI-Rb-NIs" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="80" id="uw8-eF-w9d"/>
+                            <constraint firstItem="uqI-Rb-NIs" firstAttribute="centerX" secondItem="UQy-K1-n7B" secondAttribute="centerX" id="yxV-as-Z2e"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -34,6 +43,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Log_header" width="383" height="112"/>
         <image name="Logo_Miao.png" width="113" height="128"/>
     </resources>
 </document>

@@ -9,6 +9,7 @@
 #import "CollectViewController.h"
 #import "CollectModel.h"
 #import "CollectModelCell.h"
+#import "DetailsViewController.h"
 
 @interface CollectViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -108,18 +109,16 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 86;
 }
+
 -(void)back{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    CollectModel *molde = self.listArray[indexPath.row];
+    DetailsViewController *detilsVC = [[DetailsViewController alloc] init];
+    detilsVC.cid = molde.cid;
+    [self.navigationController pushViewController:detilsVC animated:YES];
 }
-*/
 
 @end
