@@ -10,4 +10,6 @@
 
 @interface SearchViewController : BaseViewController
 
+@property (nonatomic, copy)NSString *ControllerWithstring;//返回上一个界面
+
 @end
