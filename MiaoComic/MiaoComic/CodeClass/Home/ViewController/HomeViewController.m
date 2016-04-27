@@ -68,9 +68,7 @@
 #pragma mark - 创建基础视图 -
 
 - (void)createNavigationButton {
-    // 设置导航栏的背景色
-    
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.73 green:0.27 blue:0.62 alpha:1];
+
     
     // 搜索按钮
     UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -594,6 +592,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    // 设置导航栏的背景色
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.73 green:0.27 blue:0.62 alpha:1];
+    
     if (![[UserInfoManager getUserID] isEqual:@" "]) {
         if (_loginView != nil) {
             [_loginView removeFromSuperview];
