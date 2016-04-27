@@ -68,7 +68,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.since = @"0";
-    self.ID = @"10720";
+//    self.ID = @"10720";
     //请求数据
     [self requestData:COMMENT_New];
     
