@@ -41,4 +41,16 @@
 // 消息接收
 #define MESSAGE_SENDURL @"http://api.kuaikanmanhua.com/v1/timeline/polling"
 
+
+
+// 每一话漫画
+#define DETAILCOMICURL @"http://api.kuaikanmanhua.com/v1/comics/"
+// 每一话漫画的热门评论
+#define DETAILCOMICURLHOTCOMMENT @"http://api.kuaikanmanhua.com/v1/comics/"
+
+
+// 修改用户
+#define UPDATEUSERURL @"http://api.kuaikanmanhua.com/v1/account/update"
+
+
 #endif /* URLHeaderDefine_h */

@@ -63,7 +63,18 @@
 		792555801CCB22DB001C92BE /* SearchModelCellChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 7925557F1CCB22DB001C92BE /* SearchModelCellChange.m */; };
 		792555821CCB231E001C92BE /* SearchModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 792555811CCB231E001C92BE /* SearchModelCell.xib */; };
 		792555841CCB234E001C92BE /* SearchModelCellChange.xib in Resources */ = {isa = PBXBuildFile; fileRef = 792555831CCB234E001C92BE /* SearchModelCellChange.xib */; };
+		792DB0D21CD0932F007EFA94 /* SetUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 792DB0D11CD0932F007EFA94 /* SetUserModel.m */; };
+		79325DEB1CCF17D500D785F8 /* DetailsCommentModelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 79325DEA1CCF17D500D785F8 /* DetailsCommentModelCell.m */; };
+		79325DEE1CCF6F0900D785F8 /* DetailsHotModelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 79325DED1CCF6F0900D785F8 /* DetailsHotModelCell.m */; };
+		79325DF01CCF6F3C00D785F8 /* DetailsHotModelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79325DEF1CCF6F3C00D785F8 /* DetailsHotModelCell.xib */; };
+		79325DF31CCF86C000D785F8 /* DetailsHotModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79325DF21CCF86C000D785F8 /* DetailsHotModel.m */; };
 		7934A3D01CCBA7D40072F386 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 791C4BC31CCBA36A00F62479 /* LoginViewController.m */; };
+		795576C91CCDC685002D05D8 /* AboutMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 795576C81CCDC685002D05D8 /* AboutMeViewController.m */; };
+		7955770B1CCE1C91002D05D8 /* DetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7955770A1CCE1C91002D05D8 /* DetailsViewController.m */; };
+		7955770E1CCE39A3002D05D8 /* DetailsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7955770D1CCE39A3002D05D8 /* DetailsModel.m */; };
+		795577111CCE3ABB002D05D8 /* DetailsTopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 795577101CCE3ABB002D05D8 /* DetailsTopicModel.m */; };
+		795577141CCE3B3A002D05D8 /* DetailsUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 795577131CCE3B3A002D05D8 /* DetailsUserModel.m */; };
+		795577171CCE5A64002D05D8 /* DetailsModelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 795577161CCE5A64002D05D8 /* DetailsModelCell.m */; };
 		79823D6C1CC72A9100E3EA63 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 79823D6B1CC72A9100E3EA63 /* main.m */; };
 		79823D6F1CC72A9100E3EA63 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 79823D6E1CC72A9100E3EA63 /* AppDelegate.m */; };
 		79823D721CC72A9100E3EA63 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79823D711CC72A9100E3EA63 /* ViewController.m */; };
@@ -75,7 +86,6 @@
 		79823E391CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif in Resources */ = {isa = PBXBuildFile; fileRef = 79823E131CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */; };
 		79823E3E1CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif in Resources */ = {isa = PBXBuildFile; fileRef = 79823E1F1CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */; };
 		79823E3F1CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif in Resources */ = {isa = PBXBuildFile; fileRef = 79823E211CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */; };
-		79823E401CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif in Resources */ = {isa = PBXBuildFile; fileRef = 79823E231CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */; };
 		79823E461CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif in Resources */ = {isa = PBXBuildFile; fileRef = 79823E301CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */; };
 		79823E491CC764AD00E3EA63 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79823E481CC764AD00E3EA63 /* BaseViewController.m */; };
 		79823E4F1CC764E900E3EA63 /* BaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 79823E4E1CC764E900E3EA63 /* BaseView.m */; };
@@ -223,6 +233,27 @@
 		7925557F1CCB22DB001C92BE /* SearchModelCellChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchModelCellChange.m; sourceTree = "<group>"; };
 		792555811CCB231E001C92BE /* SearchModelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchModelCell.xib; sourceTree = "<group>"; };
 		792555831CCB234E001C92BE /* SearchModelCellChange.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchModelCellChange.xib; sourceTree = "<group>"; };
+		792DB0D01CD0932F007EFA94 /* SetUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetUserModel.h; sourceTree = "<group>"; };
+		792DB0D11CD0932F007EFA94 /* SetUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetUserModel.m; sourceTree = "<group>"; };
+		79325DE91CCF17D500D785F8 /* DetailsCommentModelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsCommentModelCell.h; sourceTree = "<group>"; };
+		79325DEA1CCF17D500D785F8 /* DetailsCommentModelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsCommentModelCell.m; sourceTree = "<group>"; };
+		79325DEC1CCF6F0900D785F8 /* DetailsHotModelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsHotModelCell.h; sourceTree = "<group>"; };
+		79325DED1CCF6F0900D785F8 /* DetailsHotModelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsHotModelCell.m; sourceTree = "<group>"; };
+		79325DEF1CCF6F3C00D785F8 /* DetailsHotModelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailsHotModelCell.xib; sourceTree = "<group>"; };
+		79325DF11CCF86C000D785F8 /* DetailsHotModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsHotModel.h; sourceTree = "<group>"; };
+		79325DF21CCF86C000D785F8 /* DetailsHotModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsHotModel.m; sourceTree = "<group>"; };
+		795576C71CCDC685002D05D8 /* AboutMeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMeViewController.h; sourceTree = "<group>"; };
+		795576C81CCDC685002D05D8 /* AboutMeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutMeViewController.m; sourceTree = "<group>"; };
+		795577091CCE1C91002D05D8 /* DetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsViewController.h; sourceTree = "<group>"; };
+		7955770A1CCE1C91002D05D8 /* DetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsViewController.m; sourceTree = "<group>"; };
+		7955770C1CCE39A3002D05D8 /* DetailsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsModel.h; sourceTree = "<group>"; };
+		7955770D1CCE39A3002D05D8 /* DetailsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsModel.m; sourceTree = "<group>"; };
+		7955770F1CCE3ABB002D05D8 /* DetailsTopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsTopicModel.h; sourceTree = "<group>"; };
+		795577101CCE3ABB002D05D8 /* DetailsTopicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTopicModel.m; sourceTree = "<group>"; };
+		795577121CCE3B3A002D05D8 /* DetailsUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsUserModel.h; sourceTree = "<group>"; };
+		795577131CCE3B3A002D05D8 /* DetailsUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsUserModel.m; sourceTree = "<group>"; };
+		795577151CCE5A64002D05D8 /* DetailsModelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsModelCell.h; sourceTree = "<group>"; };
+		795577161CCE5A64002D05D8 /* DetailsModelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsModelCell.m; sourceTree = "<group>"; };
 		79823D671CC72A9100E3EA63 /* MiaoComic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiaoComic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79823D6B1CC72A9100E3EA63 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		79823D6D1CC72A9100E3EA63 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -242,7 +273,6 @@
 		79823E131CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "u=59781668,3377876945&fm=11&gp=0.gif"; sourceTree = "<group>"; };
 		79823E1F1CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "u=59781668,3377876945&fm=11&gp=0.gif"; sourceTree = "<group>"; };
 		79823E211CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "u=59781668,3377876945&fm=11&gp=0.gif"; sourceTree = "<group>"; };
-		79823E231CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "u=59781668,3377876945&fm=11&gp=0.gif"; sourceTree = "<group>"; };
 		79823E301CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "u=59781668,3377876945&fm=11&gp=0.gif"; sourceTree = "<group>"; };
 		79823E471CC764AD00E3EA63 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		79823E481CC764AD00E3EA63 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
@@ -519,6 +549,10 @@
 				791C4BE11CCBA36A00F62479 /* SettingViewController.m */,
 				791C4BE21CCBA36A00F62479 /* SetUserViewController.h */,
 				791C4BE31CCBA36A00F62479 /* SetUserViewController.m */,
+				795576C71CCDC685002D05D8 /* AboutMeViewController.h */,
+				795576C81CCDC685002D05D8 /* AboutMeViewController.m */,
+				792DB0D01CD0932F007EFA94 /* SetUserModel.h */,
+				792DB0D11CD0932F007EFA94 /* SetUserModel.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -831,7 +865,23 @@
 		79823E221CC7632100E3EA63 /* Details */ = {
 			isa = PBXGroup;
 			children = (
-				79823E231CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif */,
+				795577091CCE1C91002D05D8 /* DetailsViewController.h */,
+				7955770A1CCE1C91002D05D8 /* DetailsViewController.m */,
+				79325DF11CCF86C000D785F8 /* DetailsHotModel.h */,
+				79325DF21CCF86C000D785F8 /* DetailsHotModel.m */,
+				7955770C1CCE39A3002D05D8 /* DetailsModel.h */,
+				7955770D1CCE39A3002D05D8 /* DetailsModel.m */,
+				7955770F1CCE3ABB002D05D8 /* DetailsTopicModel.h */,
+				795577101CCE3ABB002D05D8 /* DetailsTopicModel.m */,
+				795577121CCE3B3A002D05D8 /* DetailsUserModel.h */,
+				795577131CCE3B3A002D05D8 /* DetailsUserModel.m */,
+				795577151CCE5A64002D05D8 /* DetailsModelCell.h */,
+				795577161CCE5A64002D05D8 /* DetailsModelCell.m */,
+				79325DE91CCF17D500D785F8 /* DetailsCommentModelCell.h */,
+				79325DEA1CCF17D500D785F8 /* DetailsCommentModelCell.m */,
+				79325DEC1CCF6F0900D785F8 /* DetailsHotModelCell.h */,
+				79325DED1CCF6F0900D785F8 /* DetailsHotModelCell.m */,
+				79325DEF1CCF6F3C00D785F8 /* DetailsHotModelCell.xib */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -989,7 +1039,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79823E401CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif in Resources */,
 				791C4BE91CCBA36A00F62479 /* AttentionModelCell.xib in Resources */,
 				79B7B35D1CCA5C490032F97C /* DiscoveryHotPaiHangCellCollectionViewCell.xib in Resources */,
 				791C4BFE1CCBA36A00F62479 /* MessageModelCell.xib in Resources */,
@@ -1000,6 +1049,7 @@
 				79823D7A1CC72A9100E3EA63 /* LaunchScreen.storyboard in Resources */,
 				791C4AE91CCB9EBF00F62479 /* u=59781668,3377876945&fm=11&gp=0.gif in Resources */,
 				79879FC61CC76EED00A69F46 /* Login_Pwd.png in Resources */,
+				79325DF01CCF6F3C00D785F8 /* DetailsHotModelCell.xib in Resources */,
 				791C4BEE1CCBA36A00F62479 /* CollectModelCell.xib in Resources */,
 				79823E3F1CC7632100E3EA63 /* u=59781668,3377876945&fm=11&gp=0.gif in Resources */,
 				79879FC21CC76EED00A69F46 /* back.png in Resources */,
@@ -1112,11 +1162,14 @@
 				791C4C041CCBA36A00F62479 /* UserViewController.m in Sources */,
 				791C4BF41CCBA36A00F62479 /* RegisterViewController.m in Sources */,
 				791C4BEC1CCBA36A00F62479 /* CollectModel.m in Sources */,
+				79325DEE1CCF6F0900D785F8 /* DetailsHotModelCell.m in Sources */,
 				79823E7C1CC7771000E3EA63 /* BaseTableViewCell.m in Sources */,
 				7925557A1CCB2266001C92BE /* SearchModel.m in Sources */,
 				7901CB031CC759A900D944C6 /* CycleScrollView.m in Sources */,
+				79325DEB1CCF17D500D785F8 /* DetailsCommentModelCell.m in Sources */,
 				792555801CCB22DB001C92BE /* SearchModelCellChange.m in Sources */,
 				791C4BEA1CCBA36A00F62479 /* AttentionUserModel.m in Sources */,
+				795576C91CCDC685002D05D8 /* AboutMeViewController.m in Sources */,
 				79823E4F1CC764E900E3EA63 /* BaseView.m in Sources */,
 				791C4C011CCBA36A00F62479 /* MessageViewController.m in Sources */,
 				791C4BFF1CCBA36A00F62479 /* MessageMoldeCell.m in Sources */,
@@ -1126,8 +1179,10 @@
 				79823E791CC7769C00E3EA63 /* BaseTableViewController.m in Sources */,
 				79823E851CC777B200E3EA63 /* FactoryCollectionViewCell.m in Sources */,
 				791C4BFC1CCBA36A00F62479 /* MessageComicModel.m in Sources */,
+				795577171CCE5A64002D05D8 /* DetailsModelCell.m in Sources */,
 				791C4AF01CCB9ED400F62479 /* GetTime.m in Sources */,
 				791C4BE81CCBA36A00F62479 /* AttentionModelCell.m in Sources */,
+				7955770E1CCE39A3002D05D8 /* DetailsModel.m in Sources */,
 				7906431A1CC8B19E0068E199 /* ClassifyListModel.m in Sources */,
 				791C4BF61CCBA36A00F62479 /* SetViewController.m in Sources */,
 				791C4BF91CCBA36A00F62479 /* LoginCell.m in Sources */,
@@ -1137,12 +1192,15 @@
 				791C4AEA1CCB9EBF00F62479 /* HomeCell.m in Sources */,
 				7901CB041CC759A900D944C6 /* NSTimer+Addition.m in Sources */,
 				798DE49E1CC900F400AF2155 /* DiscoveryHoTBannerModel.m in Sources */,
+				795577111CCE3ABB002D05D8 /* DetailsTopicModel.m in Sources */,
 				791C4BF81CCBA36A00F62479 /* UserInfoManager.m in Sources */,
 				79DCB8FB1CCA095900470DE4 /* DiscoveryHotSecondView.m in Sources */,
 				791C4BE71CCBA36A00F62479 /* AttentionModel.m in Sources */,
+				792DB0D21CD0932F007EFA94 /* SetUserModel.m in Sources */,
 				79823E621CC7709400E3EA63 /* DiscoveryViewController.m in Sources */,
 				791C4C021CCBA36A00F62479 /* SettingViewController.m in Sources */,
 				7901CB051CC759A900D944C6 /* NetWorkRequestManager.m in Sources */,
+				795577141CCE3B3A002D05D8 /* DetailsUserModel.m in Sources */,
 				7906430B1CC8B0410068E199 /* ClassifyModel.m in Sources */,
 				791C4BF01CCBA36A00F62479 /* CollectViewController.m in Sources */,
 				791C4C031CCBA36A00F62479 /* SetUserViewController.m in Sources */,
@@ -1156,6 +1214,8 @@
 				79823D6C1CC72A9100E3EA63 /* main.m in Sources */,
 				7925557D1CCB22B7001C92BE /* SearchModelCell.m in Sources */,
 				79B7B34C1CCA19A80032F97C /* DiscoveryHotRenQiCell.m in Sources */,
+				79325DF31CCF86C000D785F8 /* DetailsHotModel.m in Sources */,
+				7955770B1CCE1C91002D05D8 /* DetailsViewController.m in Sources */,
 				791C4AEC1CCB9EBF00F62479 /* HomeViewController.m in Sources */,
 				791C4BEB1CCBA36A00F62479 /* AttentionViewController.m in Sources */,
 			);
