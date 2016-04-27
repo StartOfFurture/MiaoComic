@@ -248,7 +248,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 
-#pragma mark ---添加观察者---
+#pragma mark- ---添加观察者---
 
 - (void)addObserver{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(renqi:) name:@"push" object:nil];
@@ -269,7 +269,7 @@
     [self.navigationController pushViewController:DetailVC animated:YES];
 }
 
-#pragma mark ---jump协议---
+#pragma mark- ---jump协议---
 
 - (void)jump{
     HotPaiHangViewController *hotPaiHangVC = [[HotPaiHangViewController alloc] init];
@@ -278,7 +278,7 @@
     [self.navigationController pushViewController:hotPaiHangVC animated:YES];
 }
 
-#pragma mark ---UITableView的实现---
+#pragma mark- ---UITableView的实现---
 
 //创建头视图的轮播图
 - (void)createHotBannerView{
@@ -393,7 +393,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"push" object:model.ID];
 }
 
-#pragma mark ---UICollectionView协议实现---
+#pragma mark- ---UICollectionView协议实现---
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     return self.collectionArray.count;
@@ -416,7 +416,7 @@
         [self presentViewController:naVC animated:YES completion:nil];
 }
 
-#pragma mark ---分段控件的点击事件---
+#pragma mark- ---分段控件的点击事件---
 
 - (void)segClick:(UISegmentedControl *)seg{
     if (seg.selectedSegmentIndex == 0) {
