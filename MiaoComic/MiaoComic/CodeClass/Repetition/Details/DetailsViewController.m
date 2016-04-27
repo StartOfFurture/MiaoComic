@@ -40,6 +40,10 @@
 
 @implementation DetailsViewController
 
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+}
+
 // 懒加载
 -(NSMutableArray *)dataArray{
     if (_dataArray == nil) {
