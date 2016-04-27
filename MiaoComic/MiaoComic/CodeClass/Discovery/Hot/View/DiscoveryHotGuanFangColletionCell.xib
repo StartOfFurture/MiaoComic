@@ -8,20 +8,20 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="fdN-gA-a9q" customClass="DiscoveryHotGuanFangColletionCell">
-            <rect key="frame" x="0.0" y="0.0" width="348" height="100"/>
+            <rect key="frame" x="0.0" y="0.0" width="348" height="120"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="348" height="100"/>
+                <rect key="frame" x="0.0" y="0.0" width="348" height="120"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="deb-Gg-OI8">
-                        <rect key="frame" x="0.0" y="0.0" width="348" height="70"/>
+                        <rect key="frame" x="0.0" y="0.0" width="348" height="80"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="70" id="sAw-v0-icH"/>
+                            <constraint firstAttribute="height" constant="80" id="sAw-v0-icH"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DHP-rP-gMj">
-                        <rect key="frame" x="0.0" y="75" width="348" height="18"/>
+                        <rect key="frame" x="0.0" y="85" width="348" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>

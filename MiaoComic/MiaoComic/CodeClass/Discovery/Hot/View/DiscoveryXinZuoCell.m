@@ -20,7 +20,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.MyimageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 0, ScreenWidth - 16, 120)];
+        self.MyimageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 0, ScreenWidth - 16, 140)];
         [self.contentView addSubview:self.MyimageView];
     }
     return self;

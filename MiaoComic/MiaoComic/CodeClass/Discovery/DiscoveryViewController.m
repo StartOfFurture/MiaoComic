@@ -193,6 +193,7 @@
     button.block = (id)^(id but){
 //        NSLog(@"搜索搜索");
         SearchViewController *searchVC = [[SearchViewController alloc] init];
+        searchVC.ControllerWithstring = @"DiscoveryViewController";
 //        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:searchVC];
 //        searchVC.navigationController.navigationBar.barTintColor = [UIColor purpleColor];
 //        naVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
@@ -321,11 +322,11 @@
     }else if ([self.hotListArr[indexPath.section] isEqualToString:@"每周排行榜"]){
         return 241;
     }else if ([self.hotListArr[indexPath.section] isEqualToString:@"新作出炉"]){
-        return 125;
+        return 150;
     }else if ([self.hotListArr[indexPath.section] isEqualToString:@"主编力推"]){
         return 260;
     }
-    return 80;
+    return 115;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{

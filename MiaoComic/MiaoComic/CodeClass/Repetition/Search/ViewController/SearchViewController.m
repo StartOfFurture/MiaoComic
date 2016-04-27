@@ -156,7 +156,7 @@
                 UIViewController *viewVC = nil;
                 NSLog(@"%@",array);
                 for (UIViewController *viewVC1 in array) {
-                    if ([viewVC1 isKindOfClass:[DiscoveryViewController class]]) {
+                    if ([viewVC1 isKindOfClass:[NSClassFromString(self.ControllerWithstring) class]]) {
                         viewVC = viewVC1;
                     }
                 }
