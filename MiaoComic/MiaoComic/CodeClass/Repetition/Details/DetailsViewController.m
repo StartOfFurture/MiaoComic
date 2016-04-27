@@ -12,6 +12,10 @@
 #import "DetailsCommentModelCell.h"
 #import "DetailsHotModel.h"
 #import "DetailsHotModelCell.h"
+#import "CommentViewController.h"
+#import "CompleteViewController.h"
+
+@class DetailsViewController;
 
 @interface DetailsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -26,6 +30,11 @@
 @property (nonatomic, assign) NSInteger comiCount;// 保存漫画的张数
 
 @property (nonatomic, strong) UIButton *allButton;// 全集按钮
+
+@property (nonatomic, copy) NSString *tid;// 保存本本漫画的id
+@property (nonatomic, copy) NSString *pid;// 前一篇漫画的id
+@property (nonatomic, copy) NSString *nid;// 后一篇漫画的id
+
 
 @end
 
@@ -46,6 +55,9 @@
     return _commentArray;
 }
 
+//-(void)viewWillAppear:(BOOL)animated{
+//    self.hidesBottomBarWhenPushed = YES;
+//}
 
 
 // 漫画数据
@@ -129,6 +141,7 @@
     [_allButton setTitle:@"全集" forState:UIControlStateNormal];
     _allButton.titleLabel.font = [UIFont systemFontOfSize:13];
     [_allButton setTitleColor:[UIColor colorWithHue:225/255.0 saturation:155/255.0 brightness:192/255.0 alpha:255/255.0] forState:UIControlStateNormal];
+    [_allButton addTarget:self action:@selector(allClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_allButton];
     self.navigationItem.rightBarButtonItem = item;
     
@@ -164,8 +177,11 @@
         return cell;
     } else {
         DetailsModel *model = self.dataArray[0];
-        self.navigationItem.title = model.title;
-        self.comiCount = model.images.count;
+        self.navigationItem.title = model.title;// 保存头标题
+        self.comiCount = model.images.count;// 保存漫画的张数
+        self.tid = model.topic.tid;// 保存本漫画的id
+        self.pid = model.previous_comic_id;
+        self.nid = model.next_comic_id;
         
         if (indexPath.row == 0) {
             
@@ -236,10 +252,12 @@
             cell.verticalLine.backgroundColor = [UIColor grayColor];
             
             [cell.previousButton setImage:[UIImage imageNamed:@"previous"] forState:UIControlStateNormal];
+            [cell.previousButton addTarget:self action:@selector(previousClick) forControlEvents:UIControlEventTouchUpInside];
             cell.previousLabel.text = @"上一篇";
             cell.previousLabel.font = [UIFont systemFontOfSize:12];
             
             [cell.nextButton setImage:[UIImage imageNamed:@"next"] forState:UIControlStateNormal];
+            [cell.nextButton addTarget:self action:@selector(nextClick) forControlEvents:UIControlEventTouchUpInside];
             cell.nextLabel.text = @"下一篇";
             cell.nextLabel.font = [UIFont systemFontOfSize:12];
             
@@ -255,7 +273,7 @@
             moreButton.frame = CGRectMake(tableView.frame.size.width / 2 - 75, 10, 150, 40);
             [moreButton setTitle:@"查看更多评论" forState:UIControlStateNormal];
             moreButton.titleLabel.font = [UIFont systemFontOfSize:15];
-//            moreButton.titleLabel.textColor = [UIColor colorWithHue:225/255.0 saturation:155/255.0 brightness:192/255.0 alpha:255/255.0];
+            [moreButton addTarget:self action:@selector(moreComment) forControlEvents:UIControlEventTouchUpInside];
             [moreButton setTitleColor:[UIColor colorWithHue:225/255.0 saturation:155/255.0 brightness:192/255.0 alpha:255/255.0] forState:UIControlStateNormal];
             moreButton.layer.cornerRadius = 10;
             moreButton.layer.borderWidth = 2;
@@ -307,8 +325,37 @@
     return 200;
 }
 
+// 查看更多评论
+-(void)moreComment{
+    CommentViewController *commentVC = [[CommentViewController alloc] init];
+    UINavigationController *naVc = [[UINavigationController alloc] initWithRootViewController:commentVC];
+    commentVC.ID = _cid;
+    [self presentViewController:naVc animated:YES completion:nil];
+}
+
 -(void)back{
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+// 全集
+-(void)allClick{
+    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+    completeVC.ids = _tid;
+    [self.navigationController pushViewController:completeVC animated:YES];
+}
+
+// 上一篇
+-(void)previousClick{
+    DetailsViewController *detailVC = [[DetailsViewController alloc] init];
+    detailVC.cid = _pid;
+    [self.navigationController pushViewController:detailVC animated:YES];
+}
+
+// 下一篇
+-(void)nextClick{
+    DetailsViewController *detailVC = [[DetailsViewController alloc] init];
+    detailVC.cid = _nid;
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 @end
