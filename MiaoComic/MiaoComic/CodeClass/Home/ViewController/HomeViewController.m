@@ -59,6 +59,21 @@
     return _attentionDic;
 }
 
+// 创建关注部分的登录判断视图视图
+- (UIView *)loginView {
+    if (_loginView == nil) {
+        self.loginView = [[UIView alloc] initWithFrame:CGRectMake(- ScreenWidth, 0, ScreenWidth, ScreenHeight - 64 - 49)];
+        UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 50, 50)];
+        imageV.image = [UIImage imageNamed:@"Logo_Miao"];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(80, 30, 120, 20)];
+        label.text = @"请先登录~";
+        [self.loginView addSubview:label];
+        [self.loginView addSubview:imageV];
+        self.loginView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
+    }
+    return _loginView;
+}
+
 
 #pragma mark - 创建基础视图 -
 - (void)createNavigationButton {
@@ -98,11 +113,11 @@
                 [_loginView removeFromSuperview];
             }
         }
-//        else {
-//            [self.attentionTableView addSubview:_loginView];
-//            self.attentionArray = nil;
-//            self.attentionDic = nil;
-//        }
+        else {
+            [self.view addSubview:_loginView];
+            self.attentionArray = nil;
+            self.attentionDic = nil;
+        }
         
         
         if (_attentionUrl == 0) {
@@ -125,6 +140,7 @@
             }];
             [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
                 self.attentionTableView.frame = CGRectMake(0, 64, ScreenWidth, ScreenHeight - 64 - 49);
+                self.loginView.frame = CGRectMake(0, 64, ScreenWidth, ScreenHeight - 64 - 49);
             }];
             
         } completion:^(BOOL finished) {
@@ -161,6 +177,7 @@
             [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:1.0 animations:^{
                 
                 self.attentionTableView.frame = CGRectMake(-ScreenWidth, 64, ScreenWidth, ScreenHeight - 64 - 49);
+                self.loginView.frame = CGRectMake(-ScreenWidth, 64, ScreenWidth, ScreenHeight - 64 - 49);
             }];
             [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1.0 animations:^{
                 _headView.frame = CGRectMake(0, 64, ScreenWidth, 30);
@@ -184,6 +201,7 @@
     
     self.navigationItem.titleView = titleView;
 }
+
 
 - (void)createTableView {
     
@@ -215,17 +233,6 @@
     [self.attentionTableView registerNib:[UINib nibWithNibName:@"HomeCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ComicsModel"];
 }
 
-- (void)createLogin {
-    UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 50, 50)];
-    imageV.image = [UIImage imageNamed:@"Logo_Miao"];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(80, 30, 120, 20)];
-    label.text = @"请先登录~";
-    _loginView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - 49)];
-    [_loginView addSubview:label];
-    [_loginView addSubview:imageV];
-    _loginView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
-    
-}
 
 #pragma mark - 创建头部日期滚动视图 -
 
@@ -285,8 +292,14 @@
             // 计算时间
             NSDate *date = [GetTime getDate:[NSDate date] formatString:@"YYYY-MM-dd"];
 
-            _urlString = [NSString stringWithFormat:@"%.0f", [[NSDate dateWithTimeInterval:(i - 6) * 24 * 60 * 60  sinceDate:date] timeIntervalSince1970]];
-
+            if (i == 6) {
+                _urlString = @"0";
+            } else if (i == 5){
+                _urlString = @"1";
+            } else {
+                _urlString = [NSString stringWithFormat:@"%.0f", [[NSDate dateWithTimeInterval:(i - 6) * 24 * 60 * 60  sinceDate:date] timeIntervalSince1970]];
+            }
+            
             // 请求数据
             [self requestData:_urlString];
             
@@ -316,6 +329,62 @@
     NSCalendarUnit calendarUnit = NSCalendarUnitWeekday;
     NSDateComponents *theComponents = [calendar components:calendarUnit fromDate:[NSDate dateWithTimeInterval:(index - 6) * 24 * 60 * 60 sinceDate:[NSDate date]]];
     return [weekdays objectAtIndex:theComponents.weekday];
+}
+
+
+#pragma mark - 创建轻扫手势 -
+
+- (void)createSwipeGesture {
+    //向右
+    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
+    //设置轻扫的方向
+    swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+    swipeGesture.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:swipeGesture];
+    
+    //向左
+    UISwipeGestureRecognizer *swipeGestureLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
+    //设置轻扫的方向
+    swipeGestureLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    swipeGestureLeft.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:swipeGestureLeft];
+}
+
+
+#pragma mark - 轻扫手势 -
+
+-(void)swipeGesture:(id)sender
+{
+    static int mark = 0;
+    for (int i = 0; i < 7; i ++) {
+        if (self.selectButton == (UIButton *)((_headView.subviews)[i])) {
+            mark = i;
+            break;
+        }
+    }
+    
+    UISwipeGestureRecognizer *swipe = sender;
+    if(swipe.direction == UISwipeGestureRecognizerDirectionLeft)   {
+        //向左轻扫，向后一天，+ 1
+        if (mark < 6) {
+            if (mark == 5) {
+                [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:15.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    _headView.contentOffset = CGPointMake(ScreenWidth / 6, 0);
+                } completion:nil];
+            }
+            ((UIButton *)((_headView.subviews)[mark + 1])).block((UIButton *)((_headView.subviews)[mark + 1]));
+        }
+    } if(swipe.direction == UISwipeGestureRecognizerDirectionRight){
+        //向右轻扫，向前一天，- 1
+        if (mark > 0) {
+            if (mark == 1) {
+                [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:15.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    _headView.contentOffset = CGPointMake(0, 0);
+                } completion:nil];
+            }
+            ((UIButton *)((_headView.subviews)[mark - 1])).block((UIButton *)((_headView.subviews)[mark - 1]));
+        }
+    }
 }
 
 
@@ -379,13 +448,9 @@
 #pragma mark - 关注的请求网络数据 -
 
 - (void)requestDataForAttentionWithAttentionUrl:(int)attentionUrl {
-#warning 登录状态
+
     if (![[UserInfoManager getUserID] isEqual:@" "]) {
-        if (_loginView != nil) {
-            [_loginView removeFromSuperview];
-        }
-        
-        
+
         [NetWorkRequestManager requestWithType:GET urlString:[NSString stringWithFormat:@"%@?since=%d",HOME_ATTENTION, attentionUrl] dic:@{} successful:^(NSData *data) {
             NSDictionary *dateDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
             
@@ -430,11 +495,7 @@
             NSLog(@"%@", error);
         }];
     }
-    else {
-        [self.attentionTableView addSubview:_loginView];
-        self.attentionArray = nil;
-        self.attentionDic = nil;
-    }
+
 }
 
 
@@ -473,63 +534,6 @@
     }];
 }
 
-
-#pragma mark - 创建轻扫手势 -
-
-- (void)createSwipeGesture {
-    //向右
-    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
-    //设置轻扫的方向
-    swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-    swipeGesture.numberOfTouchesRequired = 1;
-    [self.view addGestureRecognizer:swipeGesture];
-    
-    //向左
-    UISwipeGestureRecognizer *swipeGestureLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
-    //设置轻扫的方向
-    swipeGestureLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-    swipeGestureLeft.numberOfTouchesRequired = 1;
-    [self.view addGestureRecognizer:swipeGestureLeft];
-}
-
-
-#pragma mark - 轻扫手势 -
-
--(void)swipeGesture:(id)sender
-{
-    static int mark = 0;
-    for (int i = 0; i < 7; i ++) {
-        if (self.selectButton == (UIButton *)((_headView.subviews)[i])) {
-            mark = i;
-            break;
-        }
-    }
-    
-    UISwipeGestureRecognizer *swipe = sender;
-    if(swipe.direction == UISwipeGestureRecognizerDirectionLeft)   {
-        //向左轻扫，向后一天，+ 1
-        if (mark < 6) {
-            if (mark == 5) {
-                [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:15.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    _headView.contentOffset = CGPointMake(ScreenWidth / 6, 0);
-                } completion:nil];
-            }
-            ((UIButton *)((_headView.subviews)[mark + 1])).block((UIButton *)((_headView.subviews)[mark + 1]));
-        }
-    } if(swipe.direction == UISwipeGestureRecognizerDirectionRight){
-        //向右轻扫，向前一天，- 1
-        if (mark > 0) {
-            if (mark == 1) {
-                [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:15.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    _headView.contentOffset = CGPointMake(0, 0);
-                } completion:nil];
-            }
-            ((UIButton *)((_headView.subviews)[mark - 1])).block((UIButton *)((_headView.subviews)[mark - 1]));
-        }
-    }
-}
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -555,12 +559,32 @@
     // 创建轻扫手势
     [self createSwipeGesture];
     
+//    // 创建登录判断界面
+//    [self createLogin];
+    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (![[UserInfoManager getUserID] isEqual:@" "]) {
+        if (self.loginView != nil && self.navSelectBtn == _attentionBtn) {
+            [self.loginView removeFromSuperview];
+            self.attentionArray = nil;
+            self.attentionDic = nil;
+            [self requestDataForAttentionWithAttentionUrl:0];
+            [self.attentionTableView reloadData];
+        }
+    } else {
+        [self.view addSubview:self.loginView];
+        self.attentionArray = nil;
+        self.attentionDic = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -574,9 +598,11 @@
     if (self.navSelectBtn == self.comicsBtn) {
         return self.comicsArray.count + 1;
     }
-    else {
+    else if (self.navSelectBtn == self.attentionBtn && _isEnding == YES ){
         return self.attentionArray.count + 1;
     }
+    return self.attentionArray.count;
+#warning 注意
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

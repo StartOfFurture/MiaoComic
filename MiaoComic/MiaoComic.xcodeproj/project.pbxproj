@@ -109,7 +109,6 @@
 		798DE49E1CC900F400AF2155 /* DiscoveryHoTBannerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 798DE49D1CC900F400AF2155 /* DiscoveryHoTBannerModel.m */; };
 		798DE4A11CC90E5200AF2155 /* DiscoveryHotListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 798DE4A01CC90E5200AF2155 /* DiscoveryHotListModel.m */; };
 		79B7B34C1CCA19A80032F97C /* DiscoveryHotRenQiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 79B7B34B1CCA19A80032F97C /* DiscoveryHotRenQiCell.m */; };
-		79B7B34E1CCA19C10032F97C /* DiscoveryHotRenQiCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79B7B34D1CCA19C10032F97C /* DiscoveryHotRenQiCell.xib */; };
 		79B7B3511CCA1F570032F97C /* DiscoveryHotRenQiCellCollectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 79B7B3501CCA1F570032F97C /* DiscoveryHotRenQiCellCollectCell.m */; };
 		79B7B3531CCA1F760032F97C /* DiscoveryHotRenQiCellCollectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79B7B3521CCA1F760032F97C /* DiscoveryHotRenQiCellCollectCell.xib */; };
 		79B7B3561CCA5AC60032F97C /* DiscoveryHotPaiHangCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 79B7B3551CCA5AC60032F97C /* DiscoveryHotPaiHangCell.m */; };
@@ -315,7 +314,6 @@
 		798DE4A01CC90E5200AF2155 /* DiscoveryHotListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoveryHotListModel.m; sourceTree = "<group>"; };
 		79B7B34A1CCA19A80032F97C /* DiscoveryHotRenQiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoveryHotRenQiCell.h; sourceTree = "<group>"; };
 		79B7B34B1CCA19A80032F97C /* DiscoveryHotRenQiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoveryHotRenQiCell.m; sourceTree = "<group>"; };
-		79B7B34D1CCA19C10032F97C /* DiscoveryHotRenQiCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DiscoveryHotRenQiCell.xib; sourceTree = "<group>"; };
 		79B7B34F1CCA1F570032F97C /* DiscoveryHotRenQiCellCollectCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoveryHotRenQiCellCollectCell.h; sourceTree = "<group>"; };
 		79B7B3501CCA1F570032F97C /* DiscoveryHotRenQiCellCollectCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoveryHotRenQiCellCollectCell.m; sourceTree = "<group>"; };
 		79B7B3521CCA1F760032F97C /* DiscoveryHotRenQiCellCollectCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DiscoveryHotRenQiCellCollectCell.xib; sourceTree = "<group>"; };
@@ -814,7 +812,6 @@
 				79DCB8FC1CCA097800470DE4 /* DiscoveryHotSecondView.xib */,
 				79B7B34A1CCA19A80032F97C /* DiscoveryHotRenQiCell.h */,
 				79B7B34B1CCA19A80032F97C /* DiscoveryHotRenQiCell.m */,
-				79B7B34D1CCA19C10032F97C /* DiscoveryHotRenQiCell.xib */,
 				79B7B34F1CCA1F570032F97C /* DiscoveryHotRenQiCellCollectCell.h */,
 				79B7B3501CCA1F570032F97C /* DiscoveryHotRenQiCellCollectCell.m */,
 				79B7B3521CCA1F760032F97C /* DiscoveryHotRenQiCellCollectCell.xib */,
@@ -1045,7 +1042,6 @@
 				791C4BFA1CCBA36A00F62479 /* LoginCell.xib in Resources */,
 				790643131CC8B05C0068E199 /* ClassifyListModelCell.xib in Resources */,
 				791C4BF31CCBA36A00F62479 /* LoginViewController.xib in Resources */,
-				79B7B34E1CCA19C10032F97C /* DiscoveryHotRenQiCell.xib in Resources */,
 				79823D7A1CC72A9100E3EA63 /* LaunchScreen.storyboard in Resources */,
 				791C4AE91CCB9EBF00F62479 /* u=59781668,3377876945&fm=11&gp=0.gif in Resources */,
 				79879FC61CC76EED00A69F46 /* Login_Pwd.png in Resources */,
