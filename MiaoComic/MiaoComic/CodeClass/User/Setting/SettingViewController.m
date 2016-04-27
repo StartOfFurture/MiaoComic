@@ -195,16 +195,17 @@
 // 计算整个文件夹所有文件大小
 -(long)fileSizeForDir:(NSString*)path
 {
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     
     NSArray* array = [fileManager contentsOfDirectoryAtPath:path error:nil];
     unsigned long long size = 0;
+    
     for(int i = 0; i<[array count]; i++)
     {
         NSString *fullPath = [path stringByAppendingPathComponent:[array objectAtIndex:i]];
         
         BOOL isDir;
-        if ( !([fileManager fileExistsAtPath:fullPath isDirectory:&isDir] && isDir) )
+        if (!([fileManager fileExistsAtPath:fullPath isDirectory:&isDir] && isDir) )
         {
             NSDictionary *fileAttributeDic=[fileManager attributesOfItemAtPath:fullPath error:nil];
             size += fileAttributeDic.fileSize;
