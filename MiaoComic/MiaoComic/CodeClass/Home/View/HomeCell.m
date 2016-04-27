@@ -10,7 +10,9 @@
 #import "ComicsModel.h"
 
 @interface HomeCell ()
+
 @property (nonatomic, strong) ComicsModel *myModel;
+
 @end
 
 
@@ -22,7 +24,10 @@
     ComicsModel *comicsModel = (ComicsModel *)model;
     _typeLabel.text = comicsModel.label_text;
     _typeLabel.backgroundColor = [self colorWithHexString:comicsModel.label_color];
+//    _typeLabel.layer.cornerRadius = 10;
+//    _typeLabel.layer.masksToBounds = YES;
     
+
     [_comicNameBtn setTitle:comicsModel.topicModel.title forState:UIControlStateNormal];
     _comicNameBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;//设置文字位置，现设为居左，默认的是居中
     
@@ -39,9 +44,7 @@
     
     [_thisComicTitleBtn setTitle:comicsModel.title forState:UIControlStateNormal];
     _thisComicTitleBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
-    
-    
-    
+
     _likeBtn.contentHorizontalAlignment= UIControlContentHorizontalAlignmentRight;
     if (comicsModel.likes_count > 100000) {
         

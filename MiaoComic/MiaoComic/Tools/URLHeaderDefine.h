@@ -21,7 +21,7 @@
 #define Discover_Hot_banner         @"http://api.kuaikanmanhua.com/v1/banners"   //热门的轮播
 #define Discover_Hot_topic_lists    @"http://api.kuaikanmanhua.com/v1/topic_lists/mixed/new"    //热门列表
 
-
+#define Discover_zuopin_more        @"http://www.kuaikanmanhua.com/webapp/total_list_new.html"  //作品榜单更多
 //搜索
 #define SEARCH_url       @"http://api.kuaikanmanhua.com/v1/topics/search?keyword=%@&limit=20&offset=0" //搜索
 
@@ -41,9 +41,28 @@
 // 消息接收
 #define MESSAGE_SENDURL @"http://api.kuaikanmanhua.com/v1/timeline/polling"
 
+
 // 作者
 #define AUTHORURL @"http://api.kuaikanmanhua.com/v1/users/"
 #define COMPLETEURL @"http://api.kuaikanmanhua.com/v1/topics/"
+
+
+
+//评论
+#define COMMENT_New     @"http://api.kuaikanmanhua.com/v1/comics/%@/comments/%@"   //评论最新
+#define COMMENT_Hot     @"http://api.kuaikanmanhua.com/v1/comics/%@/comments/%@?order=score"  //评论最热
+#define COMMENT_Published       @"http://api.kuaikanmanhua.com/v1/comics/%@/comments"        //发表评论
+
+
+// 每一话漫画
+#define DETAILCOMICURL @"http://api.kuaikanmanhua.com/v1/comics/"
+// 每一话漫画的热门评论
+#define DETAILCOMICURLHOTCOMMENT @"http://api.kuaikanmanhua.com/v1/comics/"
+
+
+// 修改用户
+#define UPDATEUSERURL @"http://api.kuaikanmanhua.com/v1/account/update"
+
 
 
 #endif /* URLHeaderDefine_h */

@@ -8,6 +8,7 @@
 
 #import "DiscoveryHotRenQiCell.h"
 #import "DiscoveryHotRenQiCellCollectCell.h"
+
 @interface DiscoveryHotRenQiCell ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
 
@@ -46,11 +47,12 @@
         layout.minimumLineSpacing = 2;
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
         layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(8, 2, ScreenWidth - 16, layout.itemSize.height) collectionViewLayout:layout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(8, 2, ScreenWidth - 16, layout.itemSize.height * 2) collectionViewLayout:layout];
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.userInteractionEnabled = YES;
+        _collectionView.scrollEnabled = NO;
         [_collectionView registerNib:[UINib nibWithNibName:@"DiscoveryHotRenQiCellCollectCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"DiscoveryHotRenQiCellCollectCell"];
         [self.contentView addSubview:_collectionView];
     }
@@ -58,18 +60,33 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return self.array.count;
+    if ([_identent isEqualToString:@"renqi"]) {
+        return self.array.count;
+    }else{
+        return self.zhubianArray.count;
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *str = @"DiscoveryHotRenQiCellCollectCell";
     DiscoveryHotRenQiCellCollectCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:str forIndexPath:indexPath];
-    [cell setDataModel:self.array[indexPath.row]];
+    if ([_identent isEqualToString:@"renqi"]) {
+        [cell setDataModel:self.array[indexPath.row]];
+    }else{
+        [cell setDataModel:self.zhubianArray[indexPath.row]];
+    }
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"lala1111");
+    DiscoveryHotListModel *model = nil;
+    if ([_identent isEqualToString:@"renqi"]) {
+        model = self.array[indexPath.row];
+    }else{
+        model = self.zhubianArray[indexPath.row];
+    }
+    NSLog(@"%@",model.title);
 }
 
 

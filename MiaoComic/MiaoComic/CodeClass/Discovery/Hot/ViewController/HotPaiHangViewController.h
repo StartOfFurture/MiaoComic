@@ -1,5 +1,5 @@
 //
-//  DetailsViewController.h
+//  HotPaiHangViewController.h
 //  MiaoComic
 //
 //  Created by lanou on 16/4/25.
@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface DetailsViewController : BaseViewController
-@property (nonatomic, copy) NSString *ids;
+@interface HotPaiHangViewController : BaseViewController
+
 @end

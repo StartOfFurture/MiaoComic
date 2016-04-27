@@ -7,7 +7,7 @@
 //
 
 #import "SetUserViewController.h"
-
+#import "SetUserModel.h"
 
 
 @interface SetUserViewController ()
@@ -19,9 +19,11 @@
 @property (nonatomic, strong) UITextField *nameTf;
 
 
+
 @end
 
 @implementation SetUserViewController
+
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -75,7 +77,6 @@
     [nameView addSubview:nLabel];
     _nameTf = [[UITextField alloc] initWithFrame:CGRectMake(60, 5, nameView.frame.size.width - 70, 30)];
     [_nameTf becomeFirstResponder];
-//    _nameTf.backgroundColor = [UIColor redColor];
     [nameView addSubview:_nameTf];
 }
 
@@ -84,22 +85,53 @@
 }
 
 -(void)done{
+    [self.view endEditing:YES];
+    NSString *str = [NSString stringWithFormat:UPDATEUSERURL];
+    str = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    [NetWorkRequestManager requestWithType:POST urlString:str dic:@{@"nickname":_nameTf.text} successful:^(NSData *data) {
+        NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"data is %@",dataDic);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UILabel *hudLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth / 2 - 75, ScreenHeight / 2, 150, 40)];
+            hudLabel.text = @"保存修改...";
+            hudLabel.font = [UIFont systemFontOfSize:18];
+            hudLabel.layer.cornerRadius = 5;
+            hudLabel.layer.masksToBounds = YES;
+            hudLabel.layer.borderColor = [[UIColor colorWithHue:225/255.0 saturation:155/255.0 brightness:192/255.0 alpha:255/255.0] CGColor];
+            hudLabel.layer.borderWidth = 2;
+            hudLabel.textAlignment = NSTextAlignmentCenter;
+            hudLabel.backgroundColor = [UIColor whiteColor];
+            [self.view addSubview:hudLabel];
+            
+            if ([dataDic[@"code"]  isEqual: @200]) {
+                
+                // 跳出弹框修改完成
+                [UIView animateWithDuration:2 animations:^{
+                    // 保存用户信息
+                    [UserInfoManager conserVeUserIcon:dataDic[@"data"][@"avatar_url"]];
+                    [UserInfoManager conserveUserID:dataDic[@"data"][@"id"]];
+                    [UserInfoManager conserveUserName:dataDic[@"data"][@"nickname"]];
+                    hudLabel.alpha = 0.0;
+                    
+                } completion:^(BOOL finished) {
+                    
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }];
+                
+            }
+            
+        });
+        
+    } errorMessage:^(NSError *error) {
+        NSLog(@"error is %@",error);
+    }];
+    
     NSLog(@"修改完成");
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

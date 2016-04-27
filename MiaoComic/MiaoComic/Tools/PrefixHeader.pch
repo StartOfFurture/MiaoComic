@@ -20,7 +20,6 @@
 #import "UserInfoManager.h"
 #import <MJRefresh/MJRefresh.h>
 
-
 #import "BaseTableViewController.h"
 #import "BaseViewController.h"
 
@@ -31,6 +30,8 @@
 #import "BaseModel.h"
 
 #import "GetTime.h"
+
+#import "ImageURL.h"
 
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
