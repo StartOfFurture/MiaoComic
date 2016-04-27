@@ -714,27 +714,6 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		795D9D621CCDFF400014A727 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		795D9D631CCDFF400014A727 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		795D9D641CCDFF400014A727 /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
 		795D9D651CCDFF4B0014A727 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1037,9 +1016,6 @@
 		79823E1E1CC7632100E3EA63 /* Comment */ = {
 			isa = PBXGroup;
 			children = (
-				795D9D621CCDFF400014A727 /* Model */,
-				795D9D631CCDFF400014A727 /* View */,
-				795D9D641CCDFF400014A727 /* ViewController */,
 				790525991CCF4B1600F8D5A9 /* Model */,
 				7905259A1CCF4B1600F8D5A9 /* View */,
 				7905259B1CCF4B1600F8D5A9 /* ViewController */,

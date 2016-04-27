@@ -75,12 +75,11 @@
     UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     searchBtn.frame = CGRectMake(0, 0, 20, 20);
     [searchBtn setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
-    searchBtn.block = ^(id button){
+    searchBtn.block = (id)^(id button){
         SearchViewController *searchVC = [[SearchViewController alloc] init];
-        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:searchVC];
-        [self presentViewController:naVC animated:YES completion:nil];
-
-        return button;
+        searchVC.ControllerWithstring = @"HomeViewController";
+        [self.navigationController pushViewController:searchVC animated:YES];
+        return nil;
     };
     UIBarButtonItem *seachItem = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];
     self.navigationItem.rightBarButtonItem = seachItem;
