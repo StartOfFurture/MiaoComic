@@ -7,7 +7,7 @@
 //
 
 #import "BaseTableViewCell.h"
-
+#import "ReadKeyBoard.h"
 @interface CommentTableCell : BaseTableViewCell
 
 @property (strong, nonatomic) IBOutlet UIImageView *cover_imageView;
@@ -19,5 +19,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *likeCountLabel;
 @property (strong, nonatomic) IBOutlet UIButton *huifuButton;
 
+@property (strong, nonatomic)ReadKeyBoard *keyBoard;//拿到外界的输入框
 
 @end

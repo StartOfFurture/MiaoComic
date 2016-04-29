@@ -17,12 +17,13 @@
 @property (nonatomic, strong)UITableView *tableView;//表视图
 @property (nonatomic, copy)NSString *since;//从哪里开始加载
 @property (nonatomic, strong)NSMutableArray *array;//存放数据的数组
-@property (nonatomic, strong)ReadKeyBoard *keyBoard;//输入框
+@property (nonatomic, strong)ReadKeyBoard *keyBoardS;//输入框
 @property (nonatomic, strong)UISegmentedControl *segVC;//标题
 
 @end
 
 @implementation CommentViewController
+
 
 - (NSMutableArray *)array{
     if (_array == nil) {
@@ -68,7 +69,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.since = @"0";
-//    self.ID = @"10720";
+    self.ID = @"10720";
     //请求数据
     [self requestData:COMMENT_New];
     
@@ -84,7 +85,7 @@
     
     //评论标题的显示
     _segVC = [[UISegmentedControl alloc] initWithItems:@[@"最新评论",@"最热评论"]];
-    //这个时候什么搜不会显示
+    //这个时候什么都不会显示
     _segVC.tintColor = [UIColor lightGrayColor];
     NSDictionary* selectedTextAttributes = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:14],NSForegroundColorAttributeName:[UIColor whiteColor]};
     [_segVC setTitleTextAttributes:selectedTextAttributes forState:UIControlStateSelected];//设置文字属性
@@ -116,13 +117,14 @@
     [self.view addSubview:_tableView];
     
     //输入框的添加
-    _keyBoard = [[ReadKeyBoard alloc] initWithFrame:CGRectMake(0, ScreenHeight - 40, ScreenWidth, 40)];
-    _keyBoard.ID = self.ID;
+    _keyBoardS = [[ReadKeyBoard alloc] initWithFrame:CGRectMake(0, ScreenHeight - 40, ScreenWidth, 40)];
+    _keyBoardS.ID = self.ID;
+    _keyBoardS.isHuiFu = NO;
     //键盘即将出现
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBoardKey:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBoardKey:) name:UIKeyboardWillShowNotification object:nil];
     //键盘即将消失
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hidKeyBoard:) name:UIKeyboardDidHideNotification object:nil];
-    [self.view addSubview:_keyBoard];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hidKeyBoard:) name:UIKeyboardWillHideNotification object:nil];
+    [self.view addSubview:_keyBoardS];
     
     //添加观察者
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shuaxin) name:@"shuaxin" object:nil];
@@ -141,6 +143,7 @@
 }
 
 - (void)login{
+    [_keyBoardS.textView resignFirstResponder];
     LoginViewController *logVC = [[LoginViewController alloc] init];
     UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:logVC];
     [self presentViewController:naVC animated:YES completion:nil];
@@ -148,33 +151,56 @@
 
 #pragma mark ---点击遮盖层---
 
-- (void)click{
-    [_keyBoard.textView resignFirstResponder];
+- (void)click11{
+    [_keyBoardS.textView resignFirstResponder];
 }
 
 #pragma mark ---键盘即将出现和消失的方法---
 
 - (void)showBoardKey:(NSNotification *)no{
-    CGRect keyBoard = [no.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
-        self.keyBoard.transform = CGAffineTransformMakeTranslation(0, -keyBoard.size.height);
-    }];
-    UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
-    view.backgroundColor = [UIColor blackColor];
-    view.alpha = 0.5;
-    view.tag = 201;
-    UITapGestureRecognizer *pan = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(click)];
-    [view addGestureRecognizer:pan];
-    [_tableView addSubview:view];
+
+    UIView *view = nil;
+    if (view == nil) {
+        view = [[UIView alloc] initWithFrame:self.view.bounds];
+        view.backgroundColor = [UIColor blackColor];
+        view.alpha = 0;
+        view.tag = 201;
+        CGRect keyBoard = [no.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+        [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
+            self.keyBoardS.transform = CGAffineTransformMakeTranslation(0, -keyBoard.size.height);
+            view.alpha = 0.5;
+        }];
+        UITapGestureRecognizer *pan = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(click11)];
+        [view addGestureRecognizer:pan];
+        _tableView.scrollEnabled = NO;
+        [_tableView addSubview:view];
+    }
 }
 
 - (void)hidKeyBoard:(NSNotification *)no{
-    [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
-        self.keyBoard.transform = CGAffineTransformIdentity;
-    }];
-    UIView *view = [_tableView viewWithTag:201];
-    [view removeFromSuperview];
+
+        UIView *view = [_tableView viewWithTag:201];
+        [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
+            self.keyBoardS.transform = CGAffineTransformIdentity;
+            view.alpha = 0;
+        }];
+        _tableView.scrollEnabled = YES;
+        _keyBoardS.plahchLabel.text = @"来吐槽把～～";
+        _keyBoardS.textView.text = @"";
+        _keyBoardS.isHuiFu = NO;
+        [view removeFromSuperview];
+
 }
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    NSLog(@"11111");
+    UIView *view = [_tableView viewWithTag:201];
+    if (view != nil) {
+        [view removeFromSuperview];
+    }
+}
+
 
 #pragma mark ---表视图的协议---
 
@@ -185,6 +211,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     CommentModel *model = self.array[indexPath.row];
     CommentTableCell *cell = (CommentTableCell *)[FactoryTableViewCell creatTableViewCell:model tableView:tableView indexPath:indexPath];
+    cell.keyBoard = _keyBoardS;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -197,7 +224,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [_keyBoard.textView becomeFirstResponder];
+    [_keyBoardS.textView becomeFirstResponder];
 }
 
 #pragma mark ---分段控件的点击---
