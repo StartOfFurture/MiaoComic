@@ -48,6 +48,14 @@
         }
 //        NSLog(@"%@",self.listArr);
         dispatch_async(dispatch_get_main_queue(), ^{
+            //让他在第一次数据请求之后只执行一次
+            static dispatch_once_t onceToken;
+            dispatch_once(&onceToken, ^{
+                self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                    self.startCount += 20;
+                    [self requestData];
+                }];
+            });
             [self.tableView reloadData];
             [self.tableView.mj_header endRefreshing];
             if (self.listArr.count < (self.startCount + 20)) {
@@ -108,10 +116,11 @@
 //    [self requestData];
     
     //上拉加载
-    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-        self.startCount += 20;
-        [self requestData];
-    }];
+//        self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+//            self.startCount += 20;
+//            [self requestData];
+//        }];
+    
     
     //下拉刷新
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{

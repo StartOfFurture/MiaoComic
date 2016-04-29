@@ -12,7 +12,7 @@
 @implementation DiscoveryHotPaiHangCellCollectionViewCell
 
 - (void)setDataModel:(DiscoveryHotListModel *)model{
-    [self.cover_imageView sd_setImageWithURL:[NSURL URLWithString:[ImageURL ImageStrWithString:model.cover_image_url]] placeholderImage:[UIImage imageNamed:@"find_change"]];
+    [self.cover_imageView sd_setImageWithURL:[NSURL URLWithString:[ImageURL ImageStrWithString:model.cover_image_url]]];
     NSLog(@"1111111%@",model.cover_image_url);
     self.titleLabel.text = model.title;
     self.nickNameLabel.text = model.nickname;

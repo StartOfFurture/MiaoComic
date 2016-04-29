@@ -54,6 +54,7 @@
 #define COMMENT_New     @"http://api.kuaikanmanhua.com/v1/comics/%@/comments/%@"   //评论最新
 #define COMMENT_Hot     @"http://api.kuaikanmanhua.com/v1/comics/%@/comments/%@?order=score"  //评论最热
 #define COMMENT_Published       @"http://api.kuaikanmanhua.com/v1/comics/%@/comments"        //发表评论
+#define COMMENT_HuiFu           @"http://api.kuaikanmanhua.com/v1/comments/%@/reply"        //回复评论POST
 
 
 // 每一话漫画
