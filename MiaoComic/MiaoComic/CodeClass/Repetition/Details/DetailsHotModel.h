@@ -11,7 +11,7 @@
 
 @interface DetailsHotModel : BaseModel
 
-@property (nonatomic, strong) NSNumber *content;// 评论的内容
+@property (nonatomic, strong) NSString *content;// 评论的内容
 @property (nonatomic, copy) NSString *likes_count;// 评论的点赞数
 @property (nonatomic, copy) NSString *created_at;// 评论的时间
 @property (nonatomic, strong) DetailsUserModel *user;// 用户信息

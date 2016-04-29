@@ -156,7 +156,7 @@
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    self.editing = NO;
+    [self.view endEditing:YES];
 }
 
 @end

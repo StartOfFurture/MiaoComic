@@ -22,7 +22,8 @@
 
 -(void)layoutSubviews {
     [super layoutSubviews];
-    self.comicImage.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
+    self.comicImage.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.width * 0.78125);
+//    NSLog(@"image is %@",[NSValue valueWithCGRect:self.comicImage.frame]);
     [self.contentView addSubview:self.comicImage];
 }
 

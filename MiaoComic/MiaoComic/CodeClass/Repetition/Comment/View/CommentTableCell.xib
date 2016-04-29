@@ -39,12 +39,6 @@
                         <color key="textColor" red="0.86491871840000001" green="0.854848469" blue="0.84935854420000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AdK-Lf-zF0">
-                        <rect key="frame" x="55" y="65" width="320" height="20"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q0O-RP-0IZ">
                         <rect key="frame" x="345" y="99" width="30" height="28"/>
                         <constraints>
@@ -79,6 +73,12 @@
                         </constraints>
                         <state key="normal" backgroundImage="zan"/>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AdK-Lf-zF0">
+                        <rect key="frame" x="55" y="65" width="320" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="zq3-hE-Zga" firstAttribute="centerY" secondItem="q0O-RP-0IZ" secondAttribute="centerY" id="0ex-Lg-blA"/>
@@ -110,7 +110,7 @@
                 <outlet property="yubaoButton" destination="v7k-r7-0Ci" id="BvJ-2t-Zj2"/>
                 <outlet property="zanButton" destination="FeB-JN-sbI" id="fNr-ic-VZg"/>
             </connections>
-            <point key="canvasLocation" x="571.5" y="280.5"/>
+            <point key="canvasLocation" x="325.5" y="280.5"/>
         </tableViewCell>
     </objects>
     <resources>
