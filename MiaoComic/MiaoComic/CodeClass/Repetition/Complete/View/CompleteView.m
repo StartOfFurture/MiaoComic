@@ -8,35 +8,55 @@
 
 #import "CompleteView.h"
 
+
+//static UIView *_headerView = nil;
+
 @implementation CompleteView
 #pragma mark - 导航栏 (返回、关注)
 
-#pragma mark - 第一组cell 的第一个row
-- (UIView *)createSection_One_Row_One {
+
+
+
+#pragma mark - 创建一个头视图
+
+- (UIView *)createHeadView {
     // 创建头视图
-    _headerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight / 3)];
-    
-    // 点赞图片
-    UIImageView *likeImgV = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth - 165, ScreenHeight / 3 - 30, 20, 20)];
-    likeImgV.image = [UIImage imageNamed:@"w_like"];
-    [_headerView addSubview:likeImgV];
-    // 点赞
-    _likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 140, ScreenHeight / 3 - 30, 50, 20)];
-    _likeLabel.font = [UIFont systemFontOfSize:13];
-    _likeLabel.textColor = [UIColor whiteColor];
-    [_headerView addSubview:_likeLabel];
-    
-    // 评论图片
-    UIImageView *commentImgV = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth - 85, ScreenHeight / 3 - 30, 20, 20)];
-    commentImgV.image = [UIImage imageNamed:@"w_comment"];
-    [_headerView addSubview:commentImgV];
-    // 评论
-    _commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 60, ScreenHeight / 3 - 30, 50, 20)];
-    _commentLabel.font = [UIFont systemFontOfSize:13];
-    _commentLabel.textColor = [UIColor whiteColor];
-    [_headerView addSubview:_commentLabel];
+    if (!_headerView) {
+        _headerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight / 3)];
+        
+        // 点赞图片
+        UIImageView *likeImgV = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth - 165, ScreenHeight / 3 - 30, 20, 20)];
+        likeImgV.image = [UIImage imageNamed:@"w_like"];
+        [_headerView addSubview:likeImgV];
+        // 点赞
+        _likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 140, ScreenHeight / 3 - 30, 50, 20)];
+        _likeLabel.font = [UIFont systemFontOfSize:13];
+        _likeLabel.textColor = [UIColor whiteColor];
+        [_headerView addSubview:_likeLabel];
+        
+        // 评论图片
+        UIImageView *commentImgV = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth - 85, ScreenHeight / 3 - 30, 20, 20)];
+        commentImgV.image = [UIImage imageNamed:@"w_comment"];
+        [_headerView addSubview:commentImgV];
+        // 评论
+        _commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 60, ScreenHeight / 3 - 30, 50, 20)];
+        _commentLabel.font = [UIFont systemFontOfSize:13];
+        _commentLabel.textColor = [UIColor whiteColor];
+        [_headerView addSubview:_commentLabel];
+    }
     
     return _headerView;
+}
+
+#pragma mark - 第一组cell 的第一个row
+- (UIView *)createSection_One_Row_One{
+
+    /**
+     创建一个空白视图
+     */
+    UIView *blankView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth,64)];
+    blankView.backgroundColor = [UIColor clearColor];
+    return blankView;
 }
 
 #pragma mark - 第二组cell 的头部视图（简介、内容、标记图片）
@@ -47,14 +67,14 @@
      CGRectMake( 0, 0, 0, height)
      这里的宽度是设置给 另外一个视图的
      */
-    UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth, 40)];
-    tableHeaderView.backgroundColor = [UIColor blackColor];
-    // 设置阴影，向上
-    tableHeaderView.layer.shadowColor = [UIColor blackColor].CGColor;
-    tableHeaderView.layer.shadowOffset = CGSizeMake(0, - 40);
-    tableHeaderView.layer.shadowRadius =  30 ;
-    tableHeaderView.layer.shadowOpacity = 1;
-    
+    _tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake( 0, 0, ScreenWidth, 40)];
+//    tableHeaderView.backgroundColor = [UIColor blackColor];
+//    // 设置阴影，向上
+//    tableHeaderView.layer.shadowColor = [UIColor blackColor].CGColor;
+//    tableHeaderView.layer.shadowOffset = CGSizeMake(0, - 40);
+//    tableHeaderView.layer.shadowRadius =  30 ;
+//    tableHeaderView.layer.shadowOpacity = 1;
+//    
     // 简介按钮
     _introBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _introBtn.frame = CGRectMake(- 1 , 0, ScreenWidth / 2 + 1, 40);
@@ -64,7 +84,7 @@
     _introBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     _introBtn.layer.borderColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1].CGColor;
     _introBtn.layer.borderWidth = 1;
-    [tableHeaderView addSubview:_introBtn];
+    [_tableHeaderView addSubview:_introBtn];
     
     
     // 内容按钮
@@ -76,9 +96,9 @@
     _contentBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     _contentBtn.layer.borderColor = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1].CGColor;
     _contentBtn.layer.borderWidth = 1;
-    [tableHeaderView addSubview:_contentBtn];
+    [_tableHeaderView addSubview:_contentBtn];
     
-    return tableHeaderView;
+    return _tableHeaderView;
 }
 #pragma mark - 第二组cell 的第一个row（作品列表、排序按钮）
 - (UIView *)createSection_Two_Row_One {
