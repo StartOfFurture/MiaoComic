@@ -13,5 +13,8 @@
 @property (nonatomic, strong)UITextView *textView;
 @property (nonatomic, strong)UIButton *sendButton;//发送按钮
 @property (nonatomic, copy)NSString *ID;
+@property (nonatomic, strong)UILabel *plahchLabel;//占位label
+
+@property (nonatomic, assign)BOOL isHuiFu;//是否是回复
 
 @end

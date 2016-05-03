@@ -14,7 +14,7 @@
 @property (nonatomic, assign)BOOL ischang;
 @property (nonatomic, assign)CGRect orginFrame;
 @property (nonatomic, assign)CGRect orginTextView;
-@property (nonatomic, strong)UILabel *plahchLabel;//占位label
+
 
 @end
 
@@ -65,12 +65,17 @@
     __block ReadKeyBoard *keyBoard = self;
     _sendButton.block = (id)^(id button){
         if (![textView.text isEqualToString:@""]&&![[UserInfoManager getUserID] isEqual:@" "]) {
-            [keyBoard requestData:textView.text];
+            if (_isHuiFu == NO) {
+                [keyBoard requestData:textView.text];
+            }else{
+                NSLog(@"回复");
+            }
             textView.text = @"";
             label.text = @"来吐槽把～～～";
             [textView resignFirstResponder];
-        }if ([[UserInfoManager getUserID] isEqual:@" "]) {
+        }else if ([[UserInfoManager getUserID] isEqual:@" "]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"nouser" object:nil];
+            [textView resignFirstResponder];
         }
         return nil;
     };

@@ -20,15 +20,21 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.MyimageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 0, ScreenWidth - 16, 140)];
+        self.MyimageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        
         [self.contentView addSubview:self.MyimageView];
     }
     return self;
 }
 
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    self.MyimageView.frame = CGRectMake(8, 2, ScreenWidth - 16, self.contentView.frame.size.height - 4);
+    NSLog(@"self.contentView.frame.size.height%f",self.contentView.frame.size.height);
+}
+
 - (void)setDataWithModel:(DiscoveryHotListModel *)model{
     [_MyimageView sd_setImageWithURL:[NSURL URLWithString:[ImageURL ImageStrWithString:model.cover_image_url]]];
-    NSLog(@"22222%@",model.cover_image_url);
 }
 
 /*

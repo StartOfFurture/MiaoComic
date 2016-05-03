@@ -12,6 +12,8 @@
 #import "SearchModel.h"
 #import "LoginViewController.h"
 #import "DiscoveryViewController.h"
+#import "ClassifyListModel.h"
+#import "CompleteViewController.h"
 
 @interface SearchViewController ()<UISearchResultsUpdating,UITableViewDataSource, UITableViewDelegate>
 
@@ -210,7 +212,11 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"haha");
+    ClassifyListModel *model = self.dataArr[indexPath.row];
+    CompleteViewController *compleVC = [[CompleteViewController alloc] init];
+    compleVC.ids = model.ID;
+    UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:compleVC];
+    [self presentViewController:naVC animated:YES completion:nil];
 }
 
 - (BaseTableViewCell *)createWithTableView:(UITableView *)tableView identifier:(NSString *)identifier cell:(BaseTableViewCell *)cell{

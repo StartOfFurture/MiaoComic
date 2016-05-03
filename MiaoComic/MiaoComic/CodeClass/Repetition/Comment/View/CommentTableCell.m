@@ -8,7 +8,6 @@
 
 #import "CommentTableCell.h"
 #import "CommentModel.h"
-
 @implementation CommentTableCell
 
 - (void)setDataWithModel:(CommentModel *)model{
@@ -27,6 +26,7 @@
     NSLog(@"%@",model.is_liked);
 //    model.is_liked = @"1";
     //判断是否已经点赞
+    /*
     if ([[NSString stringWithFormat:@"%@",model.is_liked] isEqualToString:@"1"]) {
         [self.zanButton setBackgroundImage:[[UIImage imageNamed:@"zan-change"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
     }
@@ -34,10 +34,18 @@
     self.zanButton.block = (id)^(id button){
         [cell requestData:[NSString stringWithFormat:@"%@",model.ID]];
         return nil;
+    };*/
+    __block ReadKeyBoard *key = self.keyBoard;
+    self.huifuButton.block = (id)^(id button){
+        key.plahchLabel.text = [NSString stringWithFormat:@"回复：%@",model.nickname];
+        key.isHuiFu = YES;
+        return nil;
     };
+    
 }
 
 //数据请求点赞
+/*
 - (void)requestData:(NSString *)IDstr{
     [NetWorkRequestManager requestWithType:POST urlString:[NSString stringWithFormat:LIKE_URL,IDstr] dic:nil successful:^(NSData *data) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
@@ -47,7 +55,7 @@
     } errorMessage:^(NSError *error) {
         NSLog(@"%@",error);
     }];
-}
+}*/
 
 /*
 // Only override drawRect: if you perform custom drawing.

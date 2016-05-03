@@ -14,6 +14,7 @@
 #import "DetailsHotModelCell.h"
 #import "CommentViewController.h"
 #import "CompleteViewController.h"
+#import "ReadKeyBoard.h"
 
 @class DetailsViewController;
 
@@ -35,6 +36,7 @@
 @property (nonatomic, copy) NSString *pid;// 前一篇漫画的id
 @property (nonatomic, copy) NSString *nid;// 后一篇漫画的id
 
+@property (nonatomic, strong) ReadKeyBoard *keyBoard;
 
 @end
 
@@ -42,6 +44,8 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+    [self.tableView reloadData];
+    
 }
 
 // 懒加载
@@ -58,10 +62,6 @@
     }
     return _commentArray;
 }
-
-//-(void)viewWillAppear:(BOOL)animated{
-//    self.hidesBottomBarWhenPushed = YES;
-//}
 
 
 // 漫画数据
@@ -115,6 +115,7 @@
         
         // 回到主线程刷新
         dispatch_async(dispatch_get_main_queue(), ^{
+            
             [self.tableView reloadData];
         });
         
@@ -127,19 +128,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-//    self.navigationItem.title = @"adads";
     // 加载漫画数据
     [self requestData];
     // 加载漫画热门数据
     [self requestCommentData];
+
+    self.navigationController.hidesBarsOnSwipe = YES;//滚动时隐藏导航栏
     
+    // 返回按钮
     UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
     back.frame = CGRectMake(0, 0, 10, 10);
     [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-//    [back setImage:[UIImage imageNamed:@"back_1"] forState:UIControlStateNormal];
     [back setBackgroundImage:[UIImage imageNamed:@"back_1"] forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:back];
     
+    // 全集按钮测创建
     _allButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _allButton.frame = CGRectMake(0, 0, 40, 20);
     [_allButton setTitle:@"全集" forState:UIControlStateNormal];
@@ -149,6 +152,7 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:_allButton];
     self.navigationItem.rightBarButtonItem = item;
     
+    // 创建tableView
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
@@ -156,15 +160,51 @@
     [_tableView registerNib:[UINib nibWithNibName:@"DetailsHotModelCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"hot"];
     [self.view addSubview:self.tableView];
     
-    
+    // 输入框的添加
+    _keyBoard = [[ReadKeyBoard alloc] initWithFrame:CGRectMake(0, ScreenHeight - 40, ScreenWidth, 40)];
+    _keyBoard.ID = self.cid;
+    // 键盘即将出现
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBoardKey:) name:UIKeyboardDidShowNotification object:nil];
+    // 键盘即将消失
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hidKeyBoard:) name:UIKeyboardDidHideNotification object:nil];
+    [self.view addSubview:_keyBoard];
 }
+
+#pragma mark- 键盘方法
+- (void)showBoardKey:(NSNotification *)no{
+    CGRect keyBoard = [no.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
+        self.keyBoard.transform = CGAffineTransformMakeTranslation(0, -keyBoard.size.height);
+    }];
+    UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
+    view.backgroundColor = [UIColor blackColor];
+    view.alpha = 0.5;
+    view.tag = 201;
+    UITapGestureRecognizer *pan = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyClick)];
+    [view addGestureRecognizer:pan];
+    [_tableView addSubview:view];
+}
+
+- (void)keyClick{
+    [_keyBoard.textView resignFirstResponder];
+}
+
+- (void)hidKeyBoard:(NSNotification *)no{
+    [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
+        self.keyBoard.transform = CGAffineTransformIdentity;
+    }];
+    UIView *view = [_tableView viewWithTag:201];
+    [view removeFromSuperview];
+}
+
+#pragma mark- tableView协议
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (self.dataArray.count == 0 || self.commentArray.count == 0){
         return 0;
     } else {
         DetailsModel *model = self.dataArray[0];
-        return model.images.count + 12;
+        return model.images.count + 13;
     }
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -181,14 +221,14 @@
         return cell;
     } else {
         DetailsModel *model = self.dataArray[0];
-        self.navigationItem.title = model.title;// 保存头标题
         self.comiCount = model.images.count;// 保存漫画的张数
+        self.navigationItem.title = model.title;// 保存头标题
         self.tid = model.topic.tid;// 保存本漫画的id
         self.pid = model.previous_comic_id;
         self.nid = model.next_comic_id;
-        
+
+        // 作者信息
         if (indexPath.row == 0) {
-            
             static NSString *headerIdentifier = @"header";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:headerIdentifier];
             
@@ -196,7 +236,7 @@
                 cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:headerIdentifier];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
-            
+            // 作者信息
             cell.imageView.backgroundColor = [UIColor redColor];
             cell.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:model.topic.user.avatar_url]]];
             cell.imageView.layer.cornerRadius = 25;
@@ -204,6 +244,7 @@
             cell.textLabel.text = model.topic.user.nickname;
             cell.textLabel.font = [UIFont systemFontOfSize:14];
             
+            // 收藏按钮
             UIButton *collectButton = [UIButton buttonWithType:UIButtonTypeCustom];
             collectButton.frame = CGRectMake(ScreenWidth - 40, 10, 30, 30);
             [collectButton addTarget:self action:@selector(collectClick) forControlEvents:UIControlEventTouchUpInside];
@@ -213,8 +254,8 @@
            
             return cell;
             
-        } else if(indexPath.row > 0 && indexPath.row < model.images.count){
-            
+            // 漫画图片
+        } else if(indexPath.row > 0 && indexPath.row <= model.images.count){
             static NSString *imagesIdentifier = @"images";
             DetailsModelCell *cell = [tableView dequeueReusableCellWithIdentifier:imagesIdentifier];
             
@@ -226,10 +267,10 @@
             NSString *imageUrl = [NSString stringWithFormat:@"%@",model.images[indexPath.row - 1]];
             
             [cell.comicImage sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
-            
             return cell;
         
-        } else if (indexPath.row == model.images.count){
+            // 上一页下一页
+        } else if (indexPath.row == model.images.count + 1){
             static NSString *commentIdentifier = @"comment";
             DetailsCommentModelCell *cell = [tableView dequeueReusableCellWithIdentifier:commentIdentifier];
             if (cell == nil) {
@@ -266,7 +307,9 @@
             cell.nextLabel.font = [UIFont systemFontOfSize:12];
             
             return cell;
-        } else if (indexPath.row == _comiCount + 11) {
+            
+            // 更多评论
+        } else if (indexPath.row == model.images.count + 12) {
             static NSString *more = @"more";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:more];
             
@@ -282,18 +325,16 @@
             moreButton.layer.cornerRadius = 10;
             moreButton.layer.borderWidth = 2;
             moreButton.layer.borderColor = [[UIColor colorWithHue:225/255.0 saturation:155/255.0 brightness:192/255.0 alpha:255/255.0] CGColor];
-//            moreButton.backgroundColor = [UIColor redColor];
             [cell addSubview:moreButton];
             return cell;
+            
+            // 热门评论10条
         } else {
-//            NSLog(@"row %ld",(long)(indexPath.row - model.images.count));
-            DetailsHotModel *hotModel = self.commentArray[indexPath.row - model.images.count - 1];
-//            NSLog(@"hotModel is %@",hotModel);
+            DetailsHotModel *hotModel = self.commentArray[indexPath.row - model.images.count - 2];
             static NSString *hotIdentifier = @"hot";
             DetailsHotModelCell *cell = [tableView dequeueReusableCellWithIdentifier:hotIdentifier forIndexPath:indexPath];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-            
             [cell.headerImage sd_setImageWithURL:[NSURL URLWithString:hotModel.user.avatar_url]];
             cell.headerImage.layer.cornerRadius = 25;
             cell.headerImage.layer.masksToBounds = NO;
@@ -307,29 +348,35 @@
     }
     
 }
--(void)collectClick{
-    [_collectButton setBackgroundImage:[UIImage imageNamed:@"collect_1"] forState:UIControlStateNormal];
-    NSLog(@"收藏");
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [_keyBoard.textView becomeFirstResponder];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
         return 50;
-    } else if(indexPath.row == _comiCount - 1){
-//        NSLog(@"modelImage %ld",(long)_comiCount);
-//        NSLog(@"%ld",(long)indexPath.row);
-        DetailsHotModel *model = self.commentArray[indexPath.row + 1 - _comiCount];
-//        NSLog(@"model is %@",model);
-        NSString *string = [NSString stringWithFormat:@"%@",model.content];
-        CGRect rect = [string boundingRectWithSize:CGSizeMake(tableView.bounds.size.width - 65, MAXFLOAT) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin  attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}  context:nil];
-        return rect.size.height + 70;
-    } else if (indexPath.row == _comiCount + 11) {
-        return 60;
+    } else if(indexPath.row == _comiCount + 1){
+        return 200;
+    } else if (indexPath.row == _comiCount + 12) {
+        return 90;
+    } else if(indexPath.row > _comiCount + 1 && indexPath.row <= _comiCount + 11){
+        DetailsHotModel *model = self.commentArray[indexPath.row  - _comiCount - 2];
+        NSString *string = model.content;
+        CGRect rect = [string boundingRectWithSize:CGSizeMake(ScreenWidth - 80, MAXFLOAT) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin  attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}  context:nil];
+        return rect.size.height + 110;
     }
-    return 200;
+    return ScreenWidth * 0.78;
 }
 
-// 查看更多评论
+#pragma mark- 收藏
+-(void)collectClick{
+    [_collectButton setBackgroundImage:[UIImage imageNamed:@"collect_1"] forState:UIControlStateNormal];
+    NSLog(@"收藏");
+}
+
+
+#pragma mark- 查看更多评论
 -(void)moreComment{
     CommentViewController *commentVC = [[CommentViewController alloc] init];
     UINavigationController *naVc = [[UINavigationController alloc] initWithRootViewController:commentVC];
@@ -340,6 +387,9 @@
 -(void)back{
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
+
+
+#pragma mark- 按钮方法
 
 // 全集
 -(void)allClick{

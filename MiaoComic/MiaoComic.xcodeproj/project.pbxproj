@@ -1547,6 +1547,7 @@
 			baseConfigurationReference = 779267220F78973B7F09A22A /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = YES;
 				GCC_PREFIX_HEADER = MiaoComic/Tools/PrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1561,6 +1562,7 @@
 					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
 				);
 				INFOPLIST_FILE = MiaoComic/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = lanou.com.MiaoComic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1572,6 +1574,7 @@
 			baseConfigurationReference = CDFB363E9FC144833ED0433E /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = YES;
 				GCC_PREFIX_HEADER = MiaoComic/Tools/PrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1586,6 +1589,7 @@
 					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
 				);
 				INFOPLIST_FILE = MiaoComic/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = lanou.com.MiaoComic;
 				PRODUCT_NAME = "$(TARGET_NAME)";

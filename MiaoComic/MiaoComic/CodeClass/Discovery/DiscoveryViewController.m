@@ -32,6 +32,7 @@
 @property (nonatomic, strong)CycleScrollView *headerScrollView;//头视图
 @property (nonatomic, strong)NSMutableDictionary *hotListDic;//热门列表字典
 @property (nonatomic, strong)NSMutableArray  *hotListArr;//热门列表的分组数组
+@property (nonatomic, assign)BOOL isNew;//判断是否可以刷新
 
 @property (nonatomic, strong)UICollectionView *collectionView;//分类视图
 @property (nonatomic, strong)NSMutableArray *collectionArray;//分类数组
@@ -45,7 +46,7 @@
     [super viewWillAppear:animated];
     //导航栏的颜色
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-//    self.tabBarController.tabBar.hidden = NO;
+    self.tabBarController.tabBar.hidden = NO;
 }
 
 //热门列表的分组数组的懒加载
@@ -101,6 +102,9 @@
 
 //请求热门数据
 - (void)requestHotData{
+    [self.hotBannerArr removeAllObjects];
+    [self.hotListArr removeAllObjects];
+    
     //轮播请求
     [NetWorkRequestManager requestWithType:GET urlString:Discover_Hot_banner dic:nil successful:^(NSData *data) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
@@ -113,6 +117,7 @@
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self createHotBannerView];
+            [_hotTableView.mj_header endRefreshing];
         });
     } errorMessage:^(NSError *error) {
         NSLog(@"1%@",error);
@@ -194,14 +199,8 @@
     [button setBackgroundImage:[UIImage imageNamed:@"search_change"] forState:UIControlStateNormal];
     button.frame = CGRectMake(0, 0, 20, 20);
     button.block = (id)^(id but){
-//        NSLog(@"搜索搜索");
         SearchViewController *searchVC = [[SearchViewController alloc] init];
         searchVC.ControllerWithstring = @"DiscoveryViewController";
-//        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:searchVC];
-//        searchVC.navigationController.navigationBar.barTintColor = [UIColor purpleColor];
-//        naVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
-//        [self.view addSubview:naVC.view];
-//        [self presentViewController:naVC animated:YES completion:nil];
         searchVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:searchVC animated:YES];
         return nil;
@@ -210,9 +209,10 @@
     
     //页面搭建
     //热门
+    _isNew = NO;
     self.hotTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStyleGrouped];
     _hotTableView.backgroundColor = [UIColor whiteColor];
-    _headerScrollView = [[CycleScrollView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 230) animationDuration:2];
+    _headerScrollView = [[CycleScrollView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenWidth * 2 / 3) animationDuration:2];
     _hotTableView.tableHeaderView = _headerScrollView;
     _hotTableView.delegate = self;
     _hotTableView.dataSource = self;
@@ -224,6 +224,13 @@
     [_hotTableView registerClass:[DiscoveryXinZuoCell class] forCellReuseIdentifier:@"xinzuo"];
     [_hotTableView registerClass:[DiscoveryHotRenQiCell class] forCellReuseIdentifier:@"zhubian"];
     [_hotTableView registerClass:[DiscoveryHotGuanFangCell class] forCellReuseIdentifier:@"guangfang"];
+    _hotTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        if (_hotTableView.contentOffset.y >= 0 && _isNew) {
+            [self requestHotData];
+        }else{
+            [_hotTableView.mj_header endRefreshing];
+        }
+    }];
     [self.view addSubview:_hotTableView];
     
     //分类
@@ -290,6 +297,7 @@
     }
     _headerScrollView.totalPagesCount = picArray.count;
     _headerScrollView.fetchContentViewAtIndex = ^UIView *(NSInteger page){
+        _isNew = YES;
         return picArray[page];
     };
     __block DiscoveryViewController *discVC = self;
@@ -354,12 +362,15 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    DiscoveryHotListModel *model = self.hotListDic[self.hotListArr[indexPath.section]][indexPath.row];
     if ([self.hotListArr[indexPath.section] isEqualToString:@"人气飙升"]) {
         return 120;
     }else if ([self.hotListArr[indexPath.section] isEqualToString:@"每周排行榜"]){
         return 241;
     }else if ([self.hotListArr[indexPath.section] isEqualToString:@"新作出炉"]){
-        return 150;
+//        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[ImageURL ImageStrWithString:model.cover_image_url]]]];
+//        NSLog(@"%f",(ScreenWidth - 16) * image.size.height / image.size.width + 4);
+        return 10 * (ScreenWidth - 16) / 17;
     }else if ([self.hotListArr[indexPath.section] isEqualToString:@"主编力推"]){
         return 260;
     }
