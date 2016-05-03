@@ -7,10 +7,10 @@
 //
 
 #import "CommentTableCell.h"
-#import "CommentModel.h"
+
 @implementation CommentTableCell
 
-- (void)setDataWithModel:(CommentModel *)model{
+- (void)setDataWithModel1:(CommentModel *)model{
     self.cover_imageView.layer.cornerRadius = 17.5;
     self.cover_imageView.layer.masksToBounds = YES;
     [self.cover_imageView sd_setImageWithURL:[NSURL URLWithString:[ImageURL ImageStrWithString:model.avatar_url]]];
@@ -36,8 +36,12 @@
         return nil;
     };*/
     __block ReadKeyBoard *key = self.keyBoard;
+    NSLog(@"ReadKeyBoard%@",self.keyBoard);
     self.huifuButton.block = (id)^(id button){
-        key.plahchLabel.text = [NSString stringWithFormat:@"回复：%@",model.nickname];
+        key.plahchLabel.text = [NSString stringWithFormat:@"回复@%@",model.nickname];
+        [key.textView becomeFirstResponder];
+        key.huifuID = [NSString stringWithFormat:@"%@",model.ID];
+        key.huifuName = model.nickname;
         key.isHuiFu = YES;
         return nil;
     };
