@@ -16,8 +16,9 @@
 @property (nonatomic, strong) NSMutableArray *completeArray;
 @property (nonatomic, copy) NSString *descriptions;// 作品简介
 @property (nonatomic, strong) AuthorUserInfo *authorUserInfo;// 作者信息
-@property (nonatomic, strong) UIView *newView;// 第一组的row
+//@property (nonatomic, strong) UIView *newView;// 第一组的row
 @property (nonatomic, assign) BOOL is_favourite;// 标记是否被关注
+//@property (nonatomic, assign) CGFloat cellOfY;
 
 
 @end
@@ -34,21 +35,24 @@
     return _completeArray;
 }
 
-- (UIView *)newView {
-    if (_newView == nil) {
-        self.newView = [[UIView alloc] initWithFrame:CGRectMake(0, - ScreenHeight / 3 + 64, ScreenWidth, ScreenHeight / 3)];
-        [self.newView addSubview:[self.completeView createSection_One_Row_One]];//CGRectMake(- 30, 0, ScreenWidth + 60, 40)
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight / 3, ScreenWidth, 40)];
-        view.backgroundColor = [UIColor blackColor];
-        view.layer.shadowColor = [UIColor blackColor].CGColor;
-        view.layer.shadowOffset = CGSizeMake(0, - 40);
-        view.layer.shadowRadius =  30 ;
-        view.layer.shadowOpacity = 1;
-        [view addSubview:[self.completeView createSection_Two_Header]];
-        [self.newView addSubview:view];
-    }
-    return _newView;
-}
+//- (UIView *)newView {
+//    if (_newView == nil) {
+//        self.newView = [[UIView alloc] initWithFrame:CGRectMake(0, - ScreenHeight / 3 + 64, ScreenWidth, ScreenHeight / 3)];
+////        UIView *keepview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight / 3)];
+////        keepview = [self.completeView createSection_One_Row_One];
+//        
+//        [self.newView addSubview:[self.completeView createHeadView]];//CGRectMake(- 30, 0, ScreenWidth + 60, 40)
+//        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 64, ScreenWidth, 40)];
+//        view.backgroundColor = [UIColor blackColor];
+//        view.layer.shadowColor = [UIColor blackColor].CGColor;
+//        view.layer.shadowOffset = CGSizeMake(0, - 40);
+//        view.layer.shadowRadius =  30 ;
+//        view.layer.shadowOpacity = 1;
+//        [view addSubview:[self.completeView createSection_Two_Header]];
+//        [self.newView addSubview:view];
+//    }
+//    return _newView;
+//}
 
 
 #pragma mark - 返回按钮 -
@@ -133,12 +137,12 @@
             // 封面图片
             [self.completeView.headerView sd_setImageWithURL:[NSURL URLWithString:dictionary[@"data"][@"cover_image_url"]] placeholderImage:[UIImage imageNamed:@"placeholder"]];
             // 点赞数
-            self.completeView.likeLabel.text =[NSString stringWithFormat:@"%ld", (NSInteger)(dictionary[@"data"][@"likes_count"])];
-            NSLog(@"%@", self.completeView.likeLabel.text);
+            self.completeView.likeLabel.text = [NSString stringWithFormat:@"%@", dictionary[@"data"][@"likes_count"]];
+            NSLog(@"%@", dictionary[@"data"][@"likes_count"]);
             // 评论数
-            self.completeView.commentLabel.text =[NSString stringWithFormat:@"%ld", (NSInteger)(dictionary[@"data"][@"comments_count"])];
+            self.completeView.commentLabel.text = [NSString stringWithFormat:@"%@", dictionary[@"data"][@"comments_count"]];
             // 漫画名
-            self.completeView.titleLabel.text = dictionary [@"title"];
+            self.completeView.titleLabel.text = dictionary[@"title"];
             
             [self.completeView.contentTableV reloadData];
             
@@ -152,12 +156,21 @@
 
 - (void)loadView {
     [super loadView];
-    self.completeView = [[CompleteView alloc] initWithFrame:CGRectMake(0, - 64, ScreenWidth, ScreenHeight + 64)];
+    self.completeView = [[CompleteView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     self.view = self.completeView;
+   
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    /**
+     让 navigationController 透明，但任然存在
+     */
+    [self request:@"0"];
+    
+//    _cellOfY = 64;
+    
     UIImage *image = [UIImage imageNamed:@"placeholder"];
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsCompact];
     /**
@@ -177,10 +190,18 @@
     // 创建导航栏按钮
     [self createNaVCBtn];
     
-    [self request:@"0"];
+    NSLog(@"w:%f h:%f",[[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
     
     // Do any additional setup after loading the view from its nib.
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.completeView.contentTableV reloadData];
+    [self.view addSubview:[self.completeView createHeadView]];// 头视图
+    NSLog(@"+++++%@", self.completeView.headerView);
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -208,7 +229,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        return ScreenHeight / 3;
+        return ScreenHeight / 3 - 64;
     } else if (indexPath.section == 1 && indexPath.row == 0){
         return 40;
     } else {
@@ -234,8 +255,12 @@
     if (indexPath.section == 0) {
         
         cell = [[BaseTableViewCell alloc] init];
-        [cell.contentView addSubview:[self.completeView createSection_One_Row_One]];
-        cell.backgroundColor = [UIColor orangeColor];
+//        NSLog(@"258:%@",cell);
+//         [cell addObserver:self forKeyPath:@"price" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+////        cell.contentView = [self.completeView createSection_One_Row_One];
+//        [cell.contentView addSubview:[self.completeView createSection_One_Row_One]];
+        
+//        cell.backgroundColor = [UIColor orangeColor];
 //        self.makeCell = cell;
         
     } else if (indexPath.section == 1 && indexPath.row == 0){
@@ -262,7 +287,11 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     tableView.bounces = NO;// 去掉回弹效果
     tableView.showsVerticalScrollIndicator = NO;
+    
 
+    
+   
+    
     return cell;
 }
 
@@ -270,18 +299,35 @@
 #pragma mark - 添加新的第一组的第一个row -
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
     CGRect rectInTableView = [self.completeView.contentTableV rectForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
     CGRect rect = [self.completeView.contentTableV convertRect:rectInTableView toView:[self.completeView.contentTableV superview]];
-    if (rect.origin.y < - ScreenHeight / 3 + 64) {
+    CGFloat height = ScreenHeight / 3 - 64;
+    static CGFloat cellOfY = 64;
+    
+    NSLog(@"----%@", self.completeView.headerView);
+    if (rect.origin.y + height > 64 && rect.origin.y + height < ScreenHeight / 3) {
+        NSLog(@"!!!%@", self.completeView.headerView);
+        CGRect frame = self.completeView.headerView.frame;
+        frame.origin.y = self.completeView.headerView.frame.origin.y + rect.origin.y - cellOfY;
+        NSLog(@"???%@", self.completeView.headerView);
+        NSLog(@"frame.origin.y:%f", frame.origin.y);
+        NSLog(@"%f", - ScreenHeight / 3 + 64);
+        if (frame.origin.y > - ScreenHeight / 3 + 64 && frame.origin.y <= 0) {
+            self.completeView.headerView.frame = frame;
+        }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.view addSubview:self.newView];
-        });
-    } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.newView removeFromSuperview];
-        });
+    } else if (rect.origin.y == 64) {
+        self.completeView.headerView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight / 3);
+    } else if ( rect.origin.y + height == 64) {
+        self.completeView.headerView.frame = CGRectMake(0, - ScreenHeight / 3 + 64, ScreenWidth, ScreenHeight / 3);
     }
+    
+    NSLog(@"rect.origin.y - cellOfY:%f", rect.origin.y - cellOfY);
+    NSLog(@"rect.origin.y:%f, cellOfY:%f", rect.origin.y, cellOfY);
+    cellOfY = rect.origin.y;
+//    NSLog(@"%f, %f", rect.origin.y, frame.origin.y);
+    
 }
 
 /*
