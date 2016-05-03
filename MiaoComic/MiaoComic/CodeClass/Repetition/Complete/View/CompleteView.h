@@ -10,6 +10,7 @@
 
 @interface CompleteView : UIView
 @property (nonatomic, strong) UIImageView *headerView;// 头部视图
+@property (nonatomic, strong) UIView *tableHeaderView;
 @property (nonatomic, strong) UILabel *titleLabel;// 作品的名字
 @property (nonatomic, strong) UILabel *likeLabel;// 点赞数
 @property (nonatomic, strong) UILabel *commentLabel;// 评论数
@@ -18,6 +19,9 @@
 @property (nonatomic, strong) UIButton *sortBtn;// 排序按钮
 @property (nonatomic, strong) UITableView *contentTableV;// 内容表
 
+
+#pragma mark - 头部视图
+- (UIView *)createHeadView;
 
 #pragma mark - 第一组cell 的第一个row
 - (UIView *)createSection_One_Row_One;

@@ -26,7 +26,7 @@
     _typeLabel.backgroundColor = [self colorWithHexString:comicsModel.label_color];
 //    _typeLabel.layer.cornerRadius = 10;
 //    _typeLabel.layer.masksToBounds = YES;
-    
+ 
 
     [_comicNameBtn setTitle:comicsModel.topicModel.title forState:UIControlStateNormal];
     _comicNameBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;//设置文字位置，现设为居左，默认的是居中

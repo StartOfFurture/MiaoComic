@@ -33,6 +33,19 @@
     }];
 }
 
+//回复评论网络请求
+- (void)requestHuiFu:(NSString *)content{
+    [NetWorkRequestManager requestWithType:POST urlString:[NSString stringWithFormat:COMMENT_HuiFu, self.huifuID] dic:@{@"content":content} successful:^(NSData *data) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"%@",dic);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxin" object:nil];
+        });
+    } errorMessage:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     self.ischang = YES;
@@ -68,6 +81,7 @@
             if (_isHuiFu == NO) {
                 [keyBoard requestData:textView.text];
             }else{
+                [keyBoard requestHuiFu:textView.text];
                 NSLog(@"回复");
             }
             textView.text = @"";
@@ -110,7 +124,11 @@
             self.frame = _orginFrame;
             self.textView.frame = _orginTextView;
         }if (textView.text.length == 0) {
-            self.plahchLabel.text = @"来吐槽把～～～";
+            if (_isHuiFu == NO) {
+                self.plahchLabel.text = @"来吐槽把～～～";
+            }else{
+                self.plahchLabel.text = [NSString stringWithFormat:@"回复@%@",self.huifuName];
+            }
         }else{
             self.plahchLabel.text = @"";
         }

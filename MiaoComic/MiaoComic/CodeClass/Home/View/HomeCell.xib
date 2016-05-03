@@ -145,7 +145,7 @@
                 <outlet property="thisComicTitleBtn" destination="PLH-Fc-JDF" id="2yr-Z9-8bc"/>
                 <outlet property="typeLabel" destination="oyZ-yG-Oi7" id="XBi-97-kbg"/>
             </connections>
-            <point key="canvasLocation" x="284" y="317"/>
+            <point key="canvasLocation" x="405" y="334"/>
         </tableViewCell>
     </objects>
     <resources>
