@@ -12,6 +12,10 @@
 #import "ReadKeyBoard.h"
 #import "LoginViewController.h"
 
+//键盘已经出现
+static dispatch_once_t onceTock;
+//键盘即将出现
+static dispatch_once_t onceTock1;
 @interface CommentViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong)UITableView *tableView;//表视图
@@ -24,6 +28,7 @@
 @property (nonatomic, strong)UIView *blackView;//遮盖层
 
 @end
+
 
 @implementation CommentViewController
 
@@ -51,8 +56,8 @@
     }
     NSLog(@"%@",self.array);
     dispatch_async(dispatch_get_main_queue(), ^{
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
+        static dispatch_once_t onceToken2;
+        dispatch_once(&onceToken2, ^{
             if (self.array.count != 0) {
                 _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
                     [self requestData:COMMENT_New];
@@ -167,12 +172,14 @@
 
 #pragma mark ---键盘即将出现和消失的方法---
 
-- (void)showBoardKey:(NSNotification *)no{
-    if (_blackView == nil) {
+- (void)showBoardKey1:(NSNotification *)no{
+    CGRect keyBoard = [no.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSLog(@"%f",keyBoard.size.height);
+    if (_blackView == nil && keyBoard.size.height!=0) {
         _blackView = [[UIView alloc] initWithFrame:CGRectMake(0, _tableView.contentOffset.y, self.view.frame.size.width, self.view.frame.size.height)];
         _blackView.backgroundColor = [UIColor blackColor];
         _blackView.alpha = 0;
-        CGRect keyBoard = [no.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        
         [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
             self.keyBoardS.transform = CGAffineTransformMakeTranslation(0, -keyBoard.size.height);
             _blackView.alpha = 0.5;
@@ -185,7 +192,7 @@
     NSLog(@"键盘弹出");
 }
 
-- (void)hidKeyBoard:(NSNotification *)no{
+- (void)hidKeyBoard1:(NSNotification *)no{
         [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
             self.keyBoardS.transform = CGAffineTransformIdentity;
             _blackView.alpha = 0;
@@ -197,6 +204,13 @@
         _keyBoardS.isHuiFu = NO;
         [_blackView removeFromSuperview];
     _blackView = nil;
+    
+    //防止第一次弹出键盘的时候出不来
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    
+    dispatch_once(&onceTock1, ^{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBoardKey1:) name:UIKeyboardWillShowNotification  object:nil];
+    });
     NSLog(@"键盘消失");
 }
 
@@ -207,14 +221,21 @@
         [_blackView removeFromSuperview];
         _blackView = nil;
     }
-    //键盘即将出现
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBoardKey:) name:UIKeyboardWillShowNotification  object:nil];
+    
+    //键盘已经出现
+    NSLog(@"onceTockonceTock%ld",onceTock);
+    dispatch_once(&onceTock, ^{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBoardKey1:) name:UIKeyboardDidShowNotification  object:nil];
+    });
+    
     //键盘即将消失
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hidKeyBoard:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hidKeyBoard1:) name:UIKeyboardWillHideNotification object:nil];
 
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
+    onceTock = 0;
+    onceTock1 = 0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
