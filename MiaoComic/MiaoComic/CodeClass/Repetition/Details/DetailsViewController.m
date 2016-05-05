@@ -36,6 +36,7 @@
 @property (nonatomic, copy) NSString *pid;// 前一篇漫画的id
 @property (nonatomic, copy) NSString *nid;// 后一篇漫画的id
 
+
 @property (nonatomic, strong) ReadKeyBoard *keyBoard;
 
 @end
@@ -132,7 +133,7 @@
     [self requestData];
     // 加载漫画热门数据
     [self requestCommentData];
-
+    
     self.navigationController.hidesBarsOnSwipe = YES;//滚动时隐藏导航栏
     
     // 返回按钮
@@ -168,15 +169,54 @@
     // 键盘即将消失
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hidKeyBoard:) name:UIKeyboardDidHideNotification object:nil];
     [self.view addSubview:_keyBoard];
+    
+    
+    // 回到顶部
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth - 60, ScreenHeight - 100, 50, 50)];
+    imageView.userInteractionEnabled = YES;
+    NSMutableArray *mArr = [[NSMutableArray alloc] initWithCapacity:0];
+    for (int i = 1; i < 5; i ++) {
+        //获取图片名称
+        NSString *str = [NSString stringWithFormat:@"backtotop%d",i];
+        UIImage *image = [UIImage imageNamed:str];
+        [mArr addObject:image];
+    }
+    //指定做动画的所有图片
+    imageView.animationImages = mArr;
+    //指定动画时间，动画重复次数
+    imageView.animationDuration = 0.9;
+    imageView.animationRepeatCount = 0;//一直重复
+    //开始动画
+    [imageView startAnimating];
+    
+    // 添加手势
+    UITapGestureRecognizer *pan = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backToTop)];
+    [imageView addGestureRecognizer:pan];
+    [self.view addSubview:imageView];
+    
 }
+
+-(void)backToTop{
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+//-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+//    
+//    NSIndexPath *path =  [_tableView indexPathForRowAtPoint:CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y)];
+//    CGPoint s = _tableView.contentOffset;
+//    NSLog(@"%@",[NSValue valueWithCGPoint:s]);
+//    NSLog(@"这是第%ld行",path.row);
+//}
 
 #pragma mark- 键盘方法
 - (void)showBoardKey:(NSNotification *)no{
+    _tableView.scrollEnabled = NO;
     CGRect keyBoard = [no.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
     [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
         self.keyBoard.transform = CGAffineTransformMakeTranslation(0, -keyBoard.size.height);
     }];
-    UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
+    // 遮盖随着tableview的偏移量改变
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, _tableView.contentOffset.y, ScreenWidth, ScreenHeight)];
     view.backgroundColor = [UIColor blackColor];
     view.alpha = 0.5;
     view.tag = 201;
@@ -186,6 +226,7 @@
 }
 
 - (void)keyClick{
+    _tableView.scrollEnabled = YES;
     [_keyBoard.textView resignFirstResponder];
 }
 

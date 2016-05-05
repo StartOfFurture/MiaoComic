@@ -12,15 +12,23 @@
 #import "ReadKeyBoard.h"
 #import "LoginViewController.h"
 
+//键盘已经出现
+static dispatch_once_t onceTock;
+//键盘即将出现
+static dispatch_once_t onceTock1;
 @interface CommentViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong)UITableView *tableView;//表视图
 @property (nonatomic, copy)NSString *since;//从哪里开始加载
 @property (nonatomic, strong)NSMutableArray *array;//存放数据的数组
+
 @property (nonatomic, strong)ReadKeyBoard *keyBoardS;//输入框
 @property (nonatomic, strong)UISegmentedControl *segVC;//标题
 
+@property (nonatomic, strong)UIView *blackView;//遮盖层
+
 @end
+
 
 @implementation CommentViewController
 
@@ -48,6 +56,14 @@
     }
     NSLog(@"%@",self.array);
     dispatch_async(dispatch_get_main_queue(), ^{
+        static dispatch_once_t onceToken2;
+        dispatch_once(&onceToken2, ^{
+            if (self.array.count != 0) {
+                _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                    [self requestData:COMMENT_New];
+                }];
+            }
+        });
         [_tableView reloadData];
         [_tableView.mj_header endRefreshing];
         [_tableView.mj_footer endRefreshing];
@@ -69,9 +85,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.since = @"0";
-    self.ID = @"10720";
-    //请求数据
-    [self requestData:COMMENT_New];
+    self.ID = @"11857";
     
     //按钮的显示
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -111,24 +125,25 @@
         self.since = @"0";
         [self requestData:COMMENT_New];
     }];
-    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-        [self requestData:COMMENT_New];
-    }];
+    
     [self.view addSubview:_tableView];
     
     //输入框的添加
     _keyBoardS = [[ReadKeyBoard alloc] initWithFrame:CGRectMake(0, ScreenHeight - 40, ScreenWidth, 40)];
     _keyBoardS.ID = self.ID;
     _keyBoardS.isHuiFu = NO;
-    //键盘即将出现
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBoardKey:) name:UIKeyboardWillShowNotification object:nil];
-    //键盘即将消失
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hidKeyBoard:) name:UIKeyboardWillHideNotification object:nil];
+//    //键盘即将出现
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBoardKey:) name:UIKeyboardWillShowNotification  object:nil];
+//    //键盘即将消失
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hidKeyBoard:) name:UIKeyboardWillHideNotification object:nil];
     [self.view addSubview:_keyBoardS];
     
     //添加观察者
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shuaxin) name:@"shuaxin" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(login) name:@"nouser" object:nil];
+    
+    //请求数据
+    [self requestData:COMMENT_New];
     
     // Do any additional setup after loading the view.
 }
@@ -157,48 +172,72 @@
 
 #pragma mark ---键盘即将出现和消失的方法---
 
-- (void)showBoardKey:(NSNotification *)no{
-
-    UIView *view = nil;
-    if (view == nil) {
-        view = [[UIView alloc] initWithFrame:self.view.bounds];
-        view.backgroundColor = [UIColor blackColor];
-        view.alpha = 0;
-        view.tag = 201;
-        CGRect keyBoard = [no.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+- (void)showBoardKey1:(NSNotification *)no{
+    CGRect keyBoard = [no.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSLog(@"%f",keyBoard.size.height);
+    if (_blackView == nil && keyBoard.size.height!=0) {
+        _blackView = [[UIView alloc] initWithFrame:CGRectMake(0, _tableView.contentOffset.y, self.view.frame.size.width, self.view.frame.size.height)];
+        _blackView.backgroundColor = [UIColor blackColor];
+        _blackView.alpha = 0;
+        
         [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
             self.keyBoardS.transform = CGAffineTransformMakeTranslation(0, -keyBoard.size.height);
-            view.alpha = 0.5;
+            _blackView.alpha = 0.5;
         }];
         UITapGestureRecognizer *pan = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(click11)];
-        [view addGestureRecognizer:pan];
+        [_blackView addGestureRecognizer:pan];
         _tableView.scrollEnabled = NO;
-        [_tableView addSubview:view];
+        [_tableView addSubview:_blackView];
     }
+    NSLog(@"键盘弹出");
 }
 
-- (void)hidKeyBoard:(NSNotification *)no{
-
-        UIView *view = [_tableView viewWithTag:201];
+- (void)hidKeyBoard1:(NSNotification *)no{
         [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
             self.keyBoardS.transform = CGAffineTransformIdentity;
-            view.alpha = 0;
+            _blackView.alpha = 0;
         }];
         _tableView.scrollEnabled = YES;
         _keyBoardS.plahchLabel.text = @"来吐槽把～～";
         _keyBoardS.textView.text = @"";
+    //当视图消失的时候，回复的bool变成NO
         _keyBoardS.isHuiFu = NO;
-        [view removeFromSuperview];
-
+        [_blackView removeFromSuperview];
+    _blackView = nil;
+    
+    //防止第一次弹出键盘的时候出不来
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    
+    dispatch_once(&onceTock1, ^{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBoardKey1:) name:UIKeyboardWillShowNotification  object:nil];
+    });
+    NSLog(@"键盘消失");
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     NSLog(@"11111");
-    UIView *view = [_tableView viewWithTag:201];
-    if (view != nil) {
-        [view removeFromSuperview];
+    if (_blackView != nil) {
+        [_blackView removeFromSuperview];
+        _blackView = nil;
     }
+    
+    //键盘已经出现
+    NSLog(@"onceTockonceTock%ld",onceTock);
+    dispatch_once(&onceTock, ^{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBoardKey1:) name:UIKeyboardDidShowNotification  object:nil];
+    });
+    
+    //键盘即将消失
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hidKeyBoard1:) name:UIKeyboardWillHideNotification object:nil];
+
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    onceTock = 0;
+    onceTock1 = 0;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 
@@ -212,6 +251,8 @@
     CommentModel *model = self.array[indexPath.row];
     CommentTableCell *cell = (CommentTableCell *)[FactoryTableViewCell creatTableViewCell:model tableView:tableView indexPath:indexPath];
     cell.keyBoard = _keyBoardS;
+    //如果使用父类的直接赋值的话，cell.keyBoard还没有赋值为空，所以重新写一个自己的赋值方法,让父类的赋值方法，空实现
+    [cell setDataWithModel1:model];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -224,7 +265,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    CommentModel *model = self.array[indexPath.row];
+    _keyBoardS.plahchLabel.text = [NSString stringWithFormat:@"回复@%@",model.nickname];
     [_keyBoardS.textView becomeFirstResponder];
+    _keyBoardS.huifuID = [NSString stringWithFormat:@"%@",model.ID];
+    _keyBoardS.huifuName = model.nickname;
+    _keyBoardS.isHuiFu = YES;
 }
 
 #pragma mark ---分段控件的点击---

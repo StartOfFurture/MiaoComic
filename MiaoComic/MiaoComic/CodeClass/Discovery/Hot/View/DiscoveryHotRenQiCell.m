@@ -11,6 +11,7 @@
 
 @interface DiscoveryHotRenQiCell ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
+@property (nonatomic, strong)UICollectionViewFlowLayout *layout;
 
 
 @end
@@ -57,6 +58,11 @@
         [self.contentView addSubview:_collectionView];
     }
     return self;
+}
+
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
