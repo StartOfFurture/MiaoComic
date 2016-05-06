@@ -188,7 +188,8 @@
                         viewVC = viewVC1;
                     }
                 }
-                [self.navigationController popToViewController:viewVC animated:YES];
+//                [self.navigationController popToViewController:viewVC animated:YES];
+                [self.navigationController popViewControllerAnimated:YES];
                 return nil;
             };
         }
@@ -212,7 +213,8 @@
         button.block = (id)^(id button){
             LoginViewController *loginVC = [[LoginViewController alloc] init];
             UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:loginVC];
-            [[self topViewController] presentViewController:naVC animated:YES completion:nil];
+//            [[self topViewController] presentViewController:naVC animated:YES completion:nil];
+            [self presentViewController:naVC animated:YES completion:nil];
             return nil;
         };
         

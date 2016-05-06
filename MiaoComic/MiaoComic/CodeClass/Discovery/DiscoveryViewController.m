@@ -309,6 +309,7 @@
     HotPaiHangViewController *hotPaiHangVC = [[HotPaiHangViewController alloc] init];
 //    UINavigationController *naVC = [[UINavigationController alloc]initWithRootViewController:hotPaiHangVC];
 //    [self presentViewController:naVC animated:YES completion:nil];
+    hotPaiHangVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:hotPaiHangVC animated:YES];
 }
 
