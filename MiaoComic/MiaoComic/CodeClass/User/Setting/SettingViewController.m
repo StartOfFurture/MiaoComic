@@ -85,22 +85,21 @@
     
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     if (indexPath.section == 0 || (indexPath.section == 1 && indexPath.row == 2)) {
-        cell.accessoryType = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
-        UILabel *cacheLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 50, 15, 50, 20)];
+        UILabel *cacheLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 10, 15, 100, 20)];
         cacheLabel.textColor = [UIColor lightGrayColor];
-//        cacheLabel.backgroundColor = [UIColor redColor];
+        cacheLabel.textAlignment = NSTextAlignmentRight;
         cacheLabel.text = [NSString stringWithFormat:@"%lluM",self.size];
         self.cacheLabel = cacheLabel;
-        [cell addSubview:cacheLabel];
+        cell.accessoryView = cacheLabel;
     }
-    
     cell.textLabel.text = _nameArray[indexPath.section][indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:14];
     return cell;

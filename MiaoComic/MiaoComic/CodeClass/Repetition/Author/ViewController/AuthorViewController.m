@@ -14,6 +14,7 @@
 #import "BaseModel.h"
 #import "CompleteViewController.h"
 
+
 @interface AuthorViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UIImageView *headerView;// 头像视图
 @property (nonatomic, strong) UITableView *productionTableV;// 作品简介的表格

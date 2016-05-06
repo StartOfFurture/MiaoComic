@@ -23,6 +23,7 @@
 #import "CommentViewController.h"
 #import "DetailsViewController.h"
 #import "CompleteViewController.h"
+#import "LoadingView.h"
 
 
 @interface DiscoveryViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate,DiscoveryHotPaiHangCellDelegate>
@@ -37,6 +38,10 @@
 @property (nonatomic, strong)UICollectionView *collectionView;//分类视图
 @property (nonatomic, strong)NSMutableArray *collectionArray;//分类数组
 
+@property (nonatomic, strong)LoadingView *hotLoadingView;//热门的加载视图
+@property (nonatomic, strong)LoadingView *collectionLoadingView;//分类的加载视图
+
+
 @end
 
 @implementation DiscoveryViewController
@@ -47,6 +52,17 @@
     //导航栏的颜色
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     self.tabBarController.tabBar.hidden = NO;
+    _hotLoadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+    [_hotLoadingView createAnimationWithCountImage:4 nameImage:@"6bed450854904c8dd50d5b2553f62cf5－%d（被拖移）.tiff" timeInter:0.5 labelText:@"正在加载中～～～"];
+    [self.hotTableView addSubview:_hotLoadingView];
+    
+    _collectionLoadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+    [_collectionLoadingView createAnimationWithCountImage:4 nameImage:@"6bed450854904c8dd50d5b2553f62cf5－%d（被拖移）.tiff" timeInter:0.5 labelText:@"正在加载中～～～"];
+    [self.collectionView addSubview:_collectionLoadingView];
+    //数据分类请求
+    [self requestData];
+    //热门数据
+    [self requestHotData];
 }
 
 //热门列表的分组数组的懒加载
@@ -93,10 +109,17 @@
         }
         NSLog(@"%@",self.collectionArray);
         dispatch_async(dispatch_get_main_queue(), ^{
+            [_collectionLoadingView removeFromSuperview];
             [_collectionView reloadData];
         });
     } errorMessage:^(NSError *error) {
         NSLog(@"%@",error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_collectionLoadingView removeFromSuperview];
+            _collectionLoadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+            [_collectionLoadingView createAnimationWithCountImage:20 nameImage:@"630f0cdb690cf448f97a0126dfadf414－%d（被拖移）.tiff" timeInter:2 labelText:@"哎呀！网络出问题了？"];
+            [self.collectionView addSubview:_collectionLoadingView];
+        });
     }];
 }
 
@@ -120,6 +143,7 @@
             [_hotTableView.mj_header endRefreshing];
         });
     } errorMessage:^(NSError *error) {
+        
         NSLog(@"1%@",error);
     }];
     //列表请求
@@ -153,9 +177,16 @@
         }
         NSLog(@"%@",self.hotListDic);
         dispatch_async(dispatch_get_main_queue(), ^{
+            [_hotLoadingView removeFromSuperview];
             [_hotTableView reloadData];
         });
     } errorMessage:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_hotLoadingView removeFromSuperview];
+            _hotLoadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+            [_hotLoadingView createAnimationWithCountImage:20 nameImage:@"630f0cdb690cf448f97a0126dfadf414－%d（被拖移）.tiff" timeInter:2 labelText:@"哎呀！网络出问题了？"];
+            [self.hotTableView addSubview:_hotLoadingView];
+        });
         NSLog(@"2%@",error);
     }];
 }
@@ -164,21 +195,16 @@
     [super viewDidLoad];
 
 #warning 测试评论
-    UIButton *button11 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button11.frame = CGRectMake(0, 0, 50, 20);
-    [button11 setTitle:@"评论" forState:UIControlStateNormal];
-    button11.block = (id)^(id button1){
-        CommentViewController *commVC = [[CommentViewController alloc] init];
-        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:commVC];
-        [self presentViewController:naVC animated:YES completion:nil];
-        return nil;
-    };
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button11];
-
-    //数据分类请求
-    [self requestData];
-    //热门数据
-    [self requestHotData];
+//    UIButton *button11 = [UIButton buttonWithType:UIButtonTypeSystem];
+//    button11.frame = CGRectMake(0, 0, 50, 20);
+//    [button11 setTitle:@"评论" forState:UIControlStateNormal];
+//    button11.block = (id)^(id button1){
+//        CommentViewController *commVC = [[CommentViewController alloc] init];
+//        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:commVC];
+//        [self presentViewController:naVC animated:YES completion:nil];
+//        return nil;
+//    };
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button11];
     
     //热门、分类标题的显示
     UISegmentedControl *segVC = [[UISegmentedControl alloc] initWithItems:@[@"热门",@"分类"]];
@@ -247,6 +273,7 @@
     self.collectionView.dataSource = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
     [_collectionView  registerNib:[UINib nibWithNibName:@"ClassifyModelCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"ClassifyModel"];
+    
     [self.view addSubview:_collectionView];
     
     //添加观察者
@@ -282,6 +309,7 @@
     HotPaiHangViewController *hotPaiHangVC = [[HotPaiHangViewController alloc] init];
 //    UINavigationController *naVC = [[UINavigationController alloc]initWithRootViewController:hotPaiHangVC];
 //    [self presentViewController:naVC animated:YES completion:nil];
+    hotPaiHangVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:hotPaiHangVC animated:YES];
 }
 
@@ -364,17 +392,15 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 //    DiscoveryHotListModel *model = self.hotListDic[self.hotListArr[indexPath.section]][indexPath.row];
     if ([self.hotListArr[indexPath.section] isEqualToString:@"人气飙升"]) {
-        return 120;
+        return ((ScreenWidth - 24)/3) * 1.26 ;
     }else if ([self.hotListArr[indexPath.section] isEqualToString:@"每周排行榜"]){
-        return 241;
+        return (ScreenWidth - 30) / 4 * 3;
     }else if ([self.hotListArr[indexPath.section] isEqualToString:@"新作出炉"]){
-//        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[ImageURL ImageStrWithString:model.cover_image_url]]]];
-//        NSLog(@"%f",(ScreenWidth - 16) * image.size.height / image.size.width + 4);
         return 10 * (ScreenWidth - 16) / 17;
     }else if ([self.hotListArr[indexPath.section] isEqualToString:@"主编力推"]){
-        return 260;
+        return ((ScreenWidth - 24)/3) * 1.26 * 2 + 6;
     }
-    return 115;
+    return (ScreenWidth - 24)/2 * 11 / 13 - 30;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{

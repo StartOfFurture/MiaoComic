@@ -34,7 +34,7 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height, self.frame.size.width, 30)];
     view.backgroundColor = [UIColor blackColor];
     
-    view.layer.shadowOffset = CGSizeMake(0, - 15);
+    view.layer.shadowOffset = CGSizeMake(0, - 12);
     view.layer.shadowRadius = 15;//阴影半径
     view.layer.shadowOpacity = 1;//不透明度
     [self.contentView addSubview:view];
