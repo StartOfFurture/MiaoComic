@@ -134,8 +134,8 @@
     self.searchController.searchBar.tintColor = [UIColor colorWithRed:0.73 green:0.27 blue:0.62 alpha:1.0];
     //设置搜索框加到哪个视图控制器上面，很重要!!!!!!!!!!!!如果是模态出来的要加，是push出来的不用加
 //    self.definesPresentationContext = YES;
-    //搜索框一进去就是第一响应者
-//    self.searchController.searchBar.text = @"";
+    //搜索框一进去就是第一响应者,不然没有取消按钮
+    self.searchController.searchBar.text = @"";
     //按钮
     self.searchController.searchBar.showsBookmarkButton = YES;
     
