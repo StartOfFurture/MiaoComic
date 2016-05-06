@@ -13,5 +13,8 @@
     if ([key isEqualToString:@"id"]) {
         self.ids = value;
     }
+    if ([key isEqualToString:@"description"]) {
+        self.descriptions = value;
+    }
 }
 @end
