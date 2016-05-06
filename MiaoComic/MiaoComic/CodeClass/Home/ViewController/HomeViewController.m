@@ -417,7 +417,7 @@
 - (void)requestData:(NSString *)dateString {
     
     NSString *urlString = [NSString stringWithFormat:@"%@%@?since=0",HOME_NEW, dateString];
-    NSLog(@"%@",urlString);
+   
     [NetWorkRequestManager requestWithType:GET urlString:urlString dic:@{} successful:^(NSData *data) {
         NSDictionary *dateDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
         NSArray *array = dateDic[@"data"][@"comics"];

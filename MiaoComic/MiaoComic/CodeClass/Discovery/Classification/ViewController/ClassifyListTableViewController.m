@@ -12,6 +12,7 @@
 #import "ClassifyListModelCellChange.h"
 #import "LoginViewController.h"
 #import "CompleteViewController.h"
+#import "LoadingView.h"
 
 @interface ClassifyListTableViewController ()
 
@@ -19,6 +20,8 @@
 //@property (nonatomic, strong)UIButton *button;
 
 @property (nonatomic, assign)NSInteger startCount;//开始请求
+
+@property (nonatomic, strong)LoadingView *loadingView;//正在加载的View
 
 @end
 
@@ -48,6 +51,8 @@
         }
 //        NSLog(@"%@",self.listArr);
         dispatch_async(dispatch_get_main_queue(), ^{
+            [_loadingView removeFromSuperview];
+//            self.tableView.scrollEnabled = YES;
             //让他在第一次数据请求之后只执行一次
             static dispatch_once_t onceToken;
             dispatch_once(&onceToken, ^{
@@ -65,6 +70,12 @@
             }
         });
     } errorMessage:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_loadingView removeFromSuperview];
+            _loadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+            [_loadingView createAnimationWithCountImage:20 nameImage:@"630f0cdb690cf448f97a0126dfadf414－%d（被拖移）.tiff" timeInter:2 labelText:@"哎呀！网络出问题了？"];
+            [self.view addSubview:_loadingView];
+        });
         NSLog(@"%@",error);
     }];
 }
@@ -104,24 +115,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_1"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     //设置从那里开始请求
     self.startCount = 0;
-    
-    //注册
-    //    self.tableView.delegate = self;
-    //    self.tableView.dataSource = self;
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ClassifyListModelCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ClassifyListModel"];
-//
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ClassifyListModelCellChange" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ClassifyListModel1"];
-    
-    //请求数据
-//    [self requestData];
-    
-    //上拉加载
-//        self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-//            self.startCount += 20;
-//            [self requestData];
-//        }];
-    
-    
+
     //下拉刷新
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         if (self.tableView.contentOffset.y >= 0) {
@@ -131,7 +125,13 @@
             [self.tableView.mj_header endRefreshing];
         }
     }];
-
+    
+    
+    _loadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+    [_loadingView createAnimationWithCountImage:4 nameImage:@"6bed450854904c8dd50d5b2553f62cf5－%d（被拖移）.tiff" timeInter:0.5 labelText:@"正在加载中~~~"];
+//    self.tableView.scrollEnabled = NO;
+    [self.view addSubview:_loadingView];
+    
     // Do any additional setup after loading the view.
 }
 
@@ -185,11 +185,6 @@
 }
 
 - (BaseTableViewCell *)createWithTableView:(UITableView *)tableView identifier:(NSString *)identifier cell:(BaseTableViewCell *)cell{
-//    cell = [tableView dequeueReusableCellWithIdentifier:@"ClassifyListModelCell"];
-//    if (cell == nil) {
-//        //            cell = (ClassifyListModelCell *)[FactoryTableViewCell creatTableViewCell:model tableView:tableView indexPath:indexPath];
-//        cell = (ClassifyListModelCell *)[[NSBundle mainBundle] loadNibNamed:@"ClassifyListModelCell" owner:nil options:nil][0];
-//    }
     cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
         cell = [[NSBundle mainBundle] loadNibNamed:identifier owner:nil options:nil][0];
