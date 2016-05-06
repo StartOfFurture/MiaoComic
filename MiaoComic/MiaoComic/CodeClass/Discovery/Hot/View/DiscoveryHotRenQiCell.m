@@ -64,10 +64,11 @@
     [super layoutSubviews];
     if ([_identent isEqualToString:@"renqi"]) {
         _layout.itemSize = CGSizeMake((ScreenWidth - 24)/3, self.contentView.frame.size.height);
+        _collectionView.frame = CGRectMake(8, 2, ScreenWidth - 16, _layout.itemSize.height);
     }else{
         _layout.itemSize = CGSizeMake((ScreenWidth - 24)/3, (self.contentView.frame.size.height - 6) / 2);
+        _collectionView.frame = CGRectMake(8, 2, ScreenWidth - 16, _layout.itemSize.height * 2);
     }
-    _collectionView.frame = CGRectMake(8, 2, ScreenWidth - 16, _layout.itemSize.height * 2);
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
