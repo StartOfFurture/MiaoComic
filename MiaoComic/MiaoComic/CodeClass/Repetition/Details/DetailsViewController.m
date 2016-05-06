@@ -514,6 +514,7 @@
     UINavigationController *naVc = [[UINavigationController alloc] initWithRootViewController:commentVC];
     commentVC.ID = _cid;
     [self presentViewController:naVc animated:YES completion:nil];
+    
 }
 
 
