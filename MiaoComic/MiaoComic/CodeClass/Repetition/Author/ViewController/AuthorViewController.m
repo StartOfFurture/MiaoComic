@@ -12,6 +12,7 @@
 #import "AuthorTopicModel.h"
 #import "FactoryTableViewCell.h"
 #import "BaseModel.h"
+#import "CompleteViewController.h"
 
 @interface AuthorViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UIImageView *headerView;// 头像视图
@@ -36,7 +37,7 @@
         NSDictionary *dateDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:nil];
    
         NSArray *topicsArray = dateDic[@"data"][@"topics"];
-        
+        NSLog(@"%@", dateDic);
         for (NSDictionary *dic in topicsArray) {
             AuthorTopicModel *topicModel = [[AuthorTopicModel alloc] init];
             [topicModel setValuesForKeysWithDictionary:dic];
@@ -147,6 +148,13 @@
     }
 
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+    completeVC.ids = [self.productionArray[indexPath.row] ids];// 传入全集的id
+    UINavigationController *navc = [[UINavigationController alloc] initWithRootViewController:completeVC];
+    [self.navigationController presentViewController:navc animated:YES completion:nil];
 }
 
 

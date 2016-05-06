@@ -25,6 +25,9 @@
     self.successful = successful;
     self.errorMessage = errorMessage;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+    if (requestType == DELETE) {
+        [request setHTTPMethod:@"DELETE"];
+    }
     if (requestType == POST) {
         [request setHTTPMethod:@"POST"];
         if (dic.count>0) {

@@ -738,7 +738,6 @@
         completeVC.ids = comics.topicModel.ids;// 传入全集的id
         UINavigationController *navc = [[UINavigationController alloc] initWithRootViewController:completeVC];
         [self.navigationController presentViewController:navc animated:YES completion:nil];
-//        NSLog(@"%@", completeVC.ids);
         return nil;
     };
     
@@ -759,6 +758,14 @@
 
         return nil;
     };
+    mycell.imgVblock = ^{
+        DetailsViewController *detailsVC = [[DetailsViewController alloc] init];
+        detailsVC.cid = comics.ids;// 传入详情的id
+        
+        detailsVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:detailsVC animated:YES];
+    };
+
     return cell;
 }
 

@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ComicsModel.h"
+
+typedef void(^ImgVBlock)(void);
 
 @interface HomeCell : BaseTableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *typeLabel;// 漫画类型
@@ -17,5 +20,5 @@
 @property (strong, nonatomic) IBOutlet UIButton *likeBtn;// 喜欢数
 @property (strong, nonatomic) IBOutlet UIButton *commentBtn;// 评论数
 @property (strong, nonatomic) IBOutlet UIImageView *coverImgV;// 封面
-
+@property (nonatomic, copy) ImgVBlock imgVblock;
 @end

@@ -13,6 +13,9 @@
     if ([key isEqualToString:@"description"]) {
         self.descriptions = value;
     }
+    if ([key isEqualToString:@"id"]) {
+        self.ids = value;
+    }
 }
 /*
 // Only override drawRect: if you perform custom drawing.

@@ -10,6 +10,8 @@
 #import "CompleteView.h"
 #import "ComicsModel.h"
 #import "AuthorUserInfo.h"
+#import "AuthorViewController.h"
+#import "DetailsViewController.h"
 
 @interface CompleteViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 @property (nonatomic, strong) CompleteView *completeView;
@@ -28,7 +30,8 @@
 @property (nonatomic, strong) UIScrollView *scrollView;// scrollView
 
 
-@property (nonatomic, assign) CGFloat productionY;// 标记上一次的cell的高度
+@property (nonatomic, assign) CGFloat productionY;// 标记上一次的cell的位置
+
 
 
 @end
@@ -96,39 +99,47 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem = backItem;
     
-    UIButton *attentionBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 20,  ScreenHeight / 3 / 6 / 5 * 4 * 2, ScreenHeight / 3 / 6 / 5 * 4)];
-    [attentionBtn setTitle:@"+关注" forState:UIControlStateNormal];
-    attentionBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    [attentionBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    attentionBtn.layer.cornerRadius= ScreenHeight / 3 / 6 / 5 * 4 / 2;
-    attentionBtn.layer.masksToBounds = YES;
-    attentionBtn.layer.borderWidth = 1;
-    attentionBtn.layer.borderColor = [UIColor blackColor].CGColor;
-    attentionBtn.backgroundColor = [UIColor colorWithRed:0.77 green:0.38 blue:0.67 alpha:1];
-    
-    
-    attentionBtn.block = (id)^(id button) {
+    _attentionBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 20,  ScreenHeight / 3 / 6 / 5 * 4 * 2, ScreenHeight / 3 / 6 / 5 * 4)];
+
+    _attentionBtn.layer.cornerRadius= ScreenHeight / 3 / 6 / 5 * 4 / 2;
+    _attentionBtn.layer.masksToBounds = YES;
+    _attentionBtn.layer.borderWidth = 1;
+ 
+    __block CompleteViewController *completeVC = self;
+    _attentionBtn.block = (id)^(id button) {
         UIButton *mybutton = ((UIButton *)button);
-        [mybutton setTitle:@"已关注" forState:UIControlStateNormal];
-        mybutton.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
-        [mybutton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        mybutton.titleLabel.font = [UIFont systemFontOfSize:14];
-        mybutton.layer.borderColor = [UIColor whiteColor].CGColor;
+        completeVC.topComics.is_favourite = (_topComics.is_favourite == 0) ? true : false;
+        [completeVC attentionStateWithButton:mybutton];
+//        _is_favourite = !_is_favourite;// 对关注状态取反
+        
+  
         return nil;
     };
     
     // 去除高亮状态
-    attentionBtn.adjustsImageWhenHighlighted = NO;
+    _attentionBtn.adjustsImageWhenHighlighted = NO;
     
-    UIBarButtonItem *attentionItem = [[UIBarButtonItem alloc] initWithCustomView:attentionBtn];
+    UIBarButtonItem *attentionItem = [[UIBarButtonItem alloc] initWithCustomView:_attentionBtn];
     self.navigationItem.rightBarButtonItem = attentionItem;
-    
-//    [self.view addSubview:backBtn];
+
 }
 
 // 改变按钮外形状态
-- (void)attentionState{
-    
+- (void)attentionStateWithButton:(UIButton *)mybutton{
+    NSLog(@"124:%d", _topComics.is_favourite);
+    if (_topComics.is_favourite == 1) {
+        [mybutton setTitle:@"已关注" forState:UIControlStateNormal];
+        mybutton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [mybutton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        mybutton.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+        mybutton.layer.borderColor = [UIColor whiteColor].CGColor;
+    } else {
+        [mybutton setTitle:@"+关注" forState:UIControlStateNormal];
+        mybutton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [mybutton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        mybutton.backgroundColor = [UIColor colorWithRed:0.77 green:0.38 blue:0.67 alpha:1];
+        mybutton.layer.borderColor = [UIColor blackColor].CGColor;
+    }
 }
 
 #pragma mark - 创建表 -
@@ -136,12 +147,11 @@
 - (void)createTableView {
     self.completeView.contentTableV.delegate = self;
     self.completeView.contentTableV.dataSource = self;
-//    [self.completeView.contentTableV registerNib:[UINib nibWithNibName:@"CompleteCell" bundle:nil] forCellReuseIdentifier:@"ComicsModel"];
     self.completeView.contentTableV.scrollEnabled = NO;//设置tableview 不能滚动
     
     
     self.introTableV = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
-    _introTableV.backgroundColor = [UIColor redColor];
+    _introTableV.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1];
     self.introTableV.delegate = self;
     self.introTableV.dataSource = self;
     self.introTableV.scrollEnabled = NO;
@@ -151,7 +161,7 @@
     self.contentTableV.dataSource = self;
     [self.contentTableV registerNib:[UINib nibWithNibName:@"CompleteCell" bundle:nil] forCellReuseIdentifier:@"ComicsModel"];
     self.contentTableV.scrollEnabled = NO;
-    self.contentTableV.backgroundColor = [UIColor blueColor];
+    self.contentTableV.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1];
 }
 
 
@@ -164,7 +174,6 @@
 
         // 每本作品信息
         NSArray *array = dictionary[@"data"][@"comics"];
-//        NSLog(@"%@", dictionary);
         for (NSDictionary *mDic in array) {
             ComicsModel *comics = [[ComicsModel alloc] init];
             [comics setValuesForKeysWithDictionary:mDic];
@@ -176,10 +185,11 @@
         [_topComics setValuesForKeysWithDictionary:dictionary[@"data"]];
         
         
-//        // 用于 判断是否 关注
+        // 用于 判断是否 关注
         _is_favourite = _topComics.is_favourite;
-//
-//        // 作品简介 descriptions
+
+
+        // 作品简介 descriptions
         _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, ScreenWidth - 20, 0)];
         _descLabel.text = _topComics.descriptions;
         _descLabel.font = [UIFont systemFontOfSize:13];
@@ -191,7 +201,12 @@
         _authorUserInfo = [[AuthorUserInfo alloc] init];
         [_authorUserInfo setValuesForKeysWithDictionary:dictionary[@"data"][@"user"]];
         
+    
+        __block CompleteViewController *completeVC = self;
         dispatch_async(dispatch_get_main_queue(), ^{
+            
+            // - 关注按钮 -
+             [self attentionStateWithButton:self.attentionBtn];
 
             // - 头部视图 -
             // 封面图片
@@ -214,13 +229,13 @@
 
             // 漫画名
             self.completeView.titleLabel.text = _topComics.title;
-            
             [self.completeView.contentTableV reloadData];
             [self.contentTableV reloadData];
-        
+            [self.introTableV reloadData];
+            
             // 截获对contentsize的设置
             [self setTableViewContentOffset];
-            
+
         });
         
         
@@ -228,6 +243,27 @@
         NSLog(@"error:%@", error);
     }];
 }
+
+- (void)setSortBtn {
+    __block CompleteViewController *completeVC = self;
+    _completeView.sortBtn.block = (id)^(id button){
+        UIButton *sortBtn = (UIButton *)button;
+        if (sortBtn.selected) {
+            [sortBtn setTitle:@"正序" forState:UIControlStateNormal];
+            [completeVC.completeArray removeAllObjects];
+            completeVC.completeArray = nil;
+            [completeVC request:@"1"];
+        } else {
+            [sortBtn setTitle:@"倒序" forState:UIControlStateNormal];
+            [completeVC request:@"0"];
+            [completeVC.completeArray removeAllObjects];
+            completeVC.completeArray = nil;
+        }
+        sortBtn.selected = !sortBtn.selected;
+        return button;
+    };
+}
+
 
 - (void)loadView {
     [super loadView];
@@ -281,21 +317,28 @@
         self.completeView.contentTableV.scrollEnabled = YES;
         self.scrollView.contentOffset = CGPointMake(ScreenWidth, 0);
     }
-    
-    NSLog(@"%@",getsendValue);
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-//    [self.completeView.contentTableV reloadData];
-//    [self.contentTableV reloadData];
-//    [self.introTableV reloadData];
-    
-//    [self.view addSubview:[self.completeView createHeadView]];// 头视图
-    
-
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (_topComics.is_favourite == 1) {
+        [NetWorkRequestManager requestWithType:POST urlString:[NSString stringWithFormat:Discover_fav, _topComics.ids] dic:@{} successful:^(NSData *data) {
+            
+        } errorMessage:^(NSError *error) {
+            NSLog(@"%@", error);
+        }];
+    } else {
+        [NetWorkRequestManager requestWithType:DELETE urlString:[NSString stringWithFormat:Discover_fav, _topComics.ids] dic:@{} successful:^(NSData *data) {
+            
+        } errorMessage:^(NSError *error) {
+            NSLog(@"%@", error);
+        }];
+    }
+}
 
 
 - (void)didReceiveMemoryWarning {
@@ -312,7 +355,6 @@
         return 2;
     }
     return 1;
-    
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -327,7 +369,6 @@
     }
 
     return nil;
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -347,16 +388,15 @@
             return ScreenHeight / 3 - 64;
         } else if (indexPath.section == 1){// 第二组的第一个cell的大小
             return ScreenHeight - 64 - 40;//ScreenHeight / 3 * 2 - 40
+        
         }
     }
     
     if (tableView == self.introTableV) {
         if (indexPath.row == 0) {
      
-//            CGRect rect = [_descLabel.text boundingRectWithSize:CGSizeMake(ScreenWidth, FLT_MAX) options:0 attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} context:nil];
-//            NSLog(@"%f,%f,%f,%f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-            UITableViewCell *cell = [self tableView:self.introTableV cellForRowAtIndexPath:indexPath];
-            return cell.frame.size.height;
+            CGRect rect = [_descLabel.text boundingRectWithSize:CGSizeMake(ScreenWidth, FLT_MAX) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} context:nil];
+            return rect.size.height + 20;
         } else {
             return 40;
         }
@@ -400,16 +440,14 @@
             [cell.contentView addSubview:self.scrollView];
         }
     }
-    
 
-    
     if (tableView == self.introTableV) {
         cell = [[BaseTableViewCell alloc] init];
         if (indexPath.row == 0) {
-            CGRect rect = [_topComics.descriptions boundingRectWithSize:CGSizeMake(FLT_MAX, FLT_MAX) options:0 attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} context:nil];
+            CGRect rect = [_descLabel.text boundingRectWithSize:CGSizeMake(ScreenWidth, FLT_MAX) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} context:nil];
+
             CGFloat height = rect.size.height;
 
-            // CGRectMake(0, 0, ScreenWidth, 80)
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, height)];
             UILabel *descriptionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, ScreenWidth - 20, height + 10)];
 
@@ -418,7 +456,7 @@
             descriptionsLabel.numberOfLines = 0;
             descriptionsLabel.textColor = [UIColor colorWithRed:0.38 green:0.38 blue:0.38 alpha:1];
             // 分割线
-            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, height + 10 - 1, ScreenWidth, 1)];
+            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, height + 20 - 1, ScreenWidth, 1)];
             line.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1];
             [view addSubview:line];
             [view addSubview:descriptionsLabel];
@@ -433,7 +471,6 @@
             imageV.layer.masksToBounds = YES;
             
             UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, 0, ScreenWidth - 105, 40)];
-//            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:_authorUserInfo.avatar_url] placeholderImage:[UIImage imageNamed:@"pre"]];
             
             textLabel.text = _authorUserInfo.nickname;
             textLabel.font = [UIFont systemFontOfSize:14];
@@ -448,8 +485,6 @@
             [cell.contentView addSubview:view];
             
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;//cell的右边有一个小箭头，距离右边有十几像素；
-            
-           
 
         }
      
@@ -459,9 +494,18 @@
         if (indexPath.row == 0){
             cell = [[BaseTableViewCell alloc] init];
             [cell.contentView addSubview:[self.completeView createSection_Two_Row_One]];
+            // 设置排序按钮
+            [self setSortBtn];
             
         } else if (indexPath.row >= 1){
+//            if (self.completeArray.count > 0) {
+//                <#statements#>
+//            }
+//            tableView.frame = CGRectMake(ScreenWidth, 0, ScreenWidth, 100 * self.completeArray.count + 40);
+//            NSLog(@"%f", tableView.frame.size.height);
             
+            
+//            
             ComicsModel *comicsmodel = self.completeArray[indexPath.row - 1];
             cell = [FactoryTableViewCell creatTableViewCell:comicsmodel tableView:tableView indexPath:indexPath];
             
@@ -481,34 +525,8 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     tableView.bounces = NO;// 去掉回弹效果
     tableView.showsVerticalScrollIndicator = NO;
-    
-      /*
-     else if (indexPath.section == 1 && indexPath.row == 0){
-        
-        cell = [[BaseTableViewCell alloc] init];
-        [cell.contentView addSubview:[self.completeView createSection_Two_Row_One]];
-        
-    } else if (indexPath.section == 1 && indexPath.row >= 1){
-
-        ComicsModel *comicsmodel = self.completeArray[indexPath.row - 1];
-        cell = [FactoryTableViewCell creatTableViewCell:comicsmodel tableView:tableView indexPath:indexPath];
-        CGFloat y = cell.frame.origin.y;// cell的y轴
-        CGFloat height = cell.frame.size.height;
-        CGFloat tableViewHeight = tableView.frame.size.height - 64;
-        if (y + height > tableViewHeight) {// 当最后一个cell超出表格，可以滚动
-            tableView.scrollEnabled = YES;
-        }
-        
-    }else {
-        return nil;
-    }
-*/
-
-    
 
 
-   
-    
     return cell;
 }
 
@@ -532,7 +550,7 @@
      offset >＝ comicsCellH，主表的滚动范围为 comicsCellH，内容表可滚动，主表不可滚动
      */
     CGFloat offset = comicsCellTotalH - comicsCellSurplusH;
-    NSLog(@"%f", offset);
+//    NSLog(@"%f", offset);
     if (offset > 0) {
         self.completeView.contentTableV.scrollEnabled = YES;
         if(comicsCellTotalH <= comicsCellH) {
@@ -562,82 +580,74 @@
 }
 
 
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 
-    CGRect rectInTableView = [self.completeView.contentTableV rectForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+    CGRect rectInTableView = [self.completeView.contentTableV rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     CGRect rect = [self.completeView.contentTableV convertRect:rectInTableView toView:[self.completeView.contentTableV superview]];
     CGFloat height = ScreenHeight / 3 - 64;
+
     if (rect.origin.y + height < 64) {
-        NSLog(@"%f", rect.origin.y);
+
         [self.view addSubview:self.newView];
         self.completeView.contentTableV.scrollEnabled = NO;
         self.contentTableV.scrollEnabled = YES;
-    } else {
-        [self.newView removeFromSuperview];
-        
+
         CGRect rectcontentTV = [self.contentTableV rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        CGRect rectcontent = [self.contentTableV convertRect:rectcontentTV toView:[self.completeView.contentTableV superview]];
+        CGRect rectcontent = [self.contentTableV convertRect:rectcontentTV toView:[[self.completeView.contentTableV superview] superview]];
+
         
-        
-        if (rectcontent.origin.y < 64 + 40) {
+        if (rectcontent.origin.y > _productionY && 64 + 40 - 1 < rectcontent.origin.y && rectcontent.origin.y < 64 + 40) {
             self.completeView.contentTableV.scrollEnabled = YES;
             self.contentTableV.scrollEnabled = NO;
-        } else {
-            // 判断，rectcontent.origin.y 是不是比上一次的大:
-            // 如果是，就在往下拉，那么当rectcontent.origin.y == 64 + 40，
-//            self.completeView.contentTableV.scrollEnabled = YES;
-//            self.contentTableV.scrollEnabled = NO;
-            // 如果不是，就在往上拉，那么当rectcontent.origin.y == 64 + 40，
-//            self.completeView.contentTableV.scrollEnabled = NO;
-//            self.contentTableV.scrollEnabled = YES;
-            if (rectcontent.origin.y >= _productionY && rectcontent.origin.y == 64 + 40) {
-                self.completeView.contentTableV.scrollEnabled = YES;
-                self.contentTableV.scrollEnabled = NO;
-            }
-            if (rectcontent.origin.y < _productionY && rectcontent.origin.y == 64 + 40) {
-                self.completeView.contentTableV.scrollEnabled = NO;
-                self.contentTableV.scrollEnabled = YES;
-            }
-            
-            
-            
-            
-            
         }
         _productionY = rectcontent.origin.y;
-        
-    }
-    
 
 
-//    static CGFloat cellOfY = 64;
-    
-
-    
-    
-//    NSLog(@"----%@", self.completeView.headerView);
-//    if (rect.origin.y + height > 64 && rect.origin.y + height < ScreenHeight / 3) {
-//        NSLog(@"!!!%@", self.completeView.headerView);
-//        CGRect frame = self.completeView.headerView.frame;
-//        frame.origin.y = self.completeView.headerView.frame.origin.y + rect.origin.y - cellOfY;
-//        NSLog(@"???%@", self.completeView.headerView);
-//        NSLog(@"frame.origin.y:%f", frame.origin.y);
-//        NSLog(@"%f", - ScreenHeight / 3 + 64);
-//        if (frame.origin.y > - ScreenHeight / 3 + 64 && frame.origin.y <= 0) {
-//            self.completeView.headerView.frame = frame;
+//        if (rectcontent.origin.y < 64 + 40) {
+//            self.completeView.contentTableV.scrollEnabled = YES;
+//            self.contentTableV.scrollEnabled = NO;
+//        } else {
+//            // 判断，rectcontent.origin.y 是不是比上一次的大:
+//            // 如果是，就在往下拉，那么当rectcontent.origin.y == 64 + 40，
+////            self.completeView.contentTableV.scrollEnabled = YES;
+////            self.contentTableV.scrollEnabled = NO;
+//            // 如果不是，就在往上拉，那么当rectcontent.origin.y == 64 + 40，
+////            self.completeView.contentTableV.scrollEnabled = NO;
+////            self.contentTableV.scrollEnabled = YES;
+//            if (rectcontent.origin.y >= _productionY && rectcontent.origin.y == 64 + 40) {
+//                self.completeView.contentTableV.scrollEnabled = YES;
+//                self.contentTableV.scrollEnabled = NO;
+//            }
+//            if (rectcontent.origin.y < _productionY && rectcontent.origin.y == 64 + 40) {
+//                self.completeView.contentTableV.scrollEnabled = NO;
+//                self.contentTableV.scrollEnabled = YES;
+//            }
+//            
 //        }
-//        
-//    } else if (rect.origin.y == 64) {
-//        self.completeView.headerView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight / 3);
-//    } else if ( rect.origin.y + height == 64) {
-//        self.completeView.headerView.frame = CGRectMake(0, - ScreenHeight / 3 + 64, ScreenWidth, ScreenHeight / 3);
-//    }
-//    
-//    NSLog(@"rect.origin.y - cellOfY:%f", rect.origin.y - cellOfY);
-//    NSLog(@"rect.origin.y:%f, cellOfY:%f", rect.origin.y, cellOfY);
-//    cellOfY = rect.origin.y;
-//    NSLog(@"%f, %f", rect.origin.y, frame.origin.y);
+
+        
+    } else {
+        [self.newView removeFromSuperview];
+    }
+}
+
+
+#pragma mark - 点击单元格跳转 - 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (tableView == self.introTableV && indexPath.row == 1) {
+        AuthorViewController *authorVC = [[AuthorViewController alloc] init];
+        authorVC.ids = _authorUserInfo.ids;// 传入作者的id
+        UINavigationController *navc = [[UINavigationController alloc] initWithRootViewController:authorVC];
+        [self.navigationController presentViewController:navc animated:YES completion:nil];
+    }
+    if (tableView == self.contentTableV && indexPath.row > 0) {
+        DetailsViewController *detailsVC = [[DetailsViewController alloc] init];
+        detailsVC.cid = [_completeArray[indexPath.row - 1] ids];// 传入详情的id
+        
+        detailsVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:detailsVC animated:YES];
+    }
     
 }
 

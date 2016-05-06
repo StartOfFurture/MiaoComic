@@ -10,7 +10,8 @@
 
 typedef NS_ENUM(NSInteger, RequestType){
     GET,
-    POST
+    POST,
+    DELETE
 };
 
 typedef void(^Successful)(NSData *data);

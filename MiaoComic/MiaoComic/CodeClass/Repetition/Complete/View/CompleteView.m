@@ -169,11 +169,15 @@
     [view addSubview:contentLabel];
     
     // 排序
-    _sortBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _sortBtn.frame = CGRectMake(ScreenWidth - 50 , 0, 30, 40);
-    _sortBtn.titleLabel.font = [UIFont systemFontOfSize:13];
-    [_sortBtn setTitle:@"倒序" forState:UIControlStateNormal];
-    [_sortBtn setTitleColor:[UIColor colorWithRed:0.38 green:0.38 blue:0.38 alpha:1] forState:UIControlStateNormal];
+    if (!_sortBtn) {
+        _sortBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _sortBtn.frame = CGRectMake(ScreenWidth - 50 , 0, 30, 40);
+        _sortBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+        [_sortBtn setTitle:@"倒序" forState:UIControlStateNormal];
+        [_sortBtn setTitleColor:[UIColor colorWithRed:0.38 green:0.38 blue:0.38 alpha:1] forState:UIControlStateNormal];
+        _sortBtn.selected = YES;
+        
+    }
     [view addSubview:_sortBtn];
     
     // 分割线
