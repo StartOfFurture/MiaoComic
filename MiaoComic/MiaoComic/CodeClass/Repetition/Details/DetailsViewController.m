@@ -45,6 +45,7 @@
 @implementation DetailsViewController
 
 -(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.hidesBarsOnSwipe = YES;
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     [self.tableView reloadData];
     
@@ -69,7 +70,7 @@
     return _commentArray;
 }
 
-// 漫画数据
+// 加载漫画数据
 -(void)requestData{
     NSString *str = [DETAILCOMICURL stringByAppendingString:[NSString stringWithFormat:@"%@",_cid]];
     str = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
@@ -139,12 +140,11 @@
     self.navigationController.hidesBarsOnSwipe = YES;//滚动时隐藏导航栏
     
     // 返回按钮
+    [self.navigationItem setHidesBackButton:YES];// 隐藏默认的"返回"按钮 
     UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
-    back.frame = CGRectMake(0, 0, 10, 10);
-    back.block = (id)^(id button){
-        [self dismissViewControllerAnimated:YES completion:nil];
-    };
-    [back setBackgroundImage:[UIImage imageNamed:@"back_1"] forState:UIControlStateNormal];
+    back.frame = CGRectMake(0, 0, 20, 20);
+    [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [back setImage:[UIImage imageNamed:@"back_1"] forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:back];
     
     // 全集按钮测创建
@@ -157,8 +157,9 @@
     _allButton.block = (id)^(id button){
         __weak NSString *tid = detailVC.tid;
         CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:completeVC];
         completeVC.ids = tid;
-        [detailVC.navigationController pushViewController:completeVC animated:YES];
+        [detailVC presentViewController:naVC animated:YES completion:nil];
         return nil;
         
     };
@@ -501,6 +502,11 @@
     DetailsViewController *detailVC = [[DetailsViewController alloc] init];
     detailVC.cid = _nid;
     [self.navigationController pushViewController:detailVC animated:YES];
+}
+
+// 返回
+-(void)back{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
