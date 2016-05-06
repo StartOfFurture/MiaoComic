@@ -16,6 +16,7 @@
 #import "CompleteViewController.h"
 #import "ReadKeyBoard.h"
 #import "AuthorViewController.h"
+#import "LoadingView.h"
 
 @class DetailsViewController;
 
@@ -39,6 +40,7 @@
 @property (nonatomic, copy) NSString *aid;// 作者的id
 
 @property (nonatomic, strong) ReadKeyBoard *keyBoard;
+@property (nonatomic, strong) LoadingView *loadingView;
 
 @end
 
@@ -96,6 +98,12 @@
 
     } errorMessage:^(NSError *error) {
         NSLog(@"error is %@",error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_loadingView removeFromSuperview];
+            _loadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+            [_loadingView createAnimationWithCountImage:20 nameImage:@"630f0cdb690cf448f97a0126dfadf414－%d（被拖移）.tiff" timeInter:2 labelText:@"哎呀！网络出问题了？"];
+            [self.tableView addSubview:_loadingView];
+        });
     }];
 }
 
@@ -126,6 +134,7 @@
         
     } errorMessage:^(NSError *error) {
         NSLog(@"error is %@",error);
+        
     }];
 }
 
@@ -143,7 +152,7 @@
     [self.navigationItem setHidesBackButton:YES];// 隐藏默认的"返回"按钮 
     UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
     back.frame = CGRectMake(0, 0, 20, 20);
-    [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [back addTarget:self action:@selector(backClilck:) forControlEvents:UIControlEventTouchUpInside];
     [back setImage:[UIImage imageNamed:@"back_1"] forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:back];
     
@@ -213,12 +222,32 @@
     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
+#pragma mark- 时时监听滚动
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    NSLog(@"滚~~~~~~~~");
+    // 随着导航栏的隐藏，评论隐藏
+    if (self.navigationController.navigationBar.hidden) {
+        [UIView animateWithDuration:0.01 animations:^{
+            _keyBoard.frame = CGRectMake(0, ScreenHeight, ScreenWidth, 40);
+        }];
+    }else {
+        [UIView animateWithDuration:0.01 animations:^{
+            _keyBoard.frame = CGRectMake(0, ScreenHeight - 40, ScreenWidth, 40);
+        }];
+    }
+}
+
 #pragma mark- 键盘方法
 - (void)showBoardKey:(NSNotification *)no{
     _tableView.scrollEnabled = NO;
     CGRect keyBoard = [no.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
     [UIView animateWithDuration:[no.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue] animations:^{
-        self.keyBoard.transform = CGAffineTransformMakeTranslation(0, -keyBoard.size.height);
+        if (self.navigationController.navigationBar.hidden) {
+            self.keyBoard.transform = CGAffineTransformMakeTranslation(0, -keyBoard.size.height - 40);
+        }else {
+            self.keyBoard.transform = CGAffineTransformMakeTranslation(0, -keyBoard.size.height);
+        }
+        
     }];
     // 遮盖随着tableview的偏移量改变
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, _tableView.contentOffset.y, ScreenWidth, ScreenHeight)];
@@ -485,6 +514,7 @@
     UINavigationController *naVc = [[UINavigationController alloc] initWithRootViewController:commentVC];
     commentVC.ID = _cid;
     [self presentViewController:naVc animated:YES completion:nil];
+    
 }
 
 
@@ -505,8 +535,9 @@
 }
 
 // 返回
--(void)back{
-    [self dismissViewControllerAnimated:YES completion:nil];
+-(void)backClilck:(UIButton *)button{
+    NSLog(@"返回");
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
