@@ -20,7 +20,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake(ScreenWidth - 30, 80);
+        layout.itemSize = CGSizeMake(ScreenWidth - 30, (ScreenWidth - 30) / 4);
         layout.minimumInteritemSpacing = 0;
         layout.minimumLineSpacing = 0;
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;

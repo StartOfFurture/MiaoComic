@@ -42,13 +42,13 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake((ScreenWidth - 24)/3, 120);
-        layout.minimumInteritemSpacing = 2;
-        layout.minimumLineSpacing = 2;
-        layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(8, 2, ScreenWidth - 16, layout.itemSize.height * 2) collectionViewLayout:layout];
+        _layout = [[UICollectionViewFlowLayout alloc] init];
+//        _layout.itemSize = CGSizeMake((ScreenWidth - 24)/3, 120);
+        _layout.minimumInteritemSpacing = 2;
+        _layout.minimumLineSpacing = 2;
+        _layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        _layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:_layout];
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
@@ -62,7 +62,12 @@
 
 - (void)layoutSubviews{
     [super layoutSubviews];
-    
+    if ([_identent isEqualToString:@"renqi"]) {
+        _layout.itemSize = CGSizeMake((ScreenWidth - 24)/3, self.contentView.frame.size.height);
+    }else{
+        _layout.itemSize = CGSizeMake((ScreenWidth - 24)/3, (self.contentView.frame.size.height - 6) / 2);
+    }
+    _collectionView.frame = CGRectMake(8, 2, ScreenWidth - 16, _layout.itemSize.height * 2);
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{

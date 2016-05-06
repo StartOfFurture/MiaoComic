@@ -11,6 +11,7 @@
 #import "CommentTableCell.h"
 #import "ReadKeyBoard.h"
 #import "LoginViewController.h"
+#import "LoadingView.h"
 
 //键盘已经出现
 static dispatch_once_t onceTock;
@@ -26,6 +27,8 @@ static dispatch_once_t onceTock1;
 @property (nonatomic, strong)UISegmentedControl *segVC;//标题
 
 @property (nonatomic, strong)UIView *blackView;//遮盖层
+
+@property (nonatomic, strong)LoadingView *loadingView;//正在加载视图
 
 @end
 
@@ -56,6 +59,7 @@ static dispatch_once_t onceTock1;
     }
     NSLog(@"%@",self.array);
     dispatch_async(dispatch_get_main_queue(), ^{
+        [_loadingView removeFromSuperview];
         static dispatch_once_t onceToken2;
         dispatch_once(&onceToken2, ^{
             if (self.array.count != 0) {
@@ -78,6 +82,12 @@ static dispatch_once_t onceTock1;
     [NetWorkRequestManager requestWithType:GET urlString:[NSString stringWithFormat:string, self.ID, self.since] dic:nil successful:^(NSData *data) {
         [self jiexiCreateData:data];
     } errorMessage:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_loadingView removeFromSuperview];
+            _loadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+            [_loadingView createAnimationWithCountImage:20 nameImage:@"630f0cdb690cf448f97a0126dfadf414－%d（被拖移）.tiff" timeInter:2 labelText:@"哎呀！网络出问题了？"];
+            [self.view addSubview:_loadingView];
+        });
         NSLog(@"%@",error);
     }];
 }
@@ -144,6 +154,10 @@ static dispatch_once_t onceTock1;
     
     //请求数据
     [self requestData:COMMENT_New];
+    
+    _loadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+    [_loadingView createAnimationWithCountImage:4 nameImage:@"6bed450854904c8dd50d5b2553f62cf5－%d（被拖移）.tiff" timeInter:0.5 labelText:@"正在加载中～～～"];
+    [self.view addSubview:_loadingView];
     
     // Do any additional setup after loading the view.
 }

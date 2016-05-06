@@ -14,12 +14,14 @@
 #import "DiscoveryViewController.h"
 #import "ClassifyListModel.h"
 #import "CompleteViewController.h"
+#import "LoadingView.h"
 
 @interface SearchViewController ()<UISearchResultsUpdating,UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong)UISearchController *searchController;
 @property (strong, nonatomic)UITableView *tableView;
 @property (nonatomic, strong)NSMutableArray *dataArr;
+@property (nonatomic, strong)LoadingView *loadingView;//视图加载的时候的图片
 
 @end
 
@@ -51,9 +53,28 @@
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [_tableView reloadData];
+            if (self.dataArr.count == 0 && ![self.searchController.searchBar.text isEqualToString:@""]) {
+                [_loadingView removeFromSuperview];
+                _loadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+                [_loadingView createAnimationWithCountImage:4 nameImage:@"6bed450854904c8dd50d5b2553f62cf5－%d（被拖移）.tiff" timeInter:0.5 labelText:@"呀呀！搜索不到你要的结果哦～"];
+                [self.view addSubview:_loadingView];
+            }else if ([self.searchController.searchBar.text isEqualToString:@""]){
+                [_loadingView removeFromSuperview];
+                _loadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+                [_loadingView createAnimationWithCountImage:4 nameImage:@"6bed450854904c8dd50d5b2553f62cf5－%d（被拖移）.tiff" timeInter:0.5 labelText:@"很高兴为你服务～～～"];
+                [self.view addSubview:_loadingView];
+            }else{
+                [_loadingView removeFromSuperview];
+            }
         });
     } errorMessage:^(NSError *error) {
         NSLog(@"%@",error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_loadingView removeFromSuperview];
+            _loadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+            [_loadingView createAnimationWithCountImage:20 nameImage:@"630f0cdb690cf448f97a0126dfadf414－%d（被拖移）.tiff" timeInter:2 labelText:@"哎呀！网络出问题了？"];
+            [self.view addSubview:_loadingView];
+        });
     }];
 }
 
@@ -114,12 +135,17 @@
     //设置搜索框加到哪个视图控制器上面，很重要!!!!!!!!!!!!如果是模态出来的要加，是push出来的不用加
 //    self.definesPresentationContext = YES;
     //搜索框一进去就是第一响应者
-    self.searchController.searchBar.text = @"";
+//    self.searchController.searchBar.text = @"";
     //按钮
     self.searchController.searchBar.showsBookmarkButton = YES;
     
     
     self.navigationItem.titleView = self.searchController.searchBar;
+    
+    //视图加载的时候的显示
+    _loadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+    [_loadingView createAnimationWithCountImage:4 nameImage:@"6bed450854904c8dd50d5b2553f62cf5－%d（被拖移）.tiff" timeInter:0.5 labelText:@"很高兴为你服务～～～"];
+    [self.view addSubview:_loadingView];
     
     // Do any additional setup after loading the view.
 }
