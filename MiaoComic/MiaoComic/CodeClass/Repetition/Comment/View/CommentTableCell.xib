@@ -79,12 +79,20 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mud-HR-HDb">
+                        <rect key="frame" x="2" y="128" width="391" height="1"/>
+                        <color key="backgroundColor" red="0.86491871840000001" green="0.854848469" blue="0.84935854420000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="Kpj-Up-IPS"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="zq3-hE-Zga" firstAttribute="centerY" secondItem="q0O-RP-0IZ" secondAttribute="centerY" id="0ex-Lg-blA"/>
                     <constraint firstItem="Bxs-Gl-OhG" firstAttribute="leading" secondItem="szp-wf-G9v" secondAttribute="trailing" constant="10" id="0vi-xF-hKf"/>
                     <constraint firstItem="v7k-r7-0Ci" firstAttribute="leading" secondItem="AdK-Lf-zF0" secondAttribute="leading" id="0vn-UE-0ef"/>
                     <constraint firstItem="FeP-F8-3YQ" firstAttribute="top" secondItem="Bxs-Gl-OhG" secondAttribute="bottom" constant="5" id="47N-G5-Otj"/>
+                    <constraint firstAttribute="bottom" secondItem="Mud-HR-HDb" secondAttribute="bottom" constant="1" id="5Iz-tx-FgH"/>
                     <constraint firstItem="Bxs-Gl-OhG" firstAttribute="top" secondItem="X25-u5-Naf" secondAttribute="top" constant="10" id="858-SN-Nj4"/>
                     <constraint firstItem="szp-wf-G9v" firstAttribute="top" secondItem="X25-u5-Naf" secondAttribute="top" constant="10" id="BCf-GW-XJm"/>
                     <constraint firstAttribute="trailing" secondItem="AdK-Lf-zF0" secondAttribute="trailing" constant="20" id="BIn-9t-cye"/>
@@ -94,9 +102,11 @@
                     <constraint firstItem="zq3-hE-Zga" firstAttribute="leading" secondItem="FeB-JN-sbI" secondAttribute="trailing" constant="5" id="Naj-6J-TIA"/>
                     <constraint firstItem="FeP-F8-3YQ" firstAttribute="leading" secondItem="szp-wf-G9v" secondAttribute="trailing" constant="10" id="TEU-S5-zl4"/>
                     <constraint firstItem="FeB-JN-sbI" firstAttribute="centerY" secondItem="zq3-hE-Zga" secondAttribute="centerY" constant="-3" id="Z02-rT-DY6"/>
+                    <constraint firstAttribute="trailing" secondItem="Mud-HR-HDb" secondAttribute="trailing" constant="2" id="bbg-eB-pWK"/>
                     <constraint firstItem="AdK-Lf-zF0" firstAttribute="top" secondItem="FeP-F8-3YQ" secondAttribute="bottom" constant="20" id="haO-vh-fkI"/>
                     <constraint firstItem="q0O-RP-0IZ" firstAttribute="leading" secondItem="zq3-hE-Zga" secondAttribute="trailing" constant="20" id="hjN-QK-aLr"/>
                     <constraint firstItem="szp-wf-G9v" firstAttribute="leading" secondItem="X25-u5-Naf" secondAttribute="leading" constant="10" id="lxa-Z8-M4K"/>
+                    <constraint firstItem="Mud-HR-HDb" firstAttribute="leading" secondItem="X25-u5-Naf" secondAttribute="leading" constant="2" id="mRx-6C-hA5"/>
                     <constraint firstItem="q0O-RP-0IZ" firstAttribute="centerY" secondItem="v7k-r7-0Ci" secondAttribute="centerY" id="naE-b0-2Kp"/>
                 </constraints>
             </tableViewCellContentView>
@@ -110,7 +120,7 @@
                 <outlet property="yubaoButton" destination="v7k-r7-0Ci" id="BvJ-2t-Zj2"/>
                 <outlet property="zanButton" destination="FeB-JN-sbI" id="fNr-ic-VZg"/>
             </connections>
-            <point key="canvasLocation" x="325.5" y="280.5"/>
+            <point key="canvasLocation" x="686.5" y="344.5"/>
         </tableViewCell>
     </objects>
     <resources>

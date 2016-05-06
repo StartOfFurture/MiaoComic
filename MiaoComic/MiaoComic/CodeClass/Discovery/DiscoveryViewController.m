@@ -139,17 +139,11 @@
             [self.hotBannerArr addObject:model];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_hotLoadingView removeFromSuperview];
             [self createHotBannerView];
             [_hotTableView.mj_header endRefreshing];
         });
     } errorMessage:^(NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_hotLoadingView removeFromSuperview];
-            _hotLoadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
-            [_hotLoadingView createAnimationWithCountImage:20 nameImage:@"630f0cdb690cf448f97a0126dfadf414－%d（被拖移）.tiff" timeInter:2 labelText:@"哎呀！网络出问题了？"];
-            [self.hotTableView addSubview:_hotLoadingView];
-        });
+        
         NSLog(@"1%@",error);
     }];
     //列表请求
@@ -183,9 +177,16 @@
         }
         NSLog(@"%@",self.hotListDic);
         dispatch_async(dispatch_get_main_queue(), ^{
+            [_hotLoadingView removeFromSuperview];
             [_hotTableView reloadData];
         });
     } errorMessage:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_hotLoadingView removeFromSuperview];
+            _hotLoadingView = [[NSBundle mainBundle] loadNibNamed:@"LoadingView" owner:nil options:nil][0];
+            [_hotLoadingView createAnimationWithCountImage:20 nameImage:@"630f0cdb690cf448f97a0126dfadf414－%d（被拖移）.tiff" timeInter:2 labelText:@"哎呀！网络出问题了？"];
+            [self.hotTableView addSubview:_hotLoadingView];
+        });
         NSLog(@"2%@",error);
     }];
 }
@@ -194,16 +195,16 @@
     [super viewDidLoad];
 
 #warning 测试评论
-    UIButton *button11 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button11.frame = CGRectMake(0, 0, 50, 20);
-    [button11 setTitle:@"评论" forState:UIControlStateNormal];
-    button11.block = (id)^(id button1){
-        CommentViewController *commVC = [[CommentViewController alloc] init];
-        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:commVC];
-        [self presentViewController:naVC animated:YES completion:nil];
-        return nil;
-    };
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button11];
+//    UIButton *button11 = [UIButton buttonWithType:UIButtonTypeSystem];
+//    button11.frame = CGRectMake(0, 0, 50, 20);
+//    [button11 setTitle:@"评论" forState:UIControlStateNormal];
+//    button11.block = (id)^(id button1){
+//        CommentViewController *commVC = [[CommentViewController alloc] init];
+//        UINavigationController *naVC = [[UINavigationController alloc] initWithRootViewController:commVC];
+//        [self presentViewController:naVC animated:YES completion:nil];
+//        return nil;
+//    };
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button11];
     
     //热门、分类标题的显示
     UISegmentedControl *segVC = [[UISegmentedControl alloc] initWithItems:@[@"热门",@"分类"]];

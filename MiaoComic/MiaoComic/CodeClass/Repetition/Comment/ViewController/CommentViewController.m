@@ -95,7 +95,7 @@ static dispatch_once_t onceTock1;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.since = @"0";
-    self.ID = @"11857";
+//    self.ID = @"11857";
     
     //按钮的显示
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -125,6 +125,7 @@ static dispatch_once_t onceTock1;
     
     //添加表视图
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 40) style:UITableViewStylePlain];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [_tableView registerNib:[UINib nibWithNibName:@"CommentTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"CommentModel"];
