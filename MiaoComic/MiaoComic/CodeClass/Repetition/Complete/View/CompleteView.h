@@ -10,6 +10,7 @@
 
 @interface CompleteView : UIView
 @property (nonatomic, strong) UIImageView *headerView;// 头部视图
+@property (nonatomic, strong) UIView *canvas;// 装载点赞等的图层
 @property (nonatomic, strong) UIView *tableHeaderView;
 @property (nonatomic, strong) UILabel *titleLabel;// 作品的名字
 @property (nonatomic, strong) UILabel *likeLabel;// 点赞数

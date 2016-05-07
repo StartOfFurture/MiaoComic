@@ -30,7 +30,12 @@
 @property (nonatomic, strong) UIScrollView *scrollView;// scrollView
 
 
-@property (nonatomic, assign) CGFloat productionY;// 标记上一次的cell的位置
+@property (nonatomic, assign) CGFloat orgY;// 标记源cell的位置
+@property (nonatomic, assign) CGFloat preY;// 标记上一次的cell的位置
+@property (nonatomic, assign) CGFloat newY;// 标记新的cell的位置
+@property (nonatomic, assign) NSInteger getY;
+
+@property (nonatomic, assign) BOOL makeReturn;// 标记从详情返回时，需不需要，头视图上的文字
 
 
 
@@ -51,6 +56,7 @@
 - (UIImageView *)newView {
     if (_newView == nil) {
         self.newView = [[UIImageView alloc] initWithFrame:CGRectMake(0, - ScreenHeight / 3 + 64, ScreenWidth, ScreenHeight / 3)];
+
         
         // 阴影
         for (CGFloat i = 0, a1 = 1.0, Max = 255.0, height = 150.0; i < Max; i ++) {
@@ -147,10 +153,9 @@
 - (void)createTableView {
     self.completeView.contentTableV.delegate = self;
     self.completeView.contentTableV.dataSource = self;
-    self.completeView.contentTableV.scrollEnabled = NO;//设置tableview 不能滚动
+    self.completeView.contentTableV.scrollEnabled = NO;// 设置tableview 不能滚动
     
-    
-    self.introTableV = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
+    self.introTableV = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - 40) style:UITableViewStylePlain];
     _introTableV.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1];
     self.introTableV.delegate = self;
     self.introTableV.dataSource = self;
@@ -202,7 +207,6 @@
         [_authorUserInfo setValuesForKeysWithDictionary:dictionary[@"data"][@"user"]];
         
     
-        __block CompleteViewController *completeVC = self;
         dispatch_async(dispatch_get_main_queue(), ^{
             
             // - 关注按钮 -
@@ -265,6 +269,7 @@
 }
 
 
+// 载入 completeView
 - (void)loadView {
     [super loadView];
     self.completeView = [[CompleteView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
@@ -280,7 +285,9 @@
      */
     [self request:@"0"];
     
-//    _cellOfY = 64;
+    _makeReturn = YES;
+    _preY = 104;
+    _getY = 0;
     
     UIImage *image = [UIImage imageNamed:@"placeholder"];
     [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsCompact];
@@ -302,7 +309,6 @@
     NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
     //添加当前类对象为一个观察者，name和object设置为nil，表示接收一切通知
     [center addObserver:self selector:@selector(notice:) name:@"introAndContent" object:nil];
-    // Do any additional setup after loading the view from its nib.
 }
 
 -(void)notice:(NSNotification *)notification{
@@ -319,8 +325,16 @@
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (_makeReturn == NO) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.completeView.canvas removeFromSuperview];
+        });
+    } {
+        self.completeView.contentTableV.scrollEnabled = YES;
+        self.contentTableV.scrollEnabled = NO;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -343,12 +357,10 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
 #pragma mark - tableView的代理方法 -
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (tableView == self.completeView.contentTableV) {
@@ -387,7 +399,7 @@
         if (indexPath.section == 0) {
             return ScreenHeight / 3 - 64;
         } else if (indexPath.section == 1){// 第二组的第一个cell的大小
-            return ScreenHeight - 64 - 40;//ScreenHeight / 3 * 2 - 40
+            return ScreenHeight - 64 - 40;// ScreenHeight / 3 * 2 - 40
         
         }
     }
@@ -498,34 +510,16 @@
             [self setSortBtn];
             
         } else if (indexPath.row >= 1){
-//            if (self.completeArray.count > 0) {
-//                <#statements#>
-//            }
-//            tableView.frame = CGRectMake(ScreenWidth, 0, ScreenWidth, 100 * self.completeArray.count + 40);
-//            NSLog(@"%f", tableView.frame.size.height);
-            
-            
-//            
+          
             ComicsModel *comicsmodel = self.completeArray[indexPath.row - 1];
             cell = [FactoryTableViewCell creatTableViewCell:comicsmodel tableView:tableView indexPath:indexPath];
-            
-            // 设置滚动条件
-//            CGFloat y = cell.frame.origin.y;// cell的y轴
-//            CGFloat height = cell.frame.size.height;
-//            CGFloat tableViewHeight = ScreenHeight - 64;
-//            if (y + height > tableViewHeight) {// 当最后一个cell超出表格，可以滚动
-//                tableView.scrollEnabled = YES;
-//            }
         }
-      
-        
     }
     
     [tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     tableView.bounces = NO;// 去掉回弹效果
     tableView.showsVerticalScrollIndicator = NO;
-
 
     return cell;
 }
@@ -555,8 +549,6 @@
         self.completeView.contentTableV.scrollEnabled = YES;
         if(comicsCellTotalH <= comicsCellH) {
             self.completeView.contentTableV.contentSize = CGSizeMake(ScreenWidth, ScreenHeight - 64 + offset);
-            
-  
         } else {
             // 当主表的偏移量在
             
@@ -564,7 +556,6 @@
     }
     
 }
-
 
 
 #pragma mark - 添加新的第一组的第一个row -
@@ -586,48 +577,35 @@
     CGRect rect = [self.completeView.contentTableV convertRect:rectInTableView toView:[self.completeView.contentTableV superview]];
     CGFloat height = ScreenHeight / 3 - 64;
 
-    if (rect.origin.y + height < 64) {
+    CGRect rectcontentTV = [self.contentTableV rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    CGRect rectcontent = [self.contentTableV convertRect:rectcontentTV toView:[[self.completeView.contentTableV superview] superview]];
+    
+    _newY = rectcontent.origin.y;
 
-        [self.view addSubview:self.newView];
+    if (rect.origin.y + height <= 64) {
+        [self.completeView.canvas removeFromSuperview];
+        _makeReturn = NO;
         self.completeView.contentTableV.scrollEnabled = NO;
         self.contentTableV.scrollEnabled = YES;
 
-        CGRect rectcontentTV = [self.contentTableV rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        CGRect rectcontent = [self.contentTableV convertRect:rectcontentTV toView:[[self.completeView.contentTableV superview] superview]];
-
+        if (_getY == 0 && rectcontent.origin.y != 0) {
+            _orgY = rectcontent.origin.y;
+            _getY = 1;
+        }
         
-        if (rectcontent.origin.y > _productionY && 64 + 40 - 1 < rectcontent.origin.y && rectcontent.origin.y < 64 + 40) {
+        if (_newY == _orgY && _preY < _newY) {
             self.completeView.contentTableV.scrollEnabled = YES;
             self.contentTableV.scrollEnabled = NO;
         }
-        _productionY = rectcontent.origin.y;
+        _preY = _newY;
 
-
-//        if (rectcontent.origin.y < 64 + 40) {
-//            self.completeView.contentTableV.scrollEnabled = YES;
-//            self.contentTableV.scrollEnabled = NO;
-//        } else {
-//            // 判断，rectcontent.origin.y 是不是比上一次的大:
-//            // 如果是，就在往下拉，那么当rectcontent.origin.y == 64 + 40，
-////            self.completeView.contentTableV.scrollEnabled = YES;
-////            self.contentTableV.scrollEnabled = NO;
-//            // 如果不是，就在往上拉，那么当rectcontent.origin.y == 64 + 40，
-////            self.completeView.contentTableV.scrollEnabled = NO;
-////            self.contentTableV.scrollEnabled = YES;
-//            if (rectcontent.origin.y >= _productionY && rectcontent.origin.y == 64 + 40) {
-//                self.completeView.contentTableV.scrollEnabled = YES;
-//                self.contentTableV.scrollEnabled = NO;
-//            }
-//            if (rectcontent.origin.y < _productionY && rectcontent.origin.y == 64 + 40) {
-//                self.completeView.contentTableV.scrollEnabled = NO;
-//                self.contentTableV.scrollEnabled = YES;
-//            }
-//            
-//        }
-
-        
     } else {
-        [self.newView removeFromSuperview];
+        [self.completeView.headerView addSubview:self.completeView.canvas];
+        _makeReturn = YES;
+        if (_newY == _orgY && _preY < _newY) {
+            self.completeView.contentTableV.scrollEnabled = YES;
+            self.contentTableV.scrollEnabled = NO;
+        }
     }
 }
 

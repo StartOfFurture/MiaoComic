@@ -43,32 +43,36 @@
             [_headerView addSubview:view];
         }
         
+        // 装载点赞等的图层
+        _canvas = [[UIImageView alloc] initWithFrame:CGRectMake(0, ScreenHeight / 3 - 30, ScreenWidth, 30)];
         
         // 点赞图片
-        UIImageView *likeImgV = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth - 160, ScreenHeight / 3 - 30, 20, 20)];
+        UIImageView *likeImgV = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth - 160, 0, 20, 20)];
         likeImgV.image = [UIImage imageNamed:@"w_like"];
-        [_headerView addSubview:likeImgV];
+        [_canvas addSubview:likeImgV];
         // 点赞
-        _likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 135, ScreenHeight / 3 - 30, 45, 20)];
+        _likeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 135, 0, 45, 20)];
         _likeLabel.font = [UIFont systemFontOfSize:13];
         _likeLabel.textColor = [UIColor whiteColor];
-        [_headerView addSubview:_likeLabel];
+        [_canvas addSubview:_likeLabel];
         
         // 评论图片
-        UIImageView *commentImgV = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth - 80, ScreenHeight / 3 - 30, 20, 20)];
+        UIImageView *commentImgV = [[UIImageView alloc] initWithFrame:CGRectMake(ScreenWidth - 80, 0, 20, 20)];
         commentImgV.image = [UIImage imageNamed:@"w_comment"];
-        [_headerView addSubview:commentImgV];
+        [_canvas addSubview:commentImgV];
         // 评论
-        _commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 55, ScreenHeight / 3 - 30, 45, 20)];
+        _commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWidth - 55, 0, 45, 20)];
         _commentLabel.font = [UIFont systemFontOfSize:13];
         _commentLabel.textColor = [UIColor whiteColor];
-        [_headerView addSubview:_commentLabel];
+        [_canvas addSubview:_commentLabel];
         
         // 漫画名
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, ScreenHeight / 3 - 30, ScreenWidth / 2, 20)];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, ScreenWidth / 2, 20)];
         _titleLabel.font = [UIFont systemFontOfSize:15 weight:10];
         _titleLabel.textColor = [UIColor whiteColor];
-        [_headerView addSubview:self.titleLabel];
+        [_canvas addSubview:self.titleLabel];
+        
+        [_headerView addSubview:_canvas];
         
     }
     

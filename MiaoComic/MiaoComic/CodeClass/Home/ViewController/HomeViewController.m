@@ -70,7 +70,7 @@
 - (UIView *)loginView {
     if (!_loginView) {
         self.loginView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, ScreenWidth, ScreenHeight - 64 - 49)];
-        _loginView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
+        _loginView.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1];
         UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 50, 50)];
         imageV.image = [UIImage imageNamed:@"Logo_Miao"];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(80, 30, 120, 20)];
@@ -235,7 +235,7 @@
     _comicsTableView.delegate = self;
     _comicsTableView.dataSource = self;
     _comicsTableView.showsVerticalScrollIndicator = NO;
-    _comicsTableView.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
+    _comicsTableView.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1];
     [self.view addSubview:_comicsTableView];
     
     [self.comicsTableView registerNib:[UINib nibWithNibName:@"HomeCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ComicsModel"];
@@ -244,7 +244,7 @@
     _comicsTableView_switchover = [[UITableView alloc] initWithFrame:CGRectMake(- ScreenWidth, 30 + 64, ScreenWidth, ScreenHeight - 30 - 64 - 49) style:UITableViewStylePlain];
     _comicsTableView_switchover.delegate = self;
     _comicsTableView_switchover.dataSource = self;
-    _comicsTableView_switchover.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.98 alpha:1];
+    _comicsTableView_switchover.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1];
     [self.view addSubview:_comicsTableView_switchover];
     
     [self.comicsTableView_switchover registerNib:[UINib nibWithNibName:@"HomeCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ComicsModel"];
@@ -254,7 +254,7 @@
     _attentionTableView.delegate = self;
     _attentionTableView.dataSource = self;
     _attentionTableView.showsVerticalScrollIndicator = NO;
-    _attentionTableView.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.98 alpha:1];
+    _attentionTableView.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1];
     [self.view addSubview:_attentionTableView];
     
     [self.attentionTableView registerNib:[UINib nibWithNibName:@"HomeCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ComicsModel"];

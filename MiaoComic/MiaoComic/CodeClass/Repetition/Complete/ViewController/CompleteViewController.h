@@ -10,5 +10,4 @@
 
 @interface CompleteViewController : BaseViewController
 @property (nonatomic, copy) NSString *ids;
-//
 @end
